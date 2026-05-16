@@ -1,0 +1,30 @@
+// High-contrast, distraction-free color palette for YAGC clone
+:root {
+  // Backgrounds
+  --bg-primary: #121212; // Dark background for zero-distraction
+  --bg-secondary: #1e1e1e;
+  
+  // High contrast game elements
+  --color-target: #4caf50;
+  --color-distractor: #f44336;
+  --color-neutral: #9e9e9e;
+  
+  // Specific shapes/features
+  --color-red: #ff3b30;
+  --color-blue: #007aff;
+  --color-green: #34c759;
+  --color-yellow: #ffcc00;
+  
+  // Text
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  
+  // Borders
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  
+  // Transitions
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+}

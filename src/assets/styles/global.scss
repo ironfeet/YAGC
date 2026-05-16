@@ -1,0 +1,26 @@
+@use './variables.scss';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent; // Disable tap highlight for touch screens
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; // Prevent scrolling in game
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none; // Disable text selection
+  overscroll-behavior-y: none; // Prevent pull-to-refresh without breaking internal scrolling
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

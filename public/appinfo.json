@@ -1,0 +1,19 @@
+{
+  "id": "me.ironfeet.yagc",
+  "version": "0.0.1",
+  "vendor": "ironfeet",
+  "type": "web",
+  "main": "index.html",
+  "title": "YAGC",
+  "appDescription": "Cognitive therapy application designed for ASD",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "iconColor": "#3b82f6",
+  "bgColor": "#ffffff",
+  "resolution": "1920x1080",
+  "transparent": false,
+  "supportTouchMode": "full",
+  "accessibility": {
+    "supportsAudioGuidance": true
+  }
+}
