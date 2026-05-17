@@ -17,8 +17,11 @@ const { safeSetTimeout } = useSafeTimeout();
 
 const hasStarted = ref(false);
 
+const playQueue = ref<AnimalDef[]>([]);
+
 const handleStart = () => {
   hasStarted.value = true;
+  playQueue.value = shuffleArray([...ANIMALS]);
   generateLevel();
 };
 
@@ -81,7 +84,7 @@ const score = ref(0);
 const level = ref(1);
 const isComplexScene = ref(false);
 
-const animal = computed(() => ANIMALS[currentAnimalIdx.value]);
+const animal = computed(() => playQueue.value[currentAnimalIdx.value]);
 
 // Board DOM ref for measuring drop-zone positions
 const boardRef = ref<HTMLElement | null>(null);
@@ -286,7 +289,12 @@ function onLevelComplete() {
 }
 
 function nextAnimal() {
-  currentAnimalIdx.value = (currentAnimalIdx.value + 1) % ANIMALS.length;
+  currentAnimalIdx.value++;
+  if (currentAnimalIdx.value >= playQueue.value.length) {
+    // Reshuffle when we run out
+    playQueue.value = shuffleArray([...ANIMALS]);
+    currentAnimalIdx.value = 0;
+  }
   level.value++;
   completed.value = false;
   generateLevel();
@@ -364,11 +372,11 @@ const playHint = () => {
           >
             <g v-if="isComplexScene">
               <!-- Complex Scene: Multiple animals to form a busy jungle/farm picture -->
-              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
-              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
-              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
-              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
-              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
+              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="playQueue[0]?.id" width="100" height="100" /></g>
+              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="playQueue[1]?.id" width="100" height="100" /></g>
+              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="playQueue[2]?.id" width="100" height="100" /></g>
+              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="playQueue[3]?.id" width="100" height="100" /></g>
+              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="playQueue[4]?.id" width="100" height="100" /></g>
             </g>
             <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
           </svg>
@@ -404,11 +412,11 @@ const playHint = () => {
                         <g v-if="isComplexScene">
                           <!-- Background to give piece physical body if it falls on empty space -->
                           <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-                          <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
-                          <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
-                          <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
-                          <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
-                          <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
+                          <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="playQueue[0]?.id" width="100" height="100" /></g>
+                          <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="playQueue[1]?.id" width="100" height="100" /></g>
+                          <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="playQueue[2]?.id" width="100" height="100" /></g>
+                          <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="playQueue[3]?.id" width="100" height="100" /></g>
+                          <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="playQueue[4]?.id" width="100" height="100" /></g>
                         </g>
                         <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
                       </g>
@@ -462,11 +470,11 @@ const playHint = () => {
               <g :clip-path="'url(#clip-tray-' + piece.id + ')'">
                 <g v-if="isComplexScene">
                   <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-                  <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
-                  <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
-                  <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
-                  <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
-                  <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
+                  <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="playQueue[0]?.id" width="100" height="100" /></g>
+                  <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="playQueue[1]?.id" width="100" height="100" /></g>
+                  <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="playQueue[2]?.id" width="100" height="100" /></g>
+                  <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="playQueue[3]?.id" width="100" height="100" /></g>
+                  <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="playQueue[4]?.id" width="100" height="100" /></g>
                 </g>
                 <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
               </g>
@@ -507,11 +515,11 @@ const playHint = () => {
           <g :clip-path="'url(#clip-ghost-' + piece.id + ')'">
             <g v-if="isComplexScene">
               <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
-              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
-              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
-              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
-              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
+              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="playQueue[0]?.id" width="100" height="100" /></g>
+              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="playQueue[1]?.id" width="100" height="100" /></g>
+              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="playQueue[2]?.id" width="100" height="100" /></g>
+              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="playQueue[3]?.id" width="100" height="100" /></g>
+              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="playQueue[4]?.id" width="100" height="100" /></g>
             </g>
             <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
           </g>
