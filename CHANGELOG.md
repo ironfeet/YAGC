@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Statistics View Missing Game:** Added `fun-animal-jigsaw` to the initial dictionary state in `useProgressStore.ts` so it correctly renders in the Admin Statistics table and can be manually overridden by parents/clinicians.
 
 ### Changed
+- **Jigsaw Animal Shuffling:** Replaced the static, sequential animal progression in `AnimalJigsaw` with a dynamic `playQueue`. The pool of 24 animals is now randomized via a Fisher-Yates shuffle every time a session begins (and automatically reshuffles when exhausted) to ensure unpredictable gameplay.
 - Refactored `AnimalJigsaw` to render the newly crafted `ColorfulAnimal` assets inside its dynamic `<clipPath>` templates, replacing the old monochromatic placeholders.
 - Updated `README.md` to properly document the Fun Games category, the recent Animal Jigsaw overhaul, and the roadmap for upcoming puzzle features.
 
