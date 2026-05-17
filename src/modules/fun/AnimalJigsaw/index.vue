@@ -42,6 +42,14 @@ const ANIMALS: AnimalDef[] = [
   { id: 'turtle', label: 'Turtle', emoji: '🐢' },
   { id: 'fish', label: 'Fish', emoji: '🐟' },
   { id: 'ladybug', label: 'Ladybug', emoji: '🐞' },
+  { id: 'cow', label: 'Cow', emoji: '🐮' },
+  { id: 'sheep', label: 'Sheep', emoji: '🐑' },
+  { id: 'horse', label: 'Horse', emoji: '🐴' },
+  { id: 'hippo', label: 'Hippo', emoji: '🦛' },
+  { id: 'rhino', label: 'Rhino', emoji: '🦏' },
+  { id: 'crocodile', label: 'Crocodile', emoji: '🐊' },
+  { id: 'tiger', label: 'Tiger', emoji: '🐯' },
+  { id: 'zebra', label: 'Zebra', emoji: '🦓' },
 ];
 
 // ── Piece grid config ─────────────────────────────────────────────────────────
@@ -404,8 +412,10 @@ const playHint = () => {
                         </g>
                         <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
                       </g>
-                      <!-- Puzzle piece outline -->
-                      <path :d="p.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
+                      <!-- 3D Bevel Outlines -->
+                      <path :d="p.jigsawPath" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="0.4" transform="translate(0.3, 0.3)" />
+                      <path :d="p.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.4" transform="translate(-0.3, -0.3)" />
+                      <path :d="p.jigsawPath" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="0.2" />
                     </svg>
                   </div>
                 </template>
@@ -460,7 +470,10 @@ const playHint = () => {
                 </g>
                 <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
               </g>
-              <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
+              <!-- 3D Bevel Outlines -->
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="0.4" transform="translate(0.3, 0.3)" />
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.4" transform="translate(-0.3, -0.3)" />
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="0.2" />
             </svg>
           </div>
         </div>
@@ -502,7 +515,10 @@ const playHint = () => {
             </g>
             <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
           </g>
-          <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
+          <!-- 3D Bevel Outlines -->
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="0.4" transform="translate(0.3, 0.3)" />
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.4" transform="translate(-0.3, -0.3)" />
+              <path :d="piece.jigsawPath" fill="none" stroke="rgba(0,0,0,0.6)" stroke-width="0.2" />
         </svg>
       </div>
     </template>

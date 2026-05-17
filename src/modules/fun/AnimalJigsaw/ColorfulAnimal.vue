@@ -209,6 +209,115 @@
       <path d="M42,8 Q30,-5 35,2" fill="none" stroke="#212121" stroke-width="3" />
       <path d="M58,8 Q70,-5 65,2" fill="none" stroke="#212121" stroke-width="3" />
     </g>
+
+    <!-- Cow -->
+    <g v-else-if="name === 'cow'">
+      <rect x="25" y="45" width="50" height="40" rx="15" fill="#FAFAFA" />
+      <circle cx="35" cy="55" r="8" fill="#212121" />
+      <ellipse cx="65" cy="70" rx="10" ry="12" fill="#212121" />
+      <ellipse cx="50" cy="35" rx="20" ry="15" fill="#FAFAFA" />
+      <polygon points="35,25 40,15 45,25" fill="#FFF" stroke="#E0E0E0" />
+      <polygon points="65,25 60,15 55,25" fill="#FFF" stroke="#E0E0E0" />
+      <ellipse cx="50" cy="42" rx="12" ry="8" fill="#F48FB1" />
+      <circle cx="45" cy="40" r="2" fill="#D81B60" />
+      <circle cx="55" cy="40" r="2" fill="#D81B60" />
+      <circle cx="42" cy="30" r="3" fill="#212121" />
+      <circle cx="58" cy="30" r="3" fill="#212121" />
+    </g>
+
+    <!-- Sheep -->
+    <g v-else-if="name === 'sheep'">
+      <path d="M25,55 Q15,45 30,35 Q40,15 60,25 Q80,20 85,45 Q95,65 75,75 Q65,95 45,85 Q20,95 25,55 Z" fill="#F5F5F5" />
+      <ellipse cx="50" cy="50" rx="15" ry="12" fill="#424242" />
+      <circle cx="45" cy="48" r="2.5" fill="#FFF" />
+      <circle cx="55" cy="48" r="2.5" fill="#FFF" />
+      <ellipse cx="32" cy="45" rx="6" ry="3" fill="#424242" transform="rotate(30 32 45)" />
+      <ellipse cx="68" cy="45" rx="6" ry="3" fill="#424242" transform="rotate(-30 68 45)" />
+    </g>
+
+    <!-- Horse -->
+    <g v-else-if="name === 'horse'">
+      <ellipse cx="50" cy="55" rx="35" ry="25" fill="#8D6E63" />
+      <path d="M30,55 L20,25 L40,35 Z" fill="#8D6E63" />
+      <ellipse cx="25" cy="20" rx="8" ry="14" fill="#5D4037" transform="rotate(-30 25 20)" />
+      <polygon points="35,15 40,5 45,15" fill="#8D6E63" />
+      <polygon points="50,20 55,10 60,20" fill="#8D6E63" />
+      <path d="M25,35 Q45,25 60,40" fill="none" stroke="#3E2723" stroke-width="8" stroke-linecap="round" />
+      <circle cx="32" cy="22" r="3" fill="#212121" />
+      <ellipse cx="20" cy="15" rx="4" ry="2" fill="#FFF" opacity="0.8" />
+    </g>
+
+    <!-- Hippo -->
+    <g v-else-if="name === 'hippo'">
+      <ellipse cx="50" cy="65" rx="38" ry="28" fill="#9FA8DA" />
+      <circle cx="30" cy="35" r="10" fill="#9FA8DA" />
+      <circle cx="70" cy="35" r="10" fill="#9FA8DA" />
+      <ellipse cx="50" cy="40" rx="25" ry="20" fill="#9FA8DA" />
+      <ellipse cx="50" cy="55" rx="35" ry="22" fill="#7986CB" />
+      <circle cx="35" cy="50" r="4" fill="#3949AB" />
+      <circle cx="65" cy="50" r="4" fill="#3949AB" />
+      <rect x="40" y="65" width="6" height="8" rx="2" fill="#FFF" />
+      <rect x="54" y="65" width="6" height="8" rx="2" fill="#FFF" />
+      <circle cx="40" cy="35" r="3" fill="#212121" />
+      <circle cx="60" cy="35" r="3" fill="#212121" />
+    </g>
+
+    <!-- Rhino -->
+    <g v-else-if="name === 'rhino'">
+      <ellipse cx="50" cy="65" rx="42" ry="25" fill="#B0BEC5" />
+      <ellipse cx="30" cy="45" rx="20" ry="18" fill="#B0BEC5" />
+      <path d="M15,45 Q15,15 25,30 Z" fill="#ECEFF1" />
+      <ellipse cx="45" cy="32" rx="5" ry="8" fill="#90A4AE" transform="rotate(20 45 32)" />
+      <ellipse cx="25" cy="32" rx="5" ry="8" fill="#90A4AE" transform="rotate(-20 25 32)" />
+      <circle cx="35" cy="40" r="3" fill="#212121" />
+      <circle cx="20" cy="55" r="2" fill="#546E7A" />
+      <path d="M85,60 Q95,55 90,70" fill="none" stroke="#90A4AE" stroke-width="4" stroke-linecap="round" />
+    </g>
+
+    <!-- Crocodile -->
+    <g v-else-if="name === 'crocodile'">
+      <path d="M10,65 Q30,50 50,65 Q70,80 90,65 Q70,90 50,85 Q30,80 10,65 Z" fill="#43A047" />
+      <ellipse cx="30" cy="55" rx="25" ry="12" fill="#43A047" />
+      <circle cx="45" cy="48" r="8" fill="#43A047" />
+      <circle cx="45" cy="48" r="4" fill="#FFF" />
+      <circle cx="46" cy="48" r="2" fill="#212121" />
+      <circle cx="20" cy="52" r="2" fill="#1B5E20" />
+      <polygon points="60,65 65,55 70,65" fill="#2E7D32" />
+      <polygon points="75,67 80,58 85,65" fill="#2E7D32" />
+    </g>
+
+    <!-- Tiger -->
+    <g v-else-if="name === 'tiger'">
+      <circle cx="50" cy="55" r="35" fill="#FF9800" />
+      <polygon points="20,25 35,35 15,45" fill="#FF9800" />
+      <polygon points="80,25 65,35 85,45" fill="#FF9800" />
+      <ellipse cx="50" cy="65" rx="15" ry="10" fill="#FFF" />
+      <polygon points="45,62 55,62 50,68" fill="#212121" />
+      <circle cx="35" cy="45" r="4" fill="#212121" />
+      <circle cx="65" cy="45" r="4" fill="#212121" />
+      <!-- Stripes -->
+      <path d="M50,20 L45,30 L55,30 Z" fill="#212121" />
+      <path d="M20,50 L30,48 L30,52 Z" fill="#212121" />
+      <path d="M80,50 L70,48 L70,52 Z" fill="#212121" />
+      <path d="M25,70 L35,65 L35,70 Z" fill="#212121" />
+      <path d="M75,70 L65,65 L65,70 Z" fill="#212121" />
+    </g>
+
+    <!-- Zebra -->
+    <g v-else-if="name === 'zebra'">
+      <ellipse cx="50" cy="55" rx="35" ry="25" fill="#FFF" />
+      <ellipse cx="25" cy="40" rx="15" ry="20" fill="#FFF" />
+      <polygon points="25,20 30,10 35,25" fill="#FFF" />
+      <polygon points="15,25 10,15 20,30" fill="#FFF" />
+      <ellipse cx="20" cy="50" rx="8" ry="6" fill="#424242" />
+      <circle cx="30" cy="35" r="3" fill="#212121" />
+      <!-- Stripes -->
+      <path d="M50,30 L45,45 L55,45 Z" fill="#212121" />
+      <path d="M65,35 L60,55 L70,55 Z" fill="#212121" />
+      <path d="M80,45 L75,60 L85,60 Z" fill="#212121" />
+      <path d="M40,75 L45,60 L50,80 Z" fill="#212121" />
+      <path d="M60,80 L65,65 L70,80 Z" fill="#212121" />
+    </g>
   </svg>
 </template>
 
