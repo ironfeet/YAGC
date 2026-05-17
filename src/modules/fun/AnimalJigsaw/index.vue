@@ -274,6 +274,7 @@ function onPointerUp(e: PointerEvent) {
 function onLevelComplete() {
   completed.value = true;
   score.value += 10 * level.value;
+  progressStore.updateStats(moduleId, true);
 }
 
 function nextAnimal() {
@@ -591,7 +592,7 @@ const playHint = () => {
   display: grid;
   border: 3px solid rgba(255,255,255,0.15);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   background: rgba(255,255,255,0.04);
 }
@@ -604,7 +605,7 @@ const playHint = () => {
   background: rgba(255,255,255,0.03);
   transition: background 0.2s;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .board-slot:has(.piece-placed) {
@@ -639,20 +640,15 @@ const playHint = () => {
 
 .piece-tray-item {
   position: absolute;
-  border-radius: 8px;
   cursor: grab;
-  overflow: hidden;
-  transition: box-shadow 0.15s;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-  background: rgba(255,255,255,0.05);
-  border: 2px solid rgba(255,255,255,0.12);
+  overflow: visible;
+  z-index: 1;
 }
 
-.piece-tray-item:active { cursor: grabbing; }
+.piece-tray-item:active { cursor: grabbing; z-index: 10; }
 
-.piece-tray-item:hover {
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  border-color: rgba(255,255,255,0.3);
+.piece-tray-item:hover svg {
+  filter: drop-shadow(0 4px 12px rgba(255,255,255,0.3));
 }
 
 /* ── Drag ghost ──────────────────────────────────────────── */

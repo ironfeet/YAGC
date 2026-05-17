@@ -36,6 +36,7 @@ We highly recommend reading their original academic research:
    - [Composables](#composables)
    - [Components](#components)
 6. [Game Modules](#game-modules)
+   - [Fun Games](#fun-games)
    - [Tier 1 — Foundational](#tier-1--foundational)
    - [Tier 2 — Intermediate](#tier-2--intermediate)
    - [Tier 3 — Advanced](#tier-3--advanced)
@@ -336,6 +337,30 @@ Contains 26 custom SVG icons (one per game module) rendered on each game's start
 
 ## Game Modules
 
+### Fun Games
+
+#### Animal Jigsaw (`AnimalJigsaw`)
+**Module ID**: `fun-animal-jigsaw`
+
+A progressive interlocking jigsaw puzzle designed for casual play and spatial reasoning. The game dynamically generates jigsaw cuts using SVG `<clipPath>` for authentic tab-and-hole interlocking pieces.
+
+- **16 Colorful Animals**: Features vibrant, "kawaii-style" procedural SVG animals (Cat, Dog, Rabbit, Frog, Pig, Lion, Elephant, Penguin, Fox, Bear, Monkey, Owl, Duck, Turtle, Fish, and Ladybug).
+- **Progressive Difficulty**:
+  - Phase 1: 2×2 grid (4 pieces) with a strong visual guide.
+  - Phase 2: 3×3 grid (9 pieces).
+  - Phase 3: 4×4 grid (16 pieces).
+  - Phase 4: 5×5 grid (25 pieces).
+  - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-animal scene.
+
+#### Upcoming Fun Games
+- **Vehicle Jigsaw** (coming soon)
+- **Number Puzzle** (coming soon)
+- **Color Board** (coming soon)
+- **Nature Jigsaw** (coming soon)
+- **Shape Sorter** (coming soon)
+
+---
+
 ### Tier 1 — Foundational
 
 #### Language Comprehension (`BasicLanguage`)
@@ -475,6 +500,13 @@ Memory variants share a common two-state UI:
 **Module ID**: `tier3-spatial-prepositions`
 
 A grid of toy+vehicle cells with some empty. The child must fill the empty cells with the correct combination based on the spatial rule (`in_front`, `inside`, `behind`). 3 phases scale grid complexity.
+
+---
+
+#### Combine Toys (`CombineToys`)
+**Module ID**: `tier3-combinetoys`
+
+A multi-part assembly puzzle. The child is presented with a mixed pool of toys and vehicles and must assemble the correct pairs according to verbal instructions.
 
 ---
 

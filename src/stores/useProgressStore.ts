@@ -7,6 +7,14 @@ export const useProgressStore = defineStore('progress', {
     currentTier: 1,
     unlockedModules: ['tier1-patches', 'tier1-outlines', 'tier1-basiclanguage', 'tier1-matching-cars', 'tier1-matching-animals', 'tier2-odd-one-out', 'tier2-combine-elephants', 'tier2-combine-butterflies', 'tier2-combine-trains', 'tier2-arithmetics', 'tier2-count-everything', 'tier3-spatial-prepositions', 'tier3-perspectivetaking', 'tier3-auditory-memory', 'tier3-flexible-language-memory', 'tier3-nested-logic'],
     moduleStats: {
+      'fun-animal-jigsaw': {
+        currentPhase: 1,
+        highestPhase: 5,
+        currentOptionCount: 2,
+        highestOptionCount: 2,
+        currentPromptLevel: 'none',
+        successRate: 0,
+      },
       'tier1-patches': {
         currentPhase: 1,
         highestPhase: 3,
