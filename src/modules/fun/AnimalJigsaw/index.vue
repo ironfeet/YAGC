@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
+import ColorfulAnimal from './ColorfulAnimal.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { useLogger } from '../../../composables/useLogger';
 import { useSafeTimeout } from '../../../composables/useSafeTimeout';
@@ -22,71 +23,25 @@ const handleStart = () => {
 };
 
 // ── Animal pool ──────────────────────────────────────────────────────────────
-type AnimalDef = { id: string; label: string; emoji: string; color: string; svgPath: string };
+type AnimalDef = { id: string; label: string; emoji: string; };
 
 const ANIMALS: AnimalDef[] = [
-  {
-    id: 'cat', label: 'Cat', emoji: '🐱', color: '#f97316',
-    svgPath: `M22,42 L12,12 L38,32 Z M78,42 L88,12 L62,32 Z
-      M78,42 L88,12 L62,32 Z M24,40 L17,20 L36,33 Z M76,40 L83,20 L64,33 Z
-      M50,74 Q22,74 22,54 Q22,18 50,18 Q78,18 78,54 Q78,74 50,74 Z
-      M78,80 Q96,65 88,45 Q83,33 92,28 M78,80 Q96,65 88,45
-      M34,90 Q34,98 46,98 M54,90 Q54,98 66,98`
-  },
-  {
-    id: 'dog', label: 'Dog', emoji: '🐶', color: '#a78bfa',
-    svgPath: `M24,48 Q13,30 13,48 Q13,66 24,66 Z
-      M76,48 Q87,30 87,48 Q87,66 76,66 Z
-      M50,18 Q24,18 24,52 Q24,72 50,72 Q76,72 76,52 Q76,18 50,18 Z
-      M33,88 Q33,98 45,98 M55,88 Q55,98 67,98
-      M82,65 Q98,50 90,40`
-  },
-  {
-    id: 'rabbit', label: 'Rabbit', emoji: '🐰', color: '#ec4899',
-    svgPath: `M26,12 Q26,-8 42,-8 Q42,28 34,36 Z
-      M74,12 Q74,-8 58,-8 Q58,28 66,36 Z
-      M50,96 Q20,96 20,72 Q20,48 50,48 Q80,48 80,72 Q80,96 50,96 Z
-      M50,48 Q28,48 28,28 Q28,8 50,8 Q72,8 72,28 Q72,48 50,48 Z
-      M76,82 Q85,82 85,92 Q85,100 76,100`
-  },
-  {
-    id: 'bird', label: 'Bird', emoji: '🐦', color: '#22c55e',
-    svgPath: `M50,84 Q22,84 22,62 Q22,40 50,40 Z
-      M50,84 Q78,84 78,62 Q78,40 50,40 Z
-      M68,16 Q68,-4 84,-4 Q100,8 84,34 Q76,46 68,52 Z
-      M22,58 Q8,35 22,22 Q30,45 50,50 Z
-      M24,72 Q10,80 5,90 Q18,80 22,78
-      M28,76 Q18,90 16,98 Q28,84 32,80`
-  },
-  {
-    id: 'fish', label: 'Fish', emoji: '🐟', color: '#3b82f6',
-    svgPath: `M72,50 L92,28 L88,50 L92,72 Z
-      M8,50 Q8,25 46,25 Q84,25 84,50 Q84,75 46,75 Q8,75 8,50 Z
-      M35,26 Q50,12 65,26
-      M42,75 Q50,88 58,75`
-  },
-  {
-    id: 'elephant', label: 'Elephant', emoji: '🐘', color: '#64748b',
-    svgPath: `M15,90 Q15,60 35,55 Q20,40 30,20 Q50,10 70,20 Q90,10 90,40
-      Q100,55 85,65 Q95,80 85,90 Z
-      M35,90 L35,100 M65,90 L65,100 M75,90 L75,100 M25,90 L25,100
-      M30,20 Q20,50 25,75`
-  },
-  {
-    id: 'lion', label: 'Lion', emoji: '🦁', color: '#f59e0b',
-    svgPath: `M50,10 Q70,5 80,25 Q95,40 85,65 Q90,90 70,95
-      Q50,105 30,95 Q10,90 15,65 Q5,40 20,25 Q30,5 50,10 Z
-      M50,30 Q65,25 72,40 Q80,55 70,68 Q50,80 30,68 Q20,55 28,40 Q35,25 50,30 Z
-      M70,90 L75,100 M30,90 L25,100 M60,92 L62,102 M40,92 L38,102`
-  },
-  {
-    id: 'penguin', label: 'Penguin', emoji: '🐧', color: '#1e293b',
-    svgPath: `M100,110 Q100,55 100,55 Q100,45 100,45 Q100,165 100,165 Z
-      M60,55 Q100,45 140,55 Q160,75 140,110 Q100,162 60,110 Q40,75 60,55 Z
-      M70,60 Q100,50 130,60 Q130,100 100,105 Q70,100 70,60 Z
-      M85,160 L75,175 L95,175 Z M115,160 L105,175 L125,175 Z
-      M65,100 Q30,130 50,155 M135,100 Q170,130 150,155`
-  },
+  { id: 'cat', label: 'Cat', emoji: '🐱' },
+  { id: 'dog', label: 'Dog', emoji: '🐶' },
+  { id: 'rabbit', label: 'Rabbit', emoji: '🐰' },
+  { id: 'frog', label: 'Frog', emoji: '🐸' },
+  { id: 'pig', label: 'Pig', emoji: '🐷' },
+  { id: 'lion', label: 'Lion', emoji: '🦁' },
+  { id: 'elephant', label: 'Elephant', emoji: '🐘' },
+  { id: 'penguin', label: 'Penguin', emoji: '🐧' },
+  { id: 'fox', label: 'Fox', emoji: '🦊' },
+  { id: 'bear', label: 'Bear', emoji: '🐻' },
+  { id: 'monkey', label: 'Monkey', emoji: '🐵' },
+  { id: 'owl', label: 'Owl', emoji: '🦉' },
+  { id: 'duck', label: 'Duck', emoji: '🦆' },
+  { id: 'turtle', label: 'Turtle', emoji: '🐢' },
+  { id: 'fish', label: 'Fish', emoji: '🐟' },
+  { id: 'ladybug', label: 'Ladybug', emoji: '🐞' },
 ];
 
 // ── Piece grid config ─────────────────────────────────────────────────────────
@@ -400,13 +355,13 @@ const playHint = () => {
           >
             <g v-if="isComplexScene">
               <!-- Complex Scene: Multiple animals to form a busy jungle/farm picture -->
-              <path :d="ANIMALS[0].svgPath" :fill="ANIMALS[0].color" transform="translate(-10, 10) scale(0.6)" />
-              <path :d="ANIMALS[1].svgPath" :fill="ANIMALS[1].color" transform="translate(45, -5) scale(0.55)" />
-              <path :d="ANIMALS[2].svgPath" :fill="ANIMALS[2].color" transform="translate(25, 45) scale(0.7)" />
-              <path :d="ANIMALS[3].svgPath" :fill="ANIMALS[3].color" transform="translate(-20, 60) scale(0.4)" />
-              <path :d="ANIMALS[4].svgPath" :fill="ANIMALS[4].color" transform="translate(65, 55) scale(0.5)" />
+              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
+              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
+              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
+              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
+              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
             </g>
-            <path v-else :d="animal.svgPath" :fill="animal.color" stroke="none" />
+            <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
           </svg>
 
           <template v-for="r in rows" :key="'r'+r">
@@ -440,13 +395,13 @@ const playHint = () => {
                         <g v-if="isComplexScene">
                           <!-- Background to give piece physical body if it falls on empty space -->
                           <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-                          <path :d="ANIMALS[0].svgPath" :fill="ANIMALS[0].color" transform="translate(-10, 10) scale(0.6)" />
-                          <path :d="ANIMALS[1].svgPath" :fill="ANIMALS[1].color" transform="translate(45, -5) scale(0.55)" />
-                          <path :d="ANIMALS[2].svgPath" :fill="ANIMALS[2].color" transform="translate(25, 45) scale(0.7)" />
-                          <path :d="ANIMALS[3].svgPath" :fill="ANIMALS[3].color" transform="translate(-20, 60) scale(0.4)" />
-                          <path :d="ANIMALS[4].svgPath" :fill="ANIMALS[4].color" transform="translate(65, 55) scale(0.5)" />
+                          <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
+                          <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
+                          <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
+                          <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
+                          <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
                         </g>
-                        <path v-else :d="animal.svgPath" :fill="animal.color" />
+                        <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
                       </g>
                       <!-- Puzzle piece outline -->
                       <path :d="p.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
@@ -496,13 +451,13 @@ const playHint = () => {
               <g :clip-path="'url(#clip-tray-' + piece.id + ')'">
                 <g v-if="isComplexScene">
                   <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-                  <path :d="ANIMALS[0].svgPath" :fill="ANIMALS[0].color" transform="translate(-10, 10) scale(0.6)" />
-                  <path :d="ANIMALS[1].svgPath" :fill="ANIMALS[1].color" transform="translate(45, -5) scale(0.55)" />
-                  <path :d="ANIMALS[2].svgPath" :fill="ANIMALS[2].color" transform="translate(25, 45) scale(0.7)" />
-                  <path :d="ANIMALS[3].svgPath" :fill="ANIMALS[3].color" transform="translate(-20, 60) scale(0.4)" />
-                  <path :d="ANIMALS[4].svgPath" :fill="ANIMALS[4].color" transform="translate(65, 55) scale(0.5)" />
+                  <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
+                  <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
+                  <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
+                  <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
+                  <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
                 </g>
-                <path v-else :d="animal.svgPath" :fill="animal.color" />
+                <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
               </g>
               <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
             </svg>
@@ -538,13 +493,13 @@ const playHint = () => {
           <g :clip-path="'url(#clip-ghost-' + piece.id + ')'">
             <g v-if="isComplexScene">
               <rect x="0" y="0" width="100" height="100" fill="rgba(255,255,255,0.05)" />
-              <path :d="ANIMALS[0].svgPath" :fill="ANIMALS[0].color" transform="translate(-10, 10) scale(0.6)" />
-              <path :d="ANIMALS[1].svgPath" :fill="ANIMALS[1].color" transform="translate(45, -5) scale(0.55)" />
-              <path :d="ANIMALS[2].svgPath" :fill="ANIMALS[2].color" transform="translate(25, 45) scale(0.7)" />
-              <path :d="ANIMALS[3].svgPath" :fill="ANIMALS[3].color" transform="translate(-20, 60) scale(0.4)" />
-              <path :d="ANIMALS[4].svgPath" :fill="ANIMALS[4].color" transform="translate(65, 55) scale(0.5)" />
+              <g transform="translate(-10, 10) scale(0.6)"><ColorfulAnimal :name="ANIMALS[0].id" width="100" height="100" /></g>
+              <g transform="translate(45, -5) scale(0.55)"><ColorfulAnimal :name="ANIMALS[1].id" width="100" height="100" /></g>
+              <g transform="translate(25, 45) scale(0.7)"><ColorfulAnimal :name="ANIMALS[2].id" width="100" height="100" /></g>
+              <g transform="translate(-20, 60) scale(0.4)"><ColorfulAnimal :name="ANIMALS[3].id" width="100" height="100" /></g>
+              <g transform="translate(65, 55) scale(0.5)"><ColorfulAnimal :name="ANIMALS[4].id" width="100" height="100" /></g>
             </g>
-            <path v-else :d="animal.svgPath" :fill="animal.color" />
+            <ColorfulAnimal v-else :name="animal.id" width="100" height="100" />
           </g>
           <path :d="piece.jigsawPath" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="0.3" />
         </svg>
