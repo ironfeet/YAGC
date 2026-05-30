@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.3] - 30-05-2026
+
+### Added
+- **Multi-Touch Puzzles:** Players can now grab and move multiple puzzle pieces at the exact same time using multiple fingers, making the jigsaw experience much more natural and interactive.
+
+### Fixed
+- **Smoother Controls:** Resolved glitches and ghosting issues when dragging pieces, ensuring a much more reliable and smooth experience whether you are using a touchscreen or a mouse.
+
 ## [0.0.2] - 17-05-2026
 
 ### Added
