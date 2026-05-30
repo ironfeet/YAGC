@@ -239,37 +239,36 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
     }
   };
 
-  // Event handler bindings for template
-  let activeMouseMove: ((ev: MouseEvent) => void) | null = null;
-  let activeMouseUp: ((ev: MouseEvent) => void) | null = null;
-
-  const removeMouseListeners = () => {
-    if (activeMouseMove) window.removeEventListener('mousemove', activeMouseMove);
-    if (activeMouseUp) window.removeEventListener('mouseup', activeMouseUp);
-    activeMouseMove = null;
-    activeMouseUp = null;
-  };
-
   const handlers = {
-    touchstart: (e: TouchEvent) => onStart(e.touches[0].clientX, e.touches[0].clientY),
-    touchmove: (e: TouchEvent) => onMove(e.touches[0].clientX, e.touches[0].clientY, e),
-    touchend: (e: TouchEvent) => onEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY),
-    // Fallback for mouse/local testing
-    mousedown: (e: MouseEvent) => {
+    pointerdown: (e: PointerEvent) => {
+      if (e.isPrimary === false && e.pointerType === 'mouse') return; // Ignore right click if needed, though pointer events handle it
+      const target = e.currentTarget as HTMLElement;
+      target.setPointerCapture(e.pointerId);
       onStart(e.clientX, e.clientY);
-      removeMouseListeners();
-      activeMouseMove = (ev: MouseEvent) => onMove(ev.clientX, ev.clientY, ev);
-      activeMouseUp = (ev: MouseEvent) => {
-        onEnd(ev.clientX, ev.clientY);
-        removeMouseListeners();
-      };
-      window.addEventListener('mousemove', activeMouseMove, { passive: false });
-      window.addEventListener('mouseup', activeMouseUp);
+    },
+    pointermove: (e: PointerEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      if (target.hasPointerCapture(e.pointerId)) {
+        onMove(e.clientX, e.clientY, e);
+      }
+    },
+    pointerup: (e: PointerEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      if (target.hasPointerCapture(e.pointerId)) {
+        target.releasePointerCapture(e.pointerId);
+        onEnd(e.clientX, e.clientY);
+      }
+    },
+    pointercancel: (e: PointerEvent) => {
+      const target = e.currentTarget as HTMLElement;
+      if (target.hasPointerCapture(e.pointerId)) {
+        target.releasePointerCapture(e.pointerId);
+        onEnd(e.clientX, e.clientY);
+      }
     }
   };
 
   onUnmounted(() => {
-    removeMouseListeners();
     if (wrapperZIndexTimeout) {
       clearTimeout(wrapperZIndexTimeout);
     }
