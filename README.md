@@ -704,9 +704,9 @@ Columns shown per module: `currentPhase`, `highestPhase`, `currentOptionCount`, 
 
 ## Accessibility Design
 
-### Motor Control — Expanded Drop Zones
+### Motor Control — Expanded Drop Zones & Multi-Touch
 
-All drop targets use a **20% expanded Axis-Aligned Bounding Box (AABB)** for hit-detection. This means a child's touch only needs to land within 120% of the visual target area to register a successful placement, significantly reducing placement failures due to motor imprecision.
+All drop targets use a **20% expanded Axis-Aligned Bounding Box (AABB)** for hit-detection. This means a child's touch only needs to land within 120% of the visual target area to register a successful placement, significantly reducing placement failures due to motor imprecision. Furthermore, the drag engine utilizes the **Pointer Events API** to support **multi-touch interactions**, allowing multiple puzzle pieces or items to be grabbed and dragged simultaneously for a more natural, fluid experience.
 
 ### Visual — Z-index Layering During Drag
 
