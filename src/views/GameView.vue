@@ -39,6 +39,7 @@ const moduleRegistry: Record<string, any> = {
   'tier3-flexible-language-memory': defineAsyncComponent(() => import('../modules/tier3/FlexibleLanguageMemory/index.vue')),
   'tier3-nested-logic': defineAsyncComponent(() => import('../modules/tier3/NestedLogic/index.vue')),
   'fun-animal-jigsaw': defineAsyncComponent(() => import('../modules/fun/AnimalJigsaw/index.vue')),
+  'fun-vehicle-jigsaw': defineAsyncComponent(() => import('../modules/fun/VehicleJigsaw/index.vue')),
 };
 
 const ModuleComponent = computed(() => {

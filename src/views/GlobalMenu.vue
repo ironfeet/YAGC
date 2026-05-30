@@ -22,12 +22,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'jigsaw-vehicles',
+    id: 'fun-vehicle-jigsaw',
     name: 'Vehicle Jigsaw',
     description: 'Build cars, trains and planes',
     emoji: '🚂',
     color: '#3b82f6',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 'puzzle-numbers',

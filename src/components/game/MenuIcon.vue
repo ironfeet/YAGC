@@ -351,7 +351,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Vehicle Jigsaw -->
-      <g v-else-if="gameId === 'jigsaw-vehicles'">
+      <g v-else-if="gameId === 'fun-vehicle-jigsaw'">
         <!-- Car Silhouette -->
         <path d="M 20,60 L 30,40 L 65,40 L 80,60 L 85,60 L 85,80 L 15,80 L 15,60 Z" fill="white" />
         <circle cx="30" cy="80" r="10" fill="white" />
