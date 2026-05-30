@@ -29,7 +29,7 @@ jobs:
         run: npm run build
 
       - name: Install LG webOS CLI
-        run: npm install -g @webos-tools/cli
+        run: npm install -g @webos-tools/cli@3.2.3
 
       - name: Package webOS App (.ipk)
         run: |
