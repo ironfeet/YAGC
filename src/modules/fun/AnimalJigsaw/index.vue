@@ -74,6 +74,8 @@ type Piece = {
   placed: boolean;
   dragging: boolean;
   jigsawPath: string;
+  dragX: number;
+  dragY: number;
 };
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -188,6 +190,7 @@ function generateLevel() {
         x: 0, y: 0,
         placed: false,
         dragging: false,
+        dragX: 0, dragY: 0,
         jigsawPath: generateJigsawPath(r, c, cols.value, rows.value, edges, phase === 1)
       });
     }
@@ -221,32 +224,33 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 // ── Drag-and-drop ─────────────────────────────────────────────────────────────
-let dragPiece: Piece | null = null;
-// Absolute drag position driven by pointermove
-const dragX = ref(0);
-const dragY = ref(0);
+const activePointers = new Map<number, Piece>();
 
 function onPiecePointerDown(e: PointerEvent, piece: Piece) {
   if (piece.placed) return;
   e.preventDefault();
   (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  dragPiece = piece;
+  activePointers.set(e.pointerId, piece);
   piece.dragging = true;
-  dragX.value = e.clientX;
-  dragY.value = e.clientY;
+  piece.dragX = e.clientX;
+  piece.dragY = e.clientY;
 }
 
 function onPointerMove(e: PointerEvent) {
-  if (!dragPiece) return;
+  const p = activePointers.get(e.pointerId);
+  if (!p) return;
   e.preventDefault();
-  dragX.value = e.clientX;
-  dragY.value = e.clientY;
+  p.dragX = e.clientX;
+  p.dragY = e.clientY;
 }
 
 function onPointerUp(e: PointerEvent) {
-  if (!dragPiece || !boardRef.value) { dragPiece = null; return; }
+  const p = activePointers.get(e.pointerId);
+  if (!p || !boardRef.value) {
+    activePointers.delete(e.pointerId);
+    return;
+  }
 
-  const p = dragPiece;
   p.dragging = false;
 
   // Check each un-filled slot on the board
@@ -274,7 +278,7 @@ function onPointerUp(e: PointerEvent) {
     }
   });
 
-  dragPiece = null;
+  activePointers.delete(e.pointerId);
 
   // Check win
   if (pieces.value.every(p => p.placed)) {
@@ -487,20 +491,20 @@ const playHint = () => {
         </div>
       </div>
     </div>
-
-    <!-- ── Floating drag ghost ────────────────────────────────── -->
-    <template v-for="piece in pieces" :key="'ghost-' + piece.id">
-      <div
-        v-if="piece.dragging"
-        class="piece-ghost"
-        :style="{
-          left: dragX + 'px',
-          top: dragY + 'px',
-          width: pieceSize + 'px',
-          height: pieceSize + 'px',
-          transform: 'translate(-50%, -50%) scale(1.12)',
-        }"
-      >
+<!-- ── Drag ghost ──────────────────────────────────────────── -->
+<template v-for="piece in pieces" :key="'ghost'+piece.id">
+  <div
+    v-if="piece.dragging"
+    class="piece-ghost"
+    :style="{
+      left: piece.dragX + 'px',
+      top: piece.dragY + 'px',
+      width: pieceSize + 'px',
+      height: pieceSize + 'px',
+      transform: 'translate(-50%, -50%) scale(1.1)',
+      pointerEvents: 'none'
+    }"
+  >
         <svg
           :width="pieceSize" :height="pieceSize"
           :viewBox="`${piece.col * (100/cols)} ${piece.row * (100/rows)} ${100/cols} ${100/rows}`"
