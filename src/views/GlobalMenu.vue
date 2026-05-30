@@ -46,12 +46,12 @@ const funGames = [
     comingSoon: true,
   },
   {
-    id: 'jigsaw-nature',
+    id: 'fun-nature-jigsaw',
     name: 'Nature Jigsaw',
     description: 'Piece together beautiful nature scenes',
-    emoji: '🌳',
-    color: '#10b981',
-    comingSoon: true,
+    emoji: '🌲',
+    color: '#059669',
+    comingSoon: false,
   },
   {
     id: 'puzzle-shapes',

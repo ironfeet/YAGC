@@ -394,7 +394,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Nature Jigsaw -->
-      <g v-else-if="gameId === 'jigsaw-nature'">
+      <g v-else-if="gameId === 'fun-nature-jigsaw'">
         <!-- Tree -->
         <path d="M 45,80 L 45,55 L 55,55 L 55,80 Z" fill="rgba(255,255,255,0.6)" />
         <path d="M 50,15 C 20,15 20,50 50,60 C 80,50 80,15 50,15 Z" fill="white" />

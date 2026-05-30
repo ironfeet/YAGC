@@ -40,6 +40,7 @@ const moduleRegistry: Record<string, any> = {
   'tier3-nested-logic': defineAsyncComponent(() => import('../modules/tier3/NestedLogic/index.vue')),
   'fun-animal-jigsaw': defineAsyncComponent(() => import('../modules/fun/AnimalJigsaw/index.vue')),
   'fun-vehicle-jigsaw': defineAsyncComponent(() => import('../modules/fun/VehicleJigsaw/index.vue')),
+  'fun-nature-jigsaw': defineAsyncComponent(() => import('../modules/fun/NatureJigsaw/index.vue')),
 };
 
 const ModuleComponent = computed(() => {
