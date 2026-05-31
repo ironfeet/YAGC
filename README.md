@@ -378,8 +378,20 @@ A progressive interlocking jigsaw puzzle focusing on outdoor objects.
   - Phase 4: 5×5 grid (25 pieces).
   - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-nature scene.
 
+#### Number Puzzle (`NumberPuzzle`)
+**Module ID**: `fun-number-puzzle`
+
+A progressive matching puzzle focusing on number recognition and sequencing on a wooden board.
+
+- **Numbers 1-15**: Colorful numeric blocks that snap cleanly into place using an interlocking board grid.
+- **Progressive Difficulty**:
+  - Phase 1: 1×2 grid (numbers 1-2).
+  - Phase 2: 2×2 grid (numbers 1-4).
+  - Phase 3: 2×3 grid (numbers 1-6).
+  - Phase 4: 2×5 grid (numbers 1-10).
+  - Phase 5: 3×5 grid (numbers 1-15).
+
 #### Upcoming Fun Games
-- **Number Puzzle** (coming soon)
 - **Color Board** (coming soon)
 - **Shape Sorter** (coming soon)
 
