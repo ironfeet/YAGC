@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/useProgressStore';
 
@@ -31,10 +31,10 @@ const handleReset = () => {
 const gameNames: Record<string, string> = {
   // Fun games
   'fun-animal-jigsaw': 'Animal Jigsaw',
-  'jigsaw-vehicles': 'Vehicle Jigsaw',
+  'fun-vehicle-jigsaw': 'Vehicle Jigsaw',
   'puzzle-numbers': 'Number Puzzle',
   'puzzle-colors': 'Color Board',
-  'jigsaw-nature': 'Nature Jigsaw',
+  'fun-nature-jigsaw': 'Nature Jigsaw',
   'puzzle-shapes': 'Shape Sorter',
   // MITA games
   'tier1-patches': 'Patches',
@@ -75,6 +75,26 @@ const filteredStats = computed(() => {
     }
   }
   return result;
+});
+
+onMounted(() => {
+  let changed = false;
+  for (const key in gameNames) {
+    if (!progressStore.moduleStats[key]) {
+      progressStore.moduleStats[key] = {
+        currentPhase: 1,
+        highestPhase: 5,
+        currentOptionCount: 2,
+        highestOptionCount: 8,
+        currentPromptLevel: 'none',
+        successRate: 0,
+      };
+      changed = true;
+    }
+  }
+  if (changed) {
+    progressStore.$patch({ moduleStats: { ...progressStore.moduleStats } });
+  }
 });
 </script>
 
