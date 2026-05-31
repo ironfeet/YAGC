@@ -41,6 +41,7 @@ const moduleRegistry: Record<string, any> = {
   'fun-animal-jigsaw': defineAsyncComponent(() => import('../modules/fun/AnimalJigsaw/index.vue')),
   'fun-vehicle-jigsaw': defineAsyncComponent(() => import('../modules/fun/VehicleJigsaw/index.vue')),
   'fun-nature-jigsaw': defineAsyncComponent(() => import('../modules/fun/NatureJigsaw/index.vue')),
+  'fun-number-puzzle': defineAsyncComponent(() => import('../modules/fun/NumberPuzzle/index.vue')),
 };
 
 const ModuleComponent = computed(() => {

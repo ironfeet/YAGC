@@ -366,7 +366,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Number Puzzle -->
-      <g v-else-if="gameId === 'puzzle-numbers'">
+      <g v-else-if="gameId === 'fun-number-puzzle'">
         <!-- Big '1' -->
         <path d="M 40,30 L 55,20 L 55,75 M 40,75 L 70,75" fill="none" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
         <!-- Puzzle cut line through the 1 -->

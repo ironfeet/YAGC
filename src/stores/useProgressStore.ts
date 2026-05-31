@@ -31,6 +31,14 @@ export const useProgressStore = defineStore('progress', {
         currentPromptLevel: 'none',
         successRate: 0,
       },
+      'fun-number-puzzle': {
+        currentPhase: 1,
+        highestPhase: 5,
+        currentOptionCount: 2,
+        highestOptionCount: 8,
+        currentPromptLevel: 'none',
+        successRate: 0,
+      },
       'tier1-patches': {
         currentPhase: 1,
         highestPhase: 3,

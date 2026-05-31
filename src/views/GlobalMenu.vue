@@ -30,12 +30,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'puzzle-numbers',
+    id: 'fun-number-puzzle',
     name: 'Number Puzzle',
-    description: 'Match numbers and shapes on the board',
+    description: 'Learn and place numbers',
     emoji: '🔢',
-    color: '#22c55e',
-    comingSoon: true,
+    color: '#0284c7',
+    comingSoon: false,
   },
   {
     id: 'puzzle-colors',

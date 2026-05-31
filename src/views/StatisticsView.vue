@@ -32,7 +32,7 @@ const gameNames: Record<string, string> = {
   // Fun games
   'fun-animal-jigsaw': 'Animal Jigsaw',
   'fun-vehicle-jigsaw': 'Vehicle Jigsaw',
-  'puzzle-numbers': 'Number Puzzle',
+  'fun-number-puzzle': 'Number Puzzle',
   'puzzle-colors': 'Color Board',
   'fun-nature-jigsaw': 'Nature Jigsaw',
   'puzzle-shapes': 'Shape Sorter',
