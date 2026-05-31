@@ -22,12 +22,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'jigsaw-vehicles',
+    id: 'fun-vehicle-jigsaw',
     name: 'Vehicle Jigsaw',
     description: 'Build cars, trains and planes',
     emoji: '🚂',
     color: '#3b82f6',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 'puzzle-numbers',
@@ -46,12 +46,12 @@ const funGames = [
     comingSoon: true,
   },
   {
-    id: 'jigsaw-nature',
+    id: 'fun-nature-jigsaw',
     name: 'Nature Jigsaw',
     description: 'Piece together beautiful nature scenes',
-    emoji: '🌳',
-    color: '#10b981',
-    comingSoon: true,
+    emoji: '🌲',
+    color: '#059669',
+    comingSoon: false,
   },
   {
     id: 'puzzle-shapes',

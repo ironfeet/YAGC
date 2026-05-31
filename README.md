@@ -352,11 +352,35 @@ A progressive interlocking jigsaw puzzle designed for casual play and spatial re
   - Phase 4: 5×5 grid (25 pieces).
   - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-animal scene.
 
+#### Vehicle Jigsaw (`VehicleJigsaw`)
+**Module ID**: `fun-vehicle-jigsaw`
+
+A progressive interlocking jigsaw puzzle designed for casual play and spatial reasoning. The game dynamically generates jigsaw cuts using SVG `<clipPath>` for authentic tab-and-hole interlocking pieces.
+
+- **8 Colorful Vehicles**: Features custom, vibrant SVG vehicles (Car, Truck, Bus, Train, Airplane, Rocket, Boat, and Submarine).
+- **Progressive Difficulty**:
+  - Phase 1: 2×2 grid (4 pieces) with a strong visual guide.
+  - Phase 2: 3×3 grid (9 pieces).
+  - Phase 3: 4×4 grid (16 pieces).
+  - Phase 4: 5×5 grid (25 pieces).
+  - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-vehicle scene.
+
+#### Nature Jigsaw (`NatureJigsaw`)
+**Module ID**: `fun-nature-jigsaw`
+
+A progressive interlocking jigsaw puzzle focusing on outdoor objects.
+
+- **8 Colorful Nature Assets**: Features custom, vibrant SVG nature items (Tree, Flower, Sun, Cloud, Mountain, Rainbow, Leaf, and Mushroom).
+- **Progressive Difficulty**:
+  - Phase 1: 2×2 grid (4 pieces) with a strong visual guide.
+  - Phase 2: 3×3 grid (9 pieces).
+  - Phase 3: 4×4 grid (16 pieces).
+  - Phase 4: 5×5 grid (25 pieces).
+  - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-nature scene.
+
 #### Upcoming Fun Games
-- **Vehicle Jigsaw** (coming soon)
 - **Number Puzzle** (coming soon)
 - **Color Board** (coming soon)
-- **Nature Jigsaw** (coming soon)
 - **Shape Sorter** (coming soon)
 
 ---

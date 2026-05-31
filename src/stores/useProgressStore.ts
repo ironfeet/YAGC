@@ -15,6 +15,22 @@ export const useProgressStore = defineStore('progress', {
         currentPromptLevel: 'none',
         successRate: 0,
       },
+      'fun-vehicle-jigsaw': {
+        currentPhase: 1,
+        highestPhase: 5,
+        currentOptionCount: 2,
+        highestOptionCount: 2,
+        currentPromptLevel: 'none',
+        successRate: 0,
+      },
+      'fun-nature-jigsaw': {
+        currentPhase: 1,
+        highestPhase: 5,
+        currentOptionCount: 2,
+        highestOptionCount: 2,
+        currentPromptLevel: 'none',
+        successRate: 0,
+      },
       'tier1-patches': {
         currentPhase: 1,
         highestPhase: 3,

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.4] - 31-05-2026
+
+### Added
+- **Vehicle Jigsaw Game:** Added a brand new Vehicle Jigsaw module featuring 8 custom kawaii-style vehicles (Car, Truck, Bus, Train, Airplane, Rocket, Boat, Submarine).
+- **Nature Jigsaw Game:** Added a new Nature Jigsaw module featuring 8 custom colorful nature assets (Tree, Flower, Sun, Cloud, Mountain, Rainbow, Leaf, Mushroom).
+
 ## [0.0.3] - 30-05-2026
 
 ### Added
