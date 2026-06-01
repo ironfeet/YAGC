@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] - 01-06-2026
+
+### Fixed
+- **Memory Game Listening Cover:** Fixed a bug where the "Listen Closely" cover in memory games would flash and disappear immediately when a voice instruction was replayed. The cover will now consistently lock the screen for the entire duration of the audio prompt.
+
 ## [0.0.7] - 01-06-2026
 
 ### Added
