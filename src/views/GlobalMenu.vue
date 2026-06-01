@@ -69,6 +69,46 @@ const funGames = [
     color: '#14b8a6',
     comingSoon: false,
   },
+  {
+    id: 'fun-size-sorter',
+    name: 'Size Sorter',
+    description: 'Stack rings from largest to smallest',
+    emoji: '🍩',
+    color: '#8b5cf6',
+    comingSoon: false,
+  },
+  {
+    id: 'fun-pattern-train',
+    name: 'Pattern Train',
+    description: 'Complete the sequence of train cars',
+    emoji: '🚂',
+    color: '#ef4444',
+    comingSoon: false,
+  },
+  {
+    id: 'fun-category-bins',
+    name: 'Category Bins',
+    description: 'Sort objects into the correct bins',
+    emoji: '🧺',
+    color: '#f59e0b',
+    comingSoon: false,
+  },
+  {
+    id: 'fun-memory-match',
+    name: 'Memory Match',
+    description: 'Flip and match the animal cards',
+    emoji: '🎴',
+    color: '#6366f1',
+    comingSoon: false,
+  },
+  {
+    id: 'fun-connect-dots',
+    name: 'Connect the Dots',
+    description: 'Connect numbers to reveal the picture',
+    emoji: '✏️',
+    color: '#10b981',
+    comingSoon: false,
+  },
 ];
 </script>
 

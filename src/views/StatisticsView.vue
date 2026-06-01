@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/useProgressStore';
 
 const route = useRoute();
 const router = useRouter();
 const progressStore = useProgressStore();
+
+onMounted(() => {
+  progressStore.initMissingStats();
+});
 
 const activeTab = computed(() => route.query.tab === 'fun' ? 'fun' : 'mita');
 
@@ -38,6 +42,12 @@ const gameNames: Record<string, string> = {
   'fun-number-puzzle': 'Number Puzzle',
   'fun-color-board': 'Color Board',
   'fun-shape-sorter': 'Shape Sorter',
+  'fun-shadow-match': 'Shadow Match',
+  'fun-size-sorter': 'Size Sorter',
+  'fun-pattern-train': 'Pattern Train',
+  'fun-category-bins': 'Category Bins',
+  'fun-memory-match': 'Memory Match',
+  'fun-connect-dots': 'Connect the Dots',
   // MITA games
   'tier1-patches': 'Patches',
   'tier1-outlines': 'Outlines',

@@ -4,51 +4,29 @@ import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
-import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
+import ColorfulVehicle from '../VehicleJigsaw/ColorfulVehicle.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
-const GAME_ID = 'fun-shadow-match';
+const GAME_ID = 'fun-category-bins';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
 const { playInstruction, isPlaying } = useSpeech();
 const log = useLogger(GAME_ID);
 
-type AnimalDef = { id: string; label: string; emoji: string; };
+const ANIMALS = ['cat', 'dog', 'rabbit', 'frog', 'pig', 'lion', 'elephant', 'penguin'];
+const VEHICLES = ['car', 'bus', 'train', 'airplane', 'boat', 'submarine', 'rocket', 'truck'];
 
-const ANIMALS: AnimalDef[] = [
-  { id: 'cat', label: 'Cat', emoji: '🐱' },
-  { id: 'dog', label: 'Dog', emoji: '🐶' },
-  { id: 'rabbit', label: 'Rabbit', emoji: '🐰' },
-  { id: 'frog', label: 'Frog', emoji: '🐸' },
-  { id: 'pig', label: 'Pig', emoji: '🐷' },
-  { id: 'lion', label: 'Lion', emoji: '🦁' },
-  { id: 'elephant', label: 'Elephant', emoji: '🐘' },
-  { id: 'penguin', label: 'Penguin', emoji: '🐧' },
-  { id: 'fox', label: 'Fox', emoji: '🦊' },
-  { id: 'bear', label: 'Bear', emoji: '🐻' },
-  { id: 'monkey', label: 'Monkey', emoji: '🐵' },
-  { id: 'owl', label: 'Owl', emoji: '🦉' },
-  { id: 'duck', label: 'Duck', emoji: '🦆' },
-  { id: 'turtle', label: 'Turtle', emoji: '🐢' },
-  { id: 'fish', label: 'Fish', emoji: '🐟' },
-  { id: 'ladybug', label: 'Ladybug', emoji: '🐞' },
-  { id: 'cow', label: 'Cow', emoji: '🐮' },
-  { id: 'sheep', label: 'Sheep', emoji: '🐑' },
-  { id: 'horse', label: 'Horse', emoji: '🐴' },
-  { id: 'hippo', label: 'Hippo', emoji: '🦛' },
-  { id: 'rhino', label: 'Rhino', emoji: '🦏' },
-  { id: 'crocodile', label: 'Crocodile', emoji: '🐊' },
-  { id: 'tiger', label: 'Tiger', emoji: '🐯' },
-  { id: 'zebra', label: 'Zebra', emoji: '🦓' },
-];
+type Category = 'animal' | 'vehicle';
 
-interface ShadowItem {
+interface SortItem {
   id: string;
-  animalId: string;
+  category: Category;
+  assetId: string;
   startX: number;
   startY: number;
   dragX: number;
@@ -59,20 +37,17 @@ interface ShadowItem {
 }
 
 const currentPhase = computed(() => progressStore.moduleStats[GAME_ID]?.currentPhase || 1);
-const shadowCount = computed(() => Math.min(currentPhase.value * 2, ANIMALS.length));
 
-// Generate the sequence of animals based on currentPhase
-const targetSequence = computed(() => {
-  // We want a deterministic set per level for simplicity in ABA, but here we can just pick the first `count` shuffled
-  return [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, shadowCount.value);
+// Map phase 1-5 to 4-12 items
+const itemCount = computed(() => {
+  return 4 + (currentPhase.value - 1) * 2;
 });
 
-const puzzlePieces = ref<ShadowItem[]>([]);
+const puzzlePieces = ref<SortItem[]>([]);
 const boardRef = ref<HTMLElement | null>(null);
 const piecesLayerRef = ref<HTMLElement | null>(null);
 
 let zIndexCounter = 10;
-
 const { currentLevel: promptLevel, resetAll: resetPrompt } = usePromptFading('none');
 
 const initLevel = async () => {
@@ -80,46 +55,54 @@ const initLevel = async () => {
   puzzlePieces.value = [];
   resetPrompt('none');
   
-  const seq = [...targetSequence.value];
-  // Shuffle pieces
-  for (let i = seq.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [seq[i], seq[j]] = [seq[j], seq[i]];
-  }
+  const count = itemCount.value;
+  // Ensure even split or close to it
+  const numAnimals = Math.floor(count / 2);
+  const numVehicles = count - numAnimals;
 
-  const trayCols = Math.max(5, Math.ceil(seq.length / 2));
-  const pieceWidth = 140;
-  const pieceHeight = 140;
-  const spacing = 16;
+  const aPool = [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, numAnimals);
+  const vPool = [...VEHICLES].sort(() => Math.random() - 0.5).slice(0, numVehicles);
 
-  seq.forEach((animal, index) => {
+  const items: SortItem[] = [];
+
+  aPool.forEach((a, i) => items.push({
+    id: `animal-${i}`, category: 'animal', assetId: a, 
+    startX: 0, startY: 0, dragX: 0, dragY: 0, dragging: false, placed: false, zIndex: 0
+  }));
+  vPool.forEach((v, i) => items.push({
+    id: `vehicle-${i}`, category: 'vehicle', assetId: v, 
+    startX: 0, startY: 0, dragX: 0, dragY: 0, dragging: false, placed: false, zIndex: 0
+  }));
+
+  const shuffledItems = items.sort(() => Math.random() - 0.5);
+
+  const trayCols = Math.max(4, Math.ceil(shuffledItems.length / 2));
+  const pieceWidth = 120;
+  const pieceHeight = 120;
+  const spacing = 30;
+
+  shuffledItems.forEach((item, index) => {
     const row = Math.floor(index / trayCols);
     const col = index % trayCols;
     
-    // Spread in a grid within the tray area
-    const itemsInRow = row === Math.floor(seq.length / trayCols) && seq.length % trayCols !== 0 
-      ? seq.length % trayCols 
+    const itemsInRow = row === Math.floor(shuffledItems.length / trayCols) && shuffledItems.length % trayCols !== 0 
+      ? shuffledItems.length % trayCols 
       : trayCols;
     const rowWidth = itemsInRow * pieceWidth + (itemsInRow - 1) * spacing;
     
-    const startX = 640 - (rowWidth / 2) + (col * (pieceWidth + spacing));
-    const startY = 650 + (row * (pieceHeight + spacing));
+    const startX = 640 - (rowWidth / 2) + (col * (pieceWidth + spacing)) + (pieceWidth / 2);
+    const startY = 560 + (row * (pieceHeight + spacing));
 
-    puzzlePieces.value.push({
-      id: `piece-${animal.id}`,
-      animalId: animal.id,
-      startX,
-      startY,
-      dragX: startX,
-      dragY: startY,
-      dragging: false,
-      placed: false,
-      zIndex: ++zIndexCounter
-    });
+    item.startX = startX;
+    item.startY = startY;
+    item.dragX = startX;
+    item.dragY = startY;
+    item.zIndex = ++zIndexCounter;
+    puzzlePieces.value.push(item);
   });
 
   await nextTick();
-  playInstruction('Match the animals to their shadows!');
+  playInstruction('Sort the animals and vehicles!');
 };
 
 const handleStart = () => {
@@ -127,9 +110,9 @@ const handleStart = () => {
   initLevel();
 };
 
-const activePointers = new Map<number, ShadowItem>();
+const activePointers = new Map<number, SortItem>();
 
-function onPointerDown(e: PointerEvent, piece: ShadowItem) {
+function onPointerDown(e: PointerEvent, piece: SortItem) {
   if (piece.placed) return;
   e.preventDefault();
   (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -141,9 +124,6 @@ function onPointerDown(e: PointerEvent, piece: ShadowItem) {
     const rect = piecesLayerRef.value.getBoundingClientRect();
     piece.dragX = e.clientX - rect.left;
     piece.dragY = e.clientY - rect.top;
-  } else {
-    piece.dragX = e.clientX;
-    piece.dragY = e.clientY;
   }
 }
 
@@ -163,40 +143,45 @@ function onPointerUp(e: PointerEvent) {
   p.dragging = false;
   activePointers.delete(e.pointerId);
 
-  if (!boardRef.value) return;
+  if (!boardRef.value) {
+    p.dragX = p.startX;
+    p.dragY = p.startY;
+    return;
+  }
 
-  const slots = boardRef.value.querySelectorAll<HTMLElement>('.board-slot');
+  const bins = boardRef.value.querySelectorAll('.bin');
   let placed = false;
 
-  slots.forEach(slot => {
+  bins.forEach((bin) => {
     if (placed) return;
-    const targetId = slot.dataset.animal;
-    if (targetId !== p.animalId) return;
-
-    const rect = slot.getBoundingClientRect();
+    const el = bin as HTMLElement;
+    const binCategory = el.dataset.category;
+    const rect = el.getBoundingClientRect();
     const cx = e.clientX;
     const cy = e.clientY;
-    const slotCenterX = rect.left + rect.width / 2;
-    const slotCenterY = rect.top + rect.height / 2;
-    
-    // Strict proximity check
-    if (Math.abs(cx - slotCenterX) < 60 && Math.abs(cy - slotCenterY) < 60) {
-      p.placed = true;
-      placed = true;
-      
-      // Visual snap calculation relative to pieces layer
-      if (piecesLayerRef.value) {
-        const layerRect = piecesLayerRef.value.getBoundingClientRect();
-        p.dragX = slotCenterX - layerRect.left;
-        p.dragY = slotCenterY - layerRect.top;
+
+    if (
+      cx > rect.left && cx < rect.right &&
+      cy > rect.top && cy < rect.bottom
+    ) {
+      if (binCategory === p.category) {
+        // Valid bin drop
+        p.placed = true;
+        placed = true;
+        
+        // Hide it in the bin (shrink & disappear)
+        if (piecesLayerRef.value) {
+          const layerRect = piecesLayerRef.value.getBoundingClientRect();
+          p.dragX = rect.left + rect.width / 2 - layerRect.left;
+          p.dragY = rect.top + rect.height / 2 - layerRect.top;
+        }
+      } else {
+        playInstruction('Try the other bin!');
       }
-      p.startX = p.dragX;
-      p.startY = p.dragY;
     }
   });
 
   if (!placed) {
-    // Snap back
     p.dragX = p.startX;
     p.dragY = p.startY;
   }
@@ -208,8 +193,8 @@ function onPointerUp(e: PointerEvent) {
 
 function onLevelComplete() {
   isComplete.value = true;
-  log.generate({ level: 1, phase: currentPhase.value, pieces: shadowCount.value });
-  playInstruction('Great job! You matched all the animals!');
+  log.generate({ level: 1, phase: currentPhase.value, pieces: itemCount.value });
+  playInstruction('Great job! You cleaned it all up!');
   progressStore.updateStats(GAME_ID, true);
   resetPrompt();
 }
@@ -222,18 +207,16 @@ const handleNextLevel = () => {
 
 <template>
   <div class="jigsaw-root" :class="{ 'prompt-active': promptLevel === 'partial' || promptLevel === 'full' }" @pointermove="onPointerMove" @pointerup="onPointerUp" @pointercancel="onPointerUp">
-    <!-- Start Screen -->
     <div v-if="!hasStarted" class="start-screen">
       <div class="start-icon"><MenuIcon :gameId="GAME_ID" style="width: 140px; height: 140px;" /></div>
-      <h1>Shadow Match<br><span>Match & Learn</span></h1>
-      <p class="start-sub">Match the animals to their shadows.</p>
+      <h1>Category Bins<br><span>Sort & Learn</span></h1>
+      <p class="start-sub">Sort the toys into the correct bins!</p>
       <button @click="handleStart" class="start-btn">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         Start
       </button>
     </div>
 
-    <!-- Game Screen -->
     <div v-else class="game-board">
       <div v-if="isPlaying" class="listening-mini">
         <svg class="speaker-mini" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
@@ -241,53 +224,46 @@ const handleNextLevel = () => {
       </div>
 
       <div class="action-layout">
-        <!-- Standard Top Bar -->
         <header class="top-bar">
           <div class="phase-badge">
             <span style="font-size: 1.5rem; margin-right: 0.5rem">⭐</span>
             Phase {{ currentPhase }}
           </div>
-          <button class="replay-btn" @click="playInstruction('Match the animals to their shadows!')" :disabled="isPlaying">
+          <button class="replay-btn" @click="playInstruction('Sort the animals and vehicles!')" :disabled="isPlaying">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
             Replay
           </button>
         </header>
 
         <div class="jig-main">
-          <!-- The Board -->
+          <!-- Bins Board -->
           <div class="board" ref="boardRef">
-            <div 
-              v-for="animal in targetSequence" 
-              :key="'shadow-'+animal.id"
-              class="board-slot"
-              :data-animal="animal.id"
-            >
-              <!-- Silhouette (black/grey) -->
-              <ColorfulAnimal 
-                :name="animal.id"
-                style="width: 120px; height: 120px; filter: brightness(0); opacity: 0.2;"
-                v-if="!puzzlePieces.find(p => p.animalId === animal.id)?.placed"
-              />
+            <div class="bin" data-category="animal">
+              <div class="bin-label">Animals</div>
+              <div class="bin-basket"></div>
+            </div>
+            <div class="bin" data-category="vehicle">
+              <div class="bin-label">Vehicles</div>
+              <div class="bin-basket"></div>
             </div>
           </div>
 
-          <!-- The pieces layer -->
+          <!-- Pieces Layer -->
           <div class="pieces-layer" ref="piecesLayerRef">
             <div 
               v-for="piece in puzzlePieces" 
               :key="piece.id"
               class="piece-tray-item"
-              :class="{ dragging: piece.dragging, placed: piece.placed, 'is-target': !piece.placed && piece.animalId === targetSequence[0].id }"
+              :class="{ dragging: piece.dragging, placed: piece.placed, 'is-target': !piece.placed && (promptLevel === 'partial' || promptLevel === 'full') }"
               :style="{
-                transform: piece.dragging ? `translate(${piece.dragX - 70}px, ${piece.dragY - 70}px) scale(1.1)` : `translate(${piece.startX - 70}px, ${piece.startY - 70}px) scale(1)`,
-                zIndex: piece.zIndex
+                transform: piece.dragging ? `translate(${piece.dragX - 60}px, ${piece.dragY - 60}px) scale(1.1)` : (piece.placed ? `translate(${piece.dragX - 60}px, ${piece.dragY - 60}px) scale(0.5)` : `translate(${piece.startX - 60}px, ${piece.startY - 60}px) scale(1)`),
+                zIndex: piece.zIndex,
+                opacity: piece.placed ? 0 : 1
               }"
               @pointerdown="onPointerDown($event, piece)"
             >
-              <ColorfulAnimal 
-                :name="piece.animalId" 
-                style="width: 120px; height: 120px;"
-              />
+              <ColorfulAnimal v-if="piece.category === 'animal'" :name="piece.assetId" style="width: 120px; height: 120px;" />
+              <ColorfulVehicle v-else :name="piece.assetId" style="width: 120px; height: 120px;" />
             </div>
           </div>
 
@@ -296,7 +272,7 @@ const handleNextLevel = () => {
               <div class="complete-card">
                 <div class="complete-emoji">🎉</div>
                 <h2 class="complete-title">Great Job!</h2>
-                <p class="complete-sub">You matched all the animals!</p>
+                <p class="complete-sub">You cleaned it all up!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
                   <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
@@ -313,34 +289,48 @@ const handleNextLevel = () => {
 <style scoped>
 @import '../../../assets/fun-games-shared.css';
 
-/* BOARD */
+/* BOARD / BINS */
 .board {
   position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 150px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 20px;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 32px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+  justify-content: space-around;
+  padding: 0 100px;
 }
-
-.board-slot {
-  width: 140px;
-  height: 140px;
+.bin {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  box-shadow: inset 0 4px 12px rgba(0,0,0,0.05);
-  transition: transform 0.2s;
+}
+.bin-label {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+  background: white;
+  padding: 0.5rem 2rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.bin-basket {
+  width: 260px;
+  height: 200px;
+  background: linear-gradient(180deg, #dbeafe 0%, #93c5fd 100%);
+  border: 8px solid #3b82f6;
+  border-radius: 20px 20px 40px 40px;
+  box-shadow: inset 0 -20px 20px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.2);
+  position: relative;
+}
+.bin-basket::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 4px dashed rgba(255,255,255,0.5);
+  border-radius: 10px 10px 20px 20px;
 }
 
 /* PIECES */
@@ -353,29 +343,25 @@ const handleNextLevel = () => {
   height: 100%;
   pointer-events: none;
 }
-
 .piece-tray-item {
   position: absolute;
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: auto;
   cursor: grab;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
   filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
 }
-
 .piece-tray-item.dragging {
   cursor: grabbing;
   transition: none;
   filter: drop-shadow(0 20px 25px rgba(0,0,0,0.3));
 }
-
 .piece-tray-item.placed {
   pointer-events: none;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 

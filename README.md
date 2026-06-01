@@ -115,7 +115,7 @@ ares-launch "./dist" -s 24 \
 ```bash
 npm run build
 ares-package ./dist -o ./build --no-minify
-ares-install ./build/yagc_0.0.1_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.6_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
@@ -417,6 +417,47 @@ A matching puzzle focusing on geometry and shape recognition.
   - Phase 4: 2×4 grid (8 shapes).
   - Phase 5: 2×5 grid (10 shapes).
 
+#### Category Bins (`CategoryBins`)
+**Module ID**: `fun-category-bins`
+
+A sorting game where the child organizes items into categorized bins (e.g. Animals vs Vehicles).
+- **Progressive Difficulty**: Increases the total number of items to sort on the board.
+
+#### Connect Dots (`ConnectDots`)
+**Module ID**: `fun-connect-dots`
+
+A classic drawing game where the child connects numbered dots in sequence to reveal a hidden picture. Features dynamic dot generation that traces animal outlines and a textured drawing board.
+- **Progressive Difficulty**: Increases the total number of dots in the sequence.
+
+#### Memory Match (`MemoryMatch`)
+**Module ID**: `fun-memory-match`
+
+A classic card-flipping memory game. The child turns over cards to find matching pairs of colorful animals, vehicles, or nature items.
+- **Progressive Difficulty**:
+  - Phase 1: 2×2 grid (2 pairs).
+  - Phase 2: 2×3 grid (3 pairs).
+  - Phase 3: 2×4 grid (4 pairs).
+  - Phase 4: 3×4 grid (6 pairs).
+  - Phase 5: 4×4 grid (8 pairs).
+
+#### Pattern Train (`PatternTrain`)
+**Module ID**: `fun-pattern-train`
+
+A sequencing game where the child completes a visual pattern by dragging the correct shapes onto the empty train cars.
+- **Progressive Difficulty**: Introduces more complex patterns (e.g., AB, AAB, ABC) and longer missing segments.
+
+#### Shadow Match (`ShadowMatch`)
+**Module ID**: `fun-shadow-match`
+
+A visual discrimination game where the child drags colorful objects onto their corresponding black silhouettes.
+- **Progressive Difficulty**: Increases the number of items on the board and introduces near-miss shapes.
+
+#### Size Sorter (`SizeSorter`)
+**Module ID**: `fun-size-sorter`
+
+A physical stacking game where the child must place numbered rings onto a central peg strictly from biggest to smallest, featuring clear audio feedback.
+- **Progressive Difficulty**: Increases the total number of rings to sort (from 3 up to 7).
+
 ---
 
 ### Tier 1 — Foundational
@@ -685,7 +726,7 @@ Advanced phases always generate distractors that match the target in N-1 feature
 
 ## Deployment to webOS
 
-The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.1`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
+The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.6`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
 
 ### Simulator
 
@@ -706,7 +747,7 @@ npm run build
 ares-package ./dist -o ./build/
 
 # 3. Install & launch
-ares-install ./build/yagc_0.0.1_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.6_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 

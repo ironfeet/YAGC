@@ -433,6 +433,83 @@ defineProps<{
         <circle cx="65" cy="25" r="4" fill="rgba(0,0,0,0.2)" />
       </g>
 
+      <!-- Fun: Size Sorter -->
+      <g v-else-if="gameId === 'fun-size-sorter'">
+        <!-- Base / Peg -->
+        <path d="M 20,80 L 80,80 L 80,85 L 20,85 Z" fill="white" />
+        <path d="M 45,80 L 45,20 L 55,20 L 55,80 Z" fill="white" />
+        <!-- Rings -->
+        <rect x="25" y="65" width="50" height="15" fill="rgba(255,255,255,0.8)" rx="7.5" />
+        <rect x="30" y="50" width="40" height="15" fill="rgba(255,255,255,0.9)" rx="7.5" />
+        <rect x="35" y="35" width="30" height="15" fill="white" rx="7.5" />
+      </g>
+
+      <!-- Fun: Pattern Train -->
+      <g v-else-if="gameId === 'fun-pattern-train'">
+        <!-- Train Engine -->
+        <rect x="15" y="45" width="25" height="25" fill="white" rx="2" />
+        <rect x="25" y="30" width="15" height="15" fill="white" rx="2" />
+        <circle cx="22" cy="70" r="6" fill="rgba(255,255,255,0.7)" />
+        <circle cx="33" cy="70" r="6" fill="rgba(255,255,255,0.7)" />
+        <!-- Link -->
+        <line x1="40" y1="65" x2="50" y2="65" stroke="white" stroke-width="4" stroke-linecap="round" />
+        <!-- Cargo Car 1 -->
+        <rect x="50" y="45" width="20" height="25" fill="rgba(255,255,255,0.8)" rx="2" />
+        <circle cx="55" cy="70" r="6" fill="rgba(255,255,255,0.7)" />
+        <circle cx="65" cy="70" r="6" fill="rgba(255,255,255,0.7)" />
+        <!-- Link 2 -->
+        <line x1="70" y1="65" x2="80" y2="65" stroke="white" stroke-width="4" stroke-linecap="round" />
+        <!-- Cargo Car 2 -->
+        <rect x="80" y="45" width="20" height="25" fill="rgba(255,255,255,0.5)" rx="2" stroke="white" stroke-width="2" stroke-dasharray="2,2" />
+        <!-- Pattern block in air -->
+        <rect x="85" y="25" width="10" height="10" fill="white" rx="2" />
+      </g>
+
+      <!-- Fun: Category Bins -->
+      <g v-else-if="gameId === 'fun-category-bins'">
+        <!-- Bin 1 -->
+        <polygon points="20,80 40,80 45,50 15,50" fill="rgba(255,255,255,0.6)" stroke="white" stroke-width="2" stroke-linejoin="round" />
+        <!-- Bin 2 -->
+        <polygon points="60,80 80,80 85,50 55,50" fill="rgba(255,255,255,0.6)" stroke="white" stroke-width="2" stroke-linejoin="round" />
+        <!-- Sorting Items -->
+        <circle cx="30" cy="40" r="6" fill="white" />
+        <rect x="65" y="30" width="10" height="10" fill="white" />
+        <!-- Arrow -->
+        <path d="M 50,15 L 68,25 M 68,25 L 60,18" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" />
+      </g>
+
+      <!-- Fun: Memory Match -->
+      <g v-else-if="gameId === 'fun-memory-match'">
+        <!-- Card 1 Face Down -->
+        <rect x="25" y="25" width="20" height="30" fill="rgba(255,255,255,0.4)" rx="4" stroke="white" stroke-width="2" />
+        <!-- Card 2 Face Up -->
+        <rect x="55" y="25" width="20" height="30" fill="white" rx="4" />
+        <circle cx="65" cy="40" r="5" fill="rgba(0,0,0,0.2)" />
+        <!-- Card 3 Face Down -->
+        <rect x="25" y="65" width="20" height="30" fill="rgba(255,255,255,0.4)" rx="4" stroke="white" stroke-width="2" />
+        <!-- Card 4 Face Up -->
+        <rect x="55" y="65" width="20" height="30" fill="white" rx="4" />
+        <circle cx="65" cy="80" r="5" fill="rgba(0,0,0,0.2)" />
+        <!-- Connection Sparkle -->
+        <circle cx="85" cy="55" r="3" fill="white" />
+      </g>
+
+      <!-- Fun: Connect Dots -->
+      <g v-else-if="gameId === 'fun-connect-dots'">
+        <!-- Dots -->
+        <circle cx="30" cy="30" r="5" fill="white" />
+        <circle cx="70" cy="30" r="5" fill="white" />
+        <circle cx="50" cy="70" r="5" fill="white" />
+        <!-- Numbers -->
+        <text x="20" y="25" font-size="12" fill="white" font-weight="bold" font-family="sans-serif">1</text>
+        <text x="80" y="25" font-size="12" fill="white" font-weight="bold" font-family="sans-serif">2</text>
+        <text x="50" y="90" font-size="12" fill="white" font-weight="bold" font-family="sans-serif">3</text>
+        <!-- Drawn Line -->
+        <line x1="30" y1="30" x2="70" y2="30" stroke="white" stroke-width="3" stroke-linecap="round" />
+        <!-- Dashed Line to draw -->
+        <line x1="70" y1="30" x2="50" y2="70" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-dasharray="4,4" stroke-linecap="round" />
+      </g>
+
       <!-- Fallback -->
       <g v-else>
         <circle cx="50" cy="50" r="35" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="4" stroke-dasharray="10,5" />

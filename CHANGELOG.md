@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.6] - 01-06-2026
+
+### Added
+- **Category Bins Game:** Added a new sorting game where children organize objects (animals vs vehicles) into matching bins.
+- **Connect Dots Game:** Added a new drawing game where children connect numbered dots in sequence to reveal hidden pictures. Features dynamic animal outlines and textured backgrounds.
+- **Memory Match Game:** Added a classic card-flipping memory game with progressive grid sizes and varied asset themes.
+- **Pattern Train Game:** Added a sequencing puzzle where children complete visual patterns (AB, AAB, ABC) by dragging shapes onto empty train cars.
+- **Shadow Match Game:** Added a visual discrimination game requiring children to match colorful objects to their corresponding black silhouettes.
+- **Size Sorter Game:** Added a physical stacking game where children must place numbered rings onto a peg strictly from biggest to smallest.
+
 ## [0.0.5] - 01-06-2026
 
 ### Added
