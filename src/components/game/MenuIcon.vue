@@ -378,7 +378,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Color Board -->
-      <g v-else-if="gameId === 'puzzle-colors'">
+      <g v-else-if="gameId === 'fun-color-board'">
         <!-- Paint Palette -->
         <path d="M 80,45 C 80,75 55,85 45,85 C 15,85 15,55 25,35 C 35,15 70,15 80,45 Z" fill="white" />
         <!-- Thumb hole -->
@@ -408,7 +408,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Shape Sorter -->
-      <g v-else-if="gameId === 'puzzle-shapes'">
+      <g v-else-if="gameId === 'fun-shape-sorter'">
         <!-- Triangle -->
         <polygon points="30,20 45,45 15,45" fill="white" />
         <!-- Circle -->

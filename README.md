@@ -391,9 +391,31 @@ A progressive matching puzzle focusing on number recognition and sequencing on a
   - Phase 4: 2×5 grid (numbers 1-10).
   - Phase 5: 3×5 grid (numbers 1-15).
 
-#### Upcoming Fun Games
-- **Color Board** (coming soon)
-- **Shape Sorter** (coming soon)
+#### Color Board (`ColorBoard`)
+**Module ID**: `fun-color-board`
+
+A matching puzzle focusing on color recognition on a wooden board.
+
+- **10 Vibrant Colors**: Features shiny circular pegs in Red, Blue, Yellow, Green, Orange, Purple, Pink, Cyan, Teal, and Lime.
+- **Progressive Difficulty**:
+  - Phase 1: 1×2 grid (2 colors).
+  - Phase 2: 2×2 grid (4 colors).
+  - Phase 3: 2×3 grid (6 colors).
+  - Phase 4: 2×4 grid (8 colors).
+  - Phase 5: 2×5 grid (10 colors).
+
+#### Shape Sorter (`ShapeSorter`)
+**Module ID**: `fun-shape-sorter`
+
+A matching puzzle focusing on geometry and shape recognition.
+
+- **10 Distinct Shapes**: Features custom SVG blocks for Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, and Crescent.
+- **Progressive Difficulty**:
+  - Phase 1: 1×3 grid (3 shapes).
+  - Phase 2: 2×2 grid (4 shapes).
+  - Phase 3: 2×3 grid (6 shapes).
+  - Phase 4: 2×4 grid (8 shapes).
+  - Phase 5: 2×5 grid (10 shapes).
 
 ---
 

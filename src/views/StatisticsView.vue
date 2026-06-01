@@ -32,9 +32,11 @@ const gameNames: Record<string, string> = {
   // Fun games
   'fun-animal-jigsaw': 'Animal Jigsaw',
   'fun-vehicle-jigsaw': 'Vehicle Jigsaw',
-  'fun-number-puzzle': 'Number Puzzle',
-  'puzzle-colors': 'Color Board',
   'fun-nature-jigsaw': 'Nature Jigsaw',
+  'fun-number-puzzle': 'Number Puzzle',
+  'fun-color-board': 'Color Board',
+  'fun-shape-sorter': 'Shape Sorter',
+  'puzzle-colors': 'Color Board',
   'puzzle-shapes': 'Shape Sorter',
   // MITA games
   'tier1-patches': 'Patches',

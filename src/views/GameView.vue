@@ -42,6 +42,8 @@ const moduleRegistry: Record<string, any> = {
   'fun-vehicle-jigsaw': defineAsyncComponent(() => import('../modules/fun/VehicleJigsaw/index.vue')),
   'fun-nature-jigsaw': defineAsyncComponent(() => import('../modules/fun/NatureJigsaw/index.vue')),
   'fun-number-puzzle': defineAsyncComponent(() => import('../modules/fun/NumberPuzzle/index.vue')),
+  'fun-color-board': defineAsyncComponent(() => import('../modules/fun/ColorBoard/index.vue')),
+  'fun-shape-sorter': defineAsyncComponent(() => import('../modules/fun/ShapeSorter/index.vue')),
 };
 
 const ModuleComponent = computed(() => {

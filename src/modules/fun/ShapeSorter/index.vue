@@ -2,27 +2,38 @@
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
-import NumberBlock from './NumberBlock.vue';
+import ShapeBlock from './ShapeBlock.vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
-const GAME_ID = 'fun-number-puzzle';
+const GAME_ID = 'fun-shape-sorter';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
 const isPlaying = ref(false); // TTS playing state
 
-const COLORS = [
-  '#ef4444', '#f97316', '#f59e0b', '#84cc16', 
-  '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', 
-  '#d946ef', '#f43f5e', '#14b8a6', '#6366f1',
-  '#ec4899', '#eab308', '#10b981'
+const SHAPES = [
+  'circle', 'square', 'triangle', 'star', 'pentagon',
+  'hexagon', 'heart', 'cross', 'diamond', 'crescent'
 ];
 
-interface NumberItem {
+const COLORS = [
+  '#ef4444', // Red (Circle)
+  '#3b82f6', // Blue (Square)
+  '#facc15', // Yellow (Triangle)
+  '#22c55e', // Green (Star)
+  '#f97316', // Orange (Pentagon)
+  '#a855f7', // Purple (Hexagon)
+  '#ec4899', // Pink (Heart)
+  '#06b6d4', // Cyan (Cross)
+  '#14b8a6', // Teal (Diamond)
+  '#84cc16'  // Lime (Crescent)
+];
+
+interface ShapeItem {
   id: string;
-  num: number;
+  shape: string;
   color: string;
   startX: number;
   startY: number;
@@ -35,31 +46,31 @@ interface NumberItem {
 
 const currentPhase = computed(() => progressStore.moduleStats[GAME_ID]?.currentPhase || 1);
 
-// Generate the sequence of numbers based on phase
+// Generate the sequence of shapes based on phase
 const targetSequence = computed(() => {
   switch (currentPhase.value) {
-    case 1: return [1, 2, 3]; // 3 items
-    case 2: return [1, 2, 3, 4, 5]; // 5 items
-    case 3: return [1, 2, 3, 4, 5, 6, 7, 8, 9]; // 9 items (3x3)
-    case 4: return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // 10 items (2x5)
-    case 5: return Array.from({ length: 15 }, (_, i) => i + 1); // 15 items (3x5)
-    default: return [1, 2, 3];
+    case 1: return SHAPES.slice(0, 3); // 3 shapes
+    case 2: return SHAPES.slice(0, 4); // 4 shapes
+    case 3: return SHAPES.slice(0, 6); // 6 shapes
+    case 4: return SHAPES.slice(0, 8); // 8 shapes
+    case 5: return SHAPES.slice(0, 10); // 10 shapes
+    default: return SHAPES.slice(0, 3);
   }
 });
 
 const boardColumns = computed(() => {
   const len = targetSequence.value.length;
   if (len === 3) return 3;
-  if (len === 5) return 5;
-  if (len === 9) return 3;
+  if (len === 4) return 2;
+  if (len === 6) return 3;
+  if (len === 8) return 4;
   if (len === 10) return 5;
-  if (len === 15) return 5;
   return 3;
 });
 
 const boardRows = computed(() => Math.ceil(targetSequence.value.length / boardColumns.value));
 
-const puzzlePieces = ref<NumberItem[]>([]);
+const puzzlePieces = ref<ShapeItem[]>([]);
 const boardRef = ref<HTMLElement | null>(null);
 const piecesLayerRef = ref<HTMLElement | null>(null);
 
@@ -82,7 +93,7 @@ const initLevel = async () => {
   const pieceHeight = 100;
   const spacing = 16;
 
-  seq.forEach((num, index) => {
+  seq.forEach((shape, index) => {
     const row = Math.floor(index / trayCols);
     const col = index % trayCols;
     
@@ -96,9 +107,9 @@ const initLevel = async () => {
     const startY = 490 + row * (pieceHeight + spacing);
 
     puzzlePieces.value.push({
-      id: `piece-${num}`,
-      num,
-      color: COLORS[num % COLORS.length],
+      id: `piece-${shape}`,
+      shape,
+      color: COLORS[SHAPES.indexOf(shape)],
       startX,
       startY,
       dragX: startX,
@@ -122,7 +133,7 @@ const speakInstruction = () => {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     isPlaying.value = true;
-    const utterance = new SpeechSynthesisUtterance("Put the numbers on the board!");
+    const utterance = new SpeechSynthesisUtterance("Put the shapes on the board!");
     utterance.onend = () => { isPlaying.value = false; };
     window.speechSynthesis.speak(utterance);
   }
@@ -133,9 +144,9 @@ const playHint = () => {
 };
 
 // Pointer Events Drag Logic
-const activePointers = new Map<number, NumberItem>();
+const activePointers = new Map<number, ShapeItem>();
 
-function onPointerDown(e: PointerEvent, piece: NumberItem) {
+function onPointerDown(e: PointerEvent, piece: ShapeItem) {
   if (piece.placed) return;
   e.preventDefault();
   (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -176,8 +187,8 @@ function onPointerUp(e: PointerEvent) {
 
   slots.forEach(slot => {
     if (placed) return;
-    const slotNum = Number(slot.dataset.num);
-    if (slotNum !== p.num) return;
+    const slotShape = slot.dataset.shape;
+    if (slotShape !== p.shape) return;
 
     const rect = slot.getBoundingClientRect();
     const cx = e.clientX;
@@ -192,8 +203,6 @@ function onPointerUp(e: PointerEvent) {
     }
   });
 
-  activePointers.delete(e.pointerId);
-
   if (puzzlePieces.value.every(p => p.placed)) {
     onLevelComplete();
   }
@@ -202,7 +211,7 @@ function onPointerUp(e: PointerEvent) {
 function onLevelComplete() {
   isComplete.value = true;
   if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance("Great job! You built it!");
+    const utterance = new SpeechSynthesisUtterance("Great job! You matched all the shapes!");
     window.speechSynthesis.speak(utterance);
   }
   progressStore.updateStats(GAME_ID, true);
@@ -218,8 +227,8 @@ const handleNextLevel = () => {
   <div class="jigsaw-root" @pointermove="onPointerMove" @pointerup="onPointerUp" @pointercancel="onPointerUp">
     <div v-if="!hasStarted" class="start-screen">
       <div class="start-icon"><MenuIcon :gameId="GAME_ID" style="width: 140px; height: 140px;" /></div>
-      <h1>Number Puzzle<br><span>Learn & Match</span></h1>
-      <p class="start-sub">Place the numbers in their correct spots.</p>
+      <h1>Shape Sorter<br><span>Learn & Match</span></h1>
+      <p class="start-sub">Match the shapes to their holes.</p>
       <button @click="handleStart" class="start-btn">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         Start
@@ -236,7 +245,7 @@ const handleNextLevel = () => {
         <!-- Standard Top Bar -->
         <header class="top-bar">
           <div class="phase-badge">
-            <span style="font-size: 1.5rem; margin-right: 0.5rem">🔢</span>
+            <span style="font-size: 1.5rem; margin-right: 0.5rem">⭐</span>
             Level {{ currentPhase }}
           </div>
           <button class="replay-btn" @click="playHint">
@@ -253,15 +262,15 @@ const handleNextLevel = () => {
               gridTemplateRows: `repeat(${boardRows}, 100px)`
             }" ref="boardRef">
               <div 
-                v-for="num in targetSequence" 
-                :key="'slot-'+num"
+                v-for="shape in targetSequence" 
+                :key="'slot-'+shape"
                 class="board-slot-wrapper"
-                :data-num="num"
+                :data-shape="shape"
               >
-                <NumberBlock 
-                  :number="num" 
-                  :color="COLORS[num % COLORS.length]"
-                  :isSlot="!puzzlePieces.find(p => p.num === num)?.placed"
+                <ShapeBlock 
+                  :shape="shape"
+                  :color="COLORS[SHAPES.indexOf(shape)]"
+                  :isSlot="!puzzlePieces.find(p => p.shape === shape)?.placed"
                 />
               </div>
             </div>
@@ -284,9 +293,9 @@ const handleNextLevel = () => {
               }"
               @pointerdown="onPointerDown($event, piece)"
             >
-              <NumberBlock 
-                :number="piece.num" 
-                :color="piece.color"
+              <ShapeBlock 
+                :shape="piece.shape"
+                :color="piece.color" 
               />
             </div>
           </div>
@@ -300,9 +309,9 @@ const handleNextLevel = () => {
       <transition name="pop">
         <div v-if="isComplete" class="complete-overlay">
           <div class="complete-card">
-            <div class="complete-emoji">🔢</div>
+            <div class="complete-emoji">⭐</div>
             <h2 class="complete-title">Great Job!</h2>
-            <p class="complete-sub">You placed all the numbers! 🎉</p>
+            <p class="complete-sub">You matched all the shapes! 🎉</p>
             <div class="complete-actions">
               <button class="btn-next" @click="handleNextLevel">Next Board →</button>
               <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>

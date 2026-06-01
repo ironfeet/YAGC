@@ -38,12 +38,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'puzzle-colors',
+    id: 'fun-color-board',
     name: 'Color Board',
-    description: 'Slide colored tiles to solve the board',
+    description: 'Match the colorful buttons to their holes',
     emoji: '🎨',
     color: '#a855f7',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 'fun-nature-jigsaw',
@@ -54,12 +54,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'puzzle-shapes',
+    id: 'fun-shape-sorter',
     name: 'Shape Sorter',
     description: 'Fit shapes into the correct holes',
-    emoji: '🔷',
+    emoji: '⭐',
     color: '#ec4899',
-    comingSoon: true,
+    comingSoon: false,
   },
 ];
 </script>
