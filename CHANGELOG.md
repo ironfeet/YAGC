@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.5] - 01-06-2026
+
+### Added
+- **Color Board Game:** Added a new progressive Color Board module featuring 10 vibrant, interactive 3D pegs (Red, Blue, Yellow, Green, Orange, Purple, Pink, Cyan, Teal, Lime) that snap into matching colored slots.
+- **Shape Sorter Game:** Added a new progressive Shape Sorter module featuring 10 dynamic SVG shapes (Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, Crescent) with responsive physical slots.
+
 ## [0.0.4] - 31-05-2026
 
 ### Added
