@@ -12,12 +12,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Shape Sorter Game:** Added a new progressive Shape Sorter module featuring 10 dynamic SVG shapes (Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, Crescent) with responsive physical slots.
 
 ### Fixed
-- **Audio Cancellation Race Condition:** Refactored the `useSpeech` composable to manage audio state globally. This prevents Vue Router transitions from immediately canceling voice prompts intended for newly mounted game views.
-- **Voice Guide Pacing:** Refactored the `NumberPuzzle`, `ColorBoard`, and `ShapeSorter` modules to utilize the unified `useSpeech` engine rather than calling raw `window.speechSynthesis`. This ensures the voice pacing (0.85x rate) and friendly pitch (1.1) exactly matches the Patches game and other core MITA modules, while also bringing these games into the WebOS resilient TTS fallback system.
-- **Drag & Drop Precision:** Completely re-engineered the collision detection for all grid-based Fun Games (`NumberPuzzle`, `ColorBoard`, `ShapeSorter`). The engine now utilizes strict center-based proximity checks (requiring the pointer to be within 40px of the slot's center), eliminating issues where pieces snapped prematurely or into incorrect adjacent slots.
-- **Layout Spacing:** Increased vertical spacing between the interactive tray and the target board in grid-based games to provide better visual separation and eliminate clutter.
-- **Color Board Accessibility:** Added inner-shadows and color-tinted brightness filters to the empty slots on the Color Board, making it immediately clear which colored peg belongs in each hole.
-- **Statistics Rendering:** Fixed an issue on the global statistics page where legacy placeholder game IDs were rendering duplicate entries.
+
+- **Audio Cancellation Race Condition:** Refactored `useSpeech` to manage audio state globally, preventing Vue Router transitions from immediately canceling voice prompts for newly mounted games.
+- **Voice Guide Pacing:** Refactored `NumberPuzzle`, `ColorBoard`, and `ShapeSorter` to use the unified `useSpeech` engine. This ensures voice pacing (0.85x rate) and pitch (1.1) match Patches and other core MITA modules, while enabling the WebOS resilient TTS fallback system.
+- **Drag & Drop Precision:** Completely re-engineered collision detection for grid-based Fun Games (`NumberPuzzle`, `ColorBoard`, `ShapeSorter`) to use strict center-based proximity checks (within 40px), eliminating premature or incorrect snapping.
+
+#### Deep Scan Bug Fixes
+
+**🔴 Critical**
+- **Number Puzzle:** Fixed a copy-paste bug causing `activePointers` to delete the same pointer twice, preventing silent failures.
+- **ABA Difficulty Scaling:** Fixed a regression in `useProgressStore` where all games reset to 3 options on phase-up. Added `minOptionCount` per game to properly scale progression (e.g., Color Board now resets to 2, Tier 3 resets to 4).
+- **TTS Fallback Reliability:** Hardened the TTS priority chain to strictly attempt the webOS Luna endpoint first, falling back gracefully to a Google TTS audio helper on failure.
+
+**🟠 High**
+- **Statistics View Defaults:** Removed unsafe `onMounted` logic that auto-created stats entries with incorrect maximums (e.g., forcing max phase 5 on games with only 3 phases).
+- **ABA Prompt Suppression:** Replaced duplicate `touchstart`/`mousedown` window listeners with a single debounced `pointerdown` event, preventing hybrid touch devices from spamming interactions and permanently suppressing the idle prompt timer.
+- **Animal Jigsaw:** Restored the missing celebratory voice line ("Great job! You built the {animal}!") upon level completion.
+- **Animal Jigsaw Icon:** Fixed a broken start screen layout caused by passing an invalid `gameId` to the Menu Icon component.
+
+**🟡 Medium**
+- **Number Puzzle Collisions:** Expanded the color palette to 16 entries to prevent the number `15` from sharing the exact same color as `0` via modulo collision.
+- **ColorBoard & ShapeSorter ABA Sync:** Updated these games to read `currentOptionCount` from the progression store instead of relying entirely on static phases, allowing their difficulty to dynamically scale piece-by-piece based on user success.
+- **Global Menu CSS:** Removed duplicate `.fun-card-icon` CSS blocks.
+- **Drag & Drop Scroll-Snap:** Fixed a visual bug where dropping a piece after scrolling the page caused it to snap to the wrong offset. Coordinates are now cached in an absolute, scroll-safe format at drag start.
+- **Statistics Wipe Mutation:** Fixed a crash caused by deleting store keys while concurrently iterating over them during a factory reset.
+
+**🔵 Low**
+- **Store Ordering:** Relocated `tier3-combinetoys` to its correct tier grouping inside `useProgressStore.ts`.
+- **Animal Jigsaw Scoring:** Ensured the internal score resets to `0` automatically upon starting a new session.
+
 ## [0.0.4] - 31-05-2026
 
 ### Added

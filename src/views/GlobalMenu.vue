@@ -405,20 +405,6 @@ const funGames = [
   max-width: 100%;
 }
 
-.fun-card-icon {
-  width: 100%;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fun-card-icon :deep(svg) {
-  width: 80px;
-  height: 80px;
-  max-width: 100%;
-}
-
 .fun-card-body {
   text-align: center;
 }

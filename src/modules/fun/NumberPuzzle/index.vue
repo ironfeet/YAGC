@@ -18,7 +18,7 @@ const COLORS = [
   '#ef4444', '#f97316', '#f59e0b', '#84cc16', 
   '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', 
   '#d946ef', '#f43f5e', '#14b8a6', '#6366f1',
-  '#ec4899', '#eab308', '#10b981'
+  '#ec4899', '#eab308', '#10b981', '#0ea5e9'
 ];
 
 interface NumberItem {
@@ -186,8 +186,6 @@ function onPointerUp(e: PointerEvent) {
       placed = true;
     }
   });
-
-  activePointers.delete(e.pointerId);
 
   if (puzzlePieces.value.every(p => p.placed)) {
     onLevelComplete();

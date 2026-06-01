@@ -30,42 +30,58 @@ if (isSupported && !voicesInitialized) {
   }
 }
 
+// NOTE: This uses an unofficial Google TTS endpoint. It works on most networks but
+// may be blocked or rate-limited. It is used only as a last-resort fallback when
+// both Luna (webOS) and the Web Speech API are unavailable.
+function _playGoogleTTS(text: string) {
+  console.log('Using Google TTS audio fallback for:', text);
+  if (fallbackAudio) {
+    fallbackAudio.pause();
+    fallbackAudio.src = '';
+  }
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
+  fallbackAudio = new Audio(url);
+  fallbackAudio.onplay = () => { globalIsPlaying.value = true; };
+  fallbackAudio.onended = () => { globalIsPlaying.value = false; };
+  fallbackAudio.onerror = () => {
+    console.warn('Google TTS audio fallback also failed. No TTS available.');
+    globalIsPlaying.value = false;
+  };
+  fallbackAudio.play().catch(() => {
+    console.warn('Google TTS audio playback blocked by browser policy.');
+    globalIsPlaying.value = false;
+  });
+}
+
 export function useSpeech() {
   const playInstruction = (text: string) => {
     const webOS = typeof window !== 'undefined' ? (window as any).webOS : null;
     
-    // 1. If we are on WebOS, OR if standard speechSynthesis has no voices, use robust Audio fallback
-    const hasStandardVoices = isSupported && window.speechSynthesis.getVoices().length > 0;
-    
-    if (webOS || !hasStandardVoices) {
-      console.log('Using Audio TTS Fallback for:', text);
-      if (fallbackAudio) {
-        fallbackAudio.pause();
-      }
-      
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
-      fallbackAudio = new Audio(url);
-      
-      fallbackAudio.onplay = () => { globalIsPlaying.value = true; };
-      fallbackAudio.onended = () => { globalIsPlaying.value = false; };
-      fallbackAudio.onerror = (e) => { 
-        console.error('Audio TTS Fallback failed:', e);
+    // 1. If we are on WebOS, use the Luna TTS service first (most reliable on-device)
+    if (webOS && webOS.service) {
+      try {
+        globalIsPlaying.value = true;
+        webOS.service.request("luna://com.webos.service.tts", {
+          method: "speak",
+          parameters: { text: text, clear: true },
+          onSuccess: () => { globalIsPlaying.value = false; },
+          onFailure: () => {
+            globalIsPlaying.value = false;
+            // Luna failed — fall through to Google TTS audio
+            _playGoogleTTS(text);
+          }
+        });
+      } catch(err) {
         globalIsPlaying.value = false;
-        
-        // Final Hail Mary: Try native WebOS Luna Service if audio fails
-        if (webOS && webOS.service) {
-          try {
-            webOS.service.request("luna://com.webos.service.tts", {
-              method: "speak",
-              parameters: { text: text, clear: true }
-            });
-          } catch(err) {}
-        }
-      };
-      
-      fallbackAudio.play().catch(e => {
-        console.error("Audio playback blocked", e);
-      });
+        _playGoogleTTS(text);
+      }
+      return;
+    }
+
+    // 2. If standard speechSynthesis has no voices, use Google TTS audio fallback
+    const hasStandardVoices = isSupported && window.speechSynthesis.getVoices().length > 0;
+    if (!hasStandardVoices) {
+      _playGoogleTTS(text);
       return;
     }
 

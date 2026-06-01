@@ -45,28 +45,21 @@ interface ShapeItem {
   zIndex: number;
 }
 
-const currentPhase = computed(() => progressStore.moduleStats[GAME_ID]?.currentPhase || 1);
+const currentOptionCount = computed(() => progressStore.moduleStats[GAME_ID]?.currentOptionCount || 2);
 
-// Generate the sequence of shapes based on phase
+// Generate the sequence of shapes based on currentOptionCount (ABA-driven)
 const targetSequence = computed(() => {
-  switch (currentPhase.value) {
-    case 1: return SHAPES.slice(0, 3); // 3 shapes
-    case 2: return SHAPES.slice(0, 4); // 4 shapes
-    case 3: return SHAPES.slice(0, 6); // 6 shapes
-    case 4: return SHAPES.slice(0, 8); // 8 shapes
-    case 5: return SHAPES.slice(0, 10); // 10 shapes
-    default: return SHAPES.slice(0, 3);
-  }
+  const count = Math.min(currentOptionCount.value, SHAPES.length);
+  return SHAPES.slice(0, count);
 });
 
 const boardColumns = computed(() => {
   const len = targetSequence.value.length;
-  if (len === 3) return 3;
-  if (len === 4) return 2;
-  if (len === 6) return 3;
-  if (len === 8) return 4;
-  if (len === 10) return 5;
-  return 3;
+  if (len <= 2) return 2;
+  if (len <= 4) return 2;
+  if (len <= 6) return 3;
+  if (len <= 8) return 4;
+  return 5;
 });
 
 const boardRows = computed(() => Math.ceil(targetSequence.value.length / boardColumns.value));
@@ -238,7 +231,7 @@ const handleNextLevel = () => {
         <header class="top-bar">
           <div class="phase-badge">
             <span style="font-size: 1.5rem; margin-right: 0.5rem">⭐</span>
-            Level {{ currentPhase }}
+            {{ currentOptionCount }} Shapes
           </div>
           <button class="replay-btn" @click="playHint">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
