@@ -14,7 +14,10 @@ const props = defineProps<{
 }>();
 
 // Generate a unique ID for this instance so SVG defs don't bleed colors globally!
-const uid = Math.random().toString(36).substring(2, 9);
+const uid = Array.from(crypto.getRandomValues(new Uint8Array(6)))
+  .map((b) => b.toString(16).padStart(2, '0'))
+  .join('')
+  .substring(0, 7);
 
 const toyTransform = computed(() => {
   if (props.isHeaderOnly && props.headerType === 'toy') return 'translate(10, 10) scale(0.9)';
