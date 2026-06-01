@@ -1,34 +1,36 @@
-import { ref, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import 'webostvjs';
 
-export function useSpeech() {
-  const isPlaying = ref(false);
-  const isSupported = 'speechSynthesis' in window;
-  
-  let preferredVoice: SpeechSynthesisVoice | null = null;
-  let fallbackAudio: HTMLAudioElement | null = null;
+// Global state to prevent memory leaks and manage active speech across components
+const globalIsPlaying = ref(false);
+const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
-  const initVoices = () => {
-    if (!isSupported) return;
-    const voices = window.speechSynthesis.getVoices();
-    // Prefer Google US English, Siri, or any friendly en-US voice
-    preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
-                     voices.find(v => v.name.includes('Samantha') || v.name.includes('Victoria')) ||
-                     voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en')) ||
-                     voices[0] || null;
-  };
+let preferredVoice: SpeechSynthesisVoice | null = null;
+let fallbackAudio: HTMLAudioElement | null = null;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+let voicesInitialized = false;
 
-  // Voices are loaded asynchronously in some browsers (like Chrome)
-  if (isSupported) {
-    if (window.speechSynthesis.getVoices().length > 0) {
-      initVoices();
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', initVoices);
-    }
+const initVoices = () => {
+  if (!isSupported) return;
+  const voices = window.speechSynthesis.getVoices();
+  // Prefer Google US English, Siri, or any friendly en-US voice
+  preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
+                   voices.find(v => v.name.includes('Samantha') || v.name.includes('Victoria')) ||
+                   voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en')) ||
+                   voices[0] || null;
+  voicesInitialized = true;
+};
+
+// Initialize voices globally once
+if (isSupported && !voicesInitialized) {
+  if (window.speechSynthesis.getVoices().length > 0) {
+    initVoices();
+  } else {
+    window.speechSynthesis.addEventListener('voiceschanged', initVoices, { once: true });
   }
+}
 
-  let activeUtterance: SpeechSynthesisUtterance | null = null;
-
+export function useSpeech() {
   const playInstruction = (text: string) => {
     const webOS = typeof window !== 'undefined' ? (window as any).webOS : null;
     
@@ -44,11 +46,11 @@ export function useSpeech() {
       const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
       fallbackAudio = new Audio(url);
       
-      fallbackAudio.onplay = () => { isPlaying.value = true; };
-      fallbackAudio.onended = () => { isPlaying.value = false; };
+      fallbackAudio.onplay = () => { globalIsPlaying.value = true; };
+      fallbackAudio.onended = () => { globalIsPlaying.value = false; };
       fallbackAudio.onerror = (e) => { 
         console.error('Audio TTS Fallback failed:', e);
-        isPlaying.value = false;
+        globalIsPlaying.value = false;
         
         // Final Hail Mary: Try native WebOS Luna Service if audio fails
         if (webOS && webOS.service) {
@@ -99,20 +101,20 @@ export function useSpeech() {
     currentUtterance.onstart = () => { 
       if (activeUtterance === currentUtterance) {
         console.log('Speech started:', text); 
-        isPlaying.value = true; 
+        globalIsPlaying.value = true; 
       }
     };
     currentUtterance.onend = () => { 
       if (activeUtterance === currentUtterance) {
         console.log('Speech ended'); 
-        isPlaying.value = false; 
+        globalIsPlaying.value = false; 
         activeUtterance = null;
       }
     };
     currentUtterance.onerror = (e) => { 
       if (activeUtterance === currentUtterance) {
         console.error('Speech error:', e); 
-        isPlaying.value = false; 
+        globalIsPlaying.value = false; 
         activeUtterance = null;
       }
     };
@@ -139,22 +141,19 @@ export function useSpeech() {
 
     if (isSupported) {
       window.speechSynthesis.cancel();
-      isPlaying.value = false;
+      globalIsPlaying.value = false;
       activeUtterance = null;
     }
   };
 
-  onUnmounted(() => {
-    stopSpeech();
-    if (isSupported) {
-      window.speechSynthesis.removeEventListener('voiceschanged', initVoices);
-    }
-  });
+  // We explicitly DO NOT call stopSpeech() onUnmounted anymore.
+  // This prevents the race condition during Vue Router transitions where the old 
+  // component unmounts *after* the new component has already started playing speech.
 
   return {
     playInstruction,
     stopSpeech,
-    isPlaying,
+    isPlaying: globalIsPlaying,
     isSupported
   };
 }
