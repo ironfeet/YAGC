@@ -36,8 +36,6 @@ const gameNames: Record<string, string> = {
   'fun-number-puzzle': 'Number Puzzle',
   'fun-color-board': 'Color Board',
   'fun-shape-sorter': 'Shape Sorter',
-  'puzzle-colors': 'Color Board',
-  'puzzle-shapes': 'Shape Sorter',
   // MITA games
   'tier1-patches': 'Patches',
   'tier1-outlines': 'Outlines',
@@ -71,6 +69,7 @@ const gameNames: Record<string, string> = {
 const filteredStats = computed(() => {
   const result: Record<string, any> = {};
   for (const key in progressStore.moduleStats) {
+    if (!gameNames[key]) continue; // Ignore legacy or unknown keys
     const isFunGame = key.startsWith('fun-') || key.startsWith('jigsaw-') || key.startsWith('puzzle-');
     if ((activeTab.value === 'fun' && isFunGame) || (activeTab.value === 'mita' && !isFunGame)) {
       result[key] = progressStore.moduleStats[key];
