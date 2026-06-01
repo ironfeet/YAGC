@@ -61,6 +61,14 @@ const funGames = [
     color: '#ec4899',
     comingSoon: false,
   },
+  {
+    id: 'fun-shadow-match',
+    name: 'Shadow Match',
+    description: 'Match animals to their silhouettes',
+    emoji: '👥',
+    color: '#14b8a6',
+    comingSoon: false,
+  },
 ];
 </script>
 

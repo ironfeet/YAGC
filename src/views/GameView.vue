@@ -44,6 +44,7 @@ const moduleRegistry: Record<string, any> = {
   'fun-number-puzzle': defineAsyncComponent(() => import('../modules/fun/NumberPuzzle/index.vue')),
   'fun-color-board': defineAsyncComponent(() => import('../modules/fun/ColorBoard/index.vue')),
   'fun-shape-sorter': defineAsyncComponent(() => import('../modules/fun/ShapeSorter/index.vue')),
+  'fun-shadow-match': defineAsyncComponent(() => import('../modules/fun/ShadowMatch/index.vue')),
 };
 
 const ModuleComponent = computed(() => {

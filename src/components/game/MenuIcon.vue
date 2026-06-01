@@ -422,6 +422,17 @@ defineProps<{
         <rect x="45" y="65" width="10" height="10" fill="rgba(0,0,0,0.2)" rx="1" />
       </g>
 
+      <!-- Fun: Shadow Match -->
+      <g v-else-if="gameId === 'fun-shadow-match'">
+        <!-- Shadow (Black Cat silhouette) -->
+        <path d="M 40,25 L 30,10 L 25,25 Q 15,40 20,60 L 15,80 L 30,80 L 35,60 Q 50,60 65,60 L 70,80 L 85,80 L 80,60 Q 85,40 75,25 L 70,10 L 60,25 Z" fill="rgba(0,0,0,0.5)" />
+        <!-- Colorful Animal offset -->
+        <path d="M 50,15 L 40,0 L 35,15 Q 25,30 30,50 L 25,70 L 40,70 L 45,50 Q 60,50 75,50 L 80,70 L 95,70 L 90,50 Q 95,30 85,15 L 80,0 L 70,15 Z" fill="white" />
+        <!-- Detail (Eyes) -->
+        <circle cx="45" cy="25" r="4" fill="rgba(0,0,0,0.2)" />
+        <circle cx="65" cy="25" r="4" fill="rgba(0,0,0,0.2)" />
+      </g>
+
       <!-- Fallback -->
       <g v-else>
         <circle cx="50" cy="50" r="35" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="4" stroke-dasharray="10,5" />
