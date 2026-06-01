@@ -4,14 +4,15 @@ import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import NumberBlock from './NumberBlock.vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
+import { useSpeech } from '../../../composables/useSpeech';
 
 const router = useRouter();
 const progressStore = useProgressStore();
+const { playInstruction, isPlaying } = useSpeech();
 const GAME_ID = 'fun-number-puzzle';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
-const isPlaying = ref(false); // TTS playing state
 
 const COLORS = [
   '#ef4444', '#f97316', '#f59e0b', '#84cc16', 
@@ -119,13 +120,7 @@ const handleStart = () => {
 };
 
 const speakInstruction = () => {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    isPlaying.value = true;
-    const utterance = new SpeechSynthesisUtterance("Put the numbers on the board!");
-    utterance.onend = () => { isPlaying.value = false; };
-    window.speechSynthesis.speak(utterance);
-  }
+  playInstruction("Put the numbers on the board!");
 };
 
 const playHint = () => {
@@ -201,10 +196,7 @@ function onPointerUp(e: PointerEvent) {
 
 function onLevelComplete() {
   isComplete.value = true;
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance("Great job! You built it!");
-    window.speechSynthesis.speak(utterance);
-  }
+  playInstruction("Great job! You built it!");
   progressStore.updateStats(GAME_ID, true);
 }
 

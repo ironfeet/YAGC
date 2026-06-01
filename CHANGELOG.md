@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Color Board Game:** Added a new progressive Color Board module featuring 10 vibrant, interactive 3D pegs (Red, Blue, Yellow, Green, Orange, Purple, Pink, Cyan, Teal, Lime) that snap into matching colored slots.
 - **Shape Sorter Game:** Added a new progressive Shape Sorter module featuring 10 dynamic SVG shapes (Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, Crescent) with responsive physical slots.
 
+### Fixed
+- **Voice Guide Pacing:** Refactored the `NumberPuzzle`, `ColorBoard`, and `ShapeSorter` modules to utilize the unified `useSpeech` engine rather than calling raw `window.speechSynthesis`. This ensures the voice pacing (0.85x rate) and friendly pitch (1.1) exactly matches the Patches game and other core MITA modules, while also bringing these games into the WebOS resilient TTS fallback system.
+- **Drag & Drop Precision:** Completely re-engineered the collision detection for all grid-based Fun Games (`NumberPuzzle`, `ColorBoard`, `ShapeSorter`). The engine now utilizes strict center-based proximity checks (requiring the pointer to be within 40px of the slot's center), eliminating issues where pieces snapped prematurely or into incorrect adjacent slots.
+- **Layout Spacing:** Increased vertical spacing between the interactive tray and the target board in grid-based games to provide better visual separation and eliminate clutter.
+- **Color Board Accessibility:** Added inner-shadows and color-tinted brightness filters to the empty slots on the Color Board, making it immediately clear which colored peg belongs in each hole.
+- **Statistics Rendering:** Fixed an issue on the global statistics page where legacy placeholder game IDs were rendering duplicate entries.
 ## [0.0.4] - 31-05-2026
 
 ### Added

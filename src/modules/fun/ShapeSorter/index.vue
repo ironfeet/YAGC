@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import ShapeBlock from './ShapeBlock.vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
+import { useSpeech } from '../../../composables/useSpeech';
 
 const router = useRouter();
 const progressStore = useProgressStore();
@@ -11,7 +12,7 @@ const GAME_ID = 'fun-shape-sorter';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
-const isPlaying = ref(false); // TTS playing state
+const { playInstruction, isPlaying } = useSpeech();
 
 const SHAPES = [
   'circle', 'square', 'triangle', 'star', 'pentagon',
@@ -130,13 +131,7 @@ const handleStart = () => {
 };
 
 const speakInstruction = () => {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    isPlaying.value = true;
-    const utterance = new SpeechSynthesisUtterance("Put the shapes on the board!");
-    utterance.onend = () => { isPlaying.value = false; };
-    window.speechSynthesis.speak(utterance);
-  }
+  playInstruction("Put the shapes in the holes!");
 };
 
 const playHint = () => {
@@ -210,10 +205,7 @@ function onPointerUp(e: PointerEvent) {
 
 function onLevelComplete() {
   isComplete.value = true;
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance("Great job! You matched all the shapes!");
-    window.speechSynthesis.speak(utterance);
-  }
+  playInstruction("Great job! You matched the shapes!");
   progressStore.updateStats(GAME_ID, true);
 }
 
