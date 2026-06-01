@@ -308,7 +308,7 @@ const handleNextLevel = () => {
   font-weight: 800;
   color: #1e3a8a;
   margin-bottom: 1rem;
-  background: white;
+  background: var(--bg-secondary);
   padding: 0.5rem 2rem;
   border-radius: 9999px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);

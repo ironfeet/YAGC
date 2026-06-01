@@ -398,7 +398,7 @@ const playHint = () => {
   position: relative;
   width: 260px;
   height: 260px;
-  background-color: #ffffff;
+  background: var(--bg-secondary);
   border-radius: 30px;
   border: 4px solid #e0e0e0;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);

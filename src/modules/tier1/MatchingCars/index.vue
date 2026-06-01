@@ -441,7 +441,7 @@ const playHint = () => {
   top: 10%;
   bottom: 10%;
   width: 12px;
-  background-color: white;
+  background-color: var(--bg-secondary);
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(255,255,255,0.5);
 }

@@ -21,6 +21,24 @@ const goBack = () => {
       </button>
     </div>
 
+    <div class="setting-item">
+      <label>MITA Game Theme</label>
+      <select class="theme-select" v-model="progressStore.mitaTheme" @change="progressStore.setMitaTheme(($event.target as HTMLSelectElement).value)">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="colorful">Colorful</option>
+      </select>
+    </div>
+
+    <div class="setting-item">
+      <label>Fun Game Theme</label>
+      <select class="theme-select" v-model="progressStore.funTheme" @change="progressStore.setFunTheme(($event.target as HTMLSelectElement).value)">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="colorful">Colorful</option>
+      </select>
+    </div>
+
     <button class="back-btn" @click="goBack">Back to Home</button>
   </div>
 </template>
@@ -59,6 +77,18 @@ button {
 
 .back-btn {
   background-color: var(--bg-secondary);
-  color: white;
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
+}
+
+.theme-select {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.5rem;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--text-secondary);
+  cursor: pointer;
+  outline: none;
 }
 </style>

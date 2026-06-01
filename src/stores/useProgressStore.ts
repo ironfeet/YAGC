@@ -361,8 +361,16 @@ export const useProgressStore = defineStore('progress', {
       },
     },
     defaultHomeMenu: 'mita', // Default home menu
+    mitaTheme: 'dark',
+    funTheme: 'colorful',
   }),
   actions: {
+    setMitaTheme(theme: string) {
+      this.mitaTheme = theme;
+    },
+    setFunTheme(theme: string) {
+      this.funTheme = theme;
+    },
     toggleHomeMenu() {
       this.defaultHomeMenu = this.defaultHomeMenu === 'mita' ? 'fun' : 'mita';
     },

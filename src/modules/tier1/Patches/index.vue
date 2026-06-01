@@ -428,11 +428,11 @@ const playHint = () => {
 
 .scene-board {
   flex: 6;
-  background-color: #f0f3f5;
+  background-color: var(--bg-primary);
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 4px solid #dee2e6;
+  border-right: 4px solid rgba(255, 255, 255, 0.1);
   padding: 2rem;
   min-width: 0;
   min-height: 0;
@@ -449,7 +449,7 @@ const playHint = () => {
 
 .options-board {
   flex: 4;
-  background-color: #ffffff;
+  background: var(--bg-secondary);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
