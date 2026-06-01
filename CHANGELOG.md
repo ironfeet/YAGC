@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.7] - 01-06-2026
+
+### Added
+- **Global Theme Switching:** Introduced a fully dynamic global theme system. The app now supports independent, switchable themes for MITA Games (e.g., Light, Dark, Colorful) and Fun Games, which seamlessly synchronize across the entire application interface and inside individual game boards.
+
+### Fixed
+- **Menu Navigation:** The app now remembers which menu you were looking at (MITA or Fun Games) when you play a game. When you click "Back to Menu", it will return you to exactly where you left off, rather than always jumping back to the default home screen.
+
 ## [0.0.6] - 01-06-2026
 
 ### Added

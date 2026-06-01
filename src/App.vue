@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { useProgressStore } from './stores/useProgressStore';
+import { useSessionStore } from './stores/useSessionStore';
 
 const route = useRoute();
 const progressStore = useProgressStore();
@@ -12,6 +13,7 @@ watch(
   () => {
     const path = route.path || '';
     const tab = route.query.tab as string | undefined;
+    const sessionStore = useSessionStore();
 
     if (path.includes('/fun')) {
       document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
@@ -19,7 +21,7 @@ watch(
       document.documentElement.setAttribute('data-theme', progressStore.mitaTheme || 'dark');
     } else if (path === '/') {
       // GlobalMenu handles both tabs
-      const activeTab = tab || progressStore.defaultHomeMenu;
+      const activeTab = tab || sessionStore.lastActiveTab || progressStore.defaultHomeMenu;
       if (activeTab === 'fun') {
         document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
       } else {

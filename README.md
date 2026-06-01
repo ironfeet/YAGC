@@ -60,6 +60,16 @@ Every game module in the clinical section shares:
 - **Web Speech API** — all instructions are spoken aloud; the child listens before interacting
 - **Persistent progress** — stats survive page reloads via `localStorage`
 
+### 🎨 Global Theme Switching
+
+YAGC supports a fully dynamic, independent global theme system. You can set a unique theme for the **MITA Games** curriculum (e.g., *Dark Mode* to reduce distractions) and a separate theme for **Fun Games** (e.g., *Colorful* or *Light*). 
+
+**How to set the theme:**
+1. Navigate to the **Settings** menu (gear icon on the home screen).
+2. Under "MITA Game Theme", select your preferred theme for clinical exercises (Light, Dark, or Colorful).
+3. Under "Fun Game Theme", select a theme for casual puzzles.
+4. Your choices are automatically persisted and instantly applied to both the game menus and inside every individual game board!
+
 ---
 
 ## Tech Stack
@@ -115,7 +125,7 @@ ares-launch "./dist" -s 24 \
 ```bash
 npm run build
 ares-package ./dist -o ./build --no-minify
-ares-install ./build/yagc_0.0.6_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.7_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
@@ -726,7 +736,7 @@ Advanced phases always generate distractors that match the target in N-1 feature
 
 ## Deployment to webOS
 
-The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.6`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
+The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.7`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
 
 ### Simulator
 
@@ -747,7 +757,7 @@ npm run build
 ares-package ./dist -o ./build/
 
 # 3. Install & launch
-ares-install ./build/yagc_0.0.6_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.7_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 

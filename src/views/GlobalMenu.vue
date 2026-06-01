@@ -4,16 +4,24 @@ import { useRouter, useRoute } from 'vue-router';
 import GameSelectionMenu from './GameSelectionMenu.vue';
 import MenuIcon from '../components/game/MenuIcon.vue';
 import { useProgressStore } from '../stores/useProgressStore';
+import { useSessionStore } from '../stores/useSessionStore';
 
 const router = useRouter();
 const route = useRoute();
 const progressStore = useProgressStore();
+const sessionStore = useSessionStore();
 
-// Initialize active tab from URL query if present, otherwise fallback to user preference
-const activeTab = ref<'mita' | 'fun'>((route.query.tab as 'mita' | 'fun') || progressStore.defaultHomeMenu);
+// Initialize active tab from URL query if present, otherwise fallback to session memory, otherwise user preference
+const activeTab = ref<'mita' | 'fun'>(
+  (route.query.tab as 'mita' | 'fun') || sessionStore.lastActiveTab || progressStore.defaultHomeMenu
+);
+
+// Always synchronize the session store with the resolved active tab
+sessionStore.lastActiveTab = activeTab.value;
 
 const switchTab = (tab: 'mita' | 'fun') => {
   activeTab.value = tab;
+  sessionStore.lastActiveTab = tab;
   router.replace({ query: { ...route.query, tab } });
 };
 
