@@ -54,7 +54,7 @@
 .complete-actions { display: flex; gap: 1rem; justify-content: center; }
 .btn-next, .btn-menu { font-size: 1.4rem; font-weight: 700; padding: 1rem 2rem; border-radius: 50px; border: none; cursor: pointer; transition: transform 0.15s; }
 .btn-next { background: var(--color-green, #10b981); color: white; box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
-.btn-menu { background: rgba(0,0,0,0.1); color: #333; }
+.btn-menu { background: var(--bg-tertiary, rgba(0,0,0,0.1)); color: var(--text-primary, #333); }
 .btn-next:active, .btn-menu:active { transform: scale(0.95); }
 
 /* Transitions */

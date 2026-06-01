@@ -360,7 +360,7 @@ const playHint = () => {
 .equation-box {
   width: 180px;
   height: 180px;
-  background-color: white;
+  background-color: var(--bg-secondary);
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: flex;
@@ -433,7 +433,7 @@ const playHint = () => {
   position: relative;
   width: 180px;
   height: 180px;
-  background-color: #ffffff;
+  background: var(--bg-secondary);
   border-radius: 20px;
   border: 4px solid #e0e0e0;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);

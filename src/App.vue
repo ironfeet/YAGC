@@ -1,4 +1,40 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { useProgressStore } from './stores/useProgressStore';
+
+const route = useRoute();
+const progressStore = useProgressStore();
+
+import { watch } from 'vue';
+
+watch(
+  () => [route.path, route.query.tab, progressStore.mitaTheme, progressStore.funTheme],
+  () => {
+    const path = route.path || '';
+    const tab = route.query.tab as string | undefined;
+
+    if (path.includes('/fun')) {
+      document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
+    } else if (path.includes('/tier') || path.includes('/mita')) {
+      document.documentElement.setAttribute('data-theme', progressStore.mitaTheme || 'dark');
+    } else if (path === '/') {
+      // GlobalMenu handles both tabs
+      const activeTab = tab || progressStore.defaultHomeMenu;
+      if (activeTab === 'fun') {
+        document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
+      } else {
+        document.documentElement.setAttribute('data-theme', progressStore.mitaTheme || 'dark');
+      }
+    } else {
+      // Settings, Statistics
+      const defaultTheme = progressStore.defaultHomeMenu === 'fun' 
+        ? (progressStore.funTheme || 'colorful')
+        : (progressStore.mitaTheme || 'dark');
+      document.documentElement.setAttribute('data-theme', defaultTheme);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

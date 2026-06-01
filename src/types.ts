@@ -10,12 +10,16 @@ export interface GameConfig {
   distractors: Array<Record<string, string>>;
 }
 
+export type ThemeMode = 'dark' | 'light' | 'colorful' | string;
+
 export interface UserProgress {
   userId: string;
   currentTier: 1 | 2 | 3;
   unlockedModules: string[];
   moduleStats: Record<string, ModuleStat>;
   defaultHomeMenu: 'mita' | 'fun';
+  mitaTheme: ThemeMode;
+  funTheme: ThemeMode;
 }
 
 export interface ModuleStat {

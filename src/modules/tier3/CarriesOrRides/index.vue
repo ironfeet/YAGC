@@ -368,7 +368,7 @@ const playHint = () => {
 
 .main-area {
   flex: 1;
-  background-color: #f0f3f5;
+  background-color: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;

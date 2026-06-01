@@ -12,6 +12,11 @@ const progressStore = useProgressStore();
 // Initialize active tab from URL query if present, otherwise fallback to user preference
 const activeTab = ref<'mita' | 'fun'>((route.query.tab as 'mita' | 'fun') || progressStore.defaultHomeMenu);
 
+const switchTab = (tab: 'mita' | 'fun') => {
+  activeTab.value = tab;
+  router.replace({ query: { ...route.query, tab } });
+};
+
 const funGames = [
   {
     id: 'fun-animal-jigsaw',
@@ -132,7 +137,7 @@ const funGames = [
           role="tab"
           class="tab-btn"
           :class="{ active: activeTab === 'mita' }"
-          @click="activeTab = 'mita'"
+          @click="switchTab('mita')"
         >
           <span class="tab-icon">🎯</span>
           <span class="tab-label">MITA</span>
@@ -143,7 +148,7 @@ const funGames = [
           role="tab"
           class="tab-btn"
           :class="{ active: activeTab === 'fun' }"
-          @click="activeTab = 'fun'"
+          @click="switchTab('fun')"
         >
           <span class="tab-icon">🧩</span>
           <span class="tab-label">Fun Games</span>

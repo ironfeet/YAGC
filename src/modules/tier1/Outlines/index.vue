@@ -387,13 +387,13 @@ const playHint = () => {
 /* ── Left board: silhouettes ──────────────────────────────────────────────── */
 .left-board {
   flex: 1;
-  background-color: #f0f3f5;
+  background-color: var(--bg-primary);
   background-image: radial-gradient(#d1d8df 1px, transparent 1px);
   background-size: 20px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 4px solid #dee2e6;
+  border-right: 4px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem;
 }
 
@@ -450,7 +450,7 @@ const playHint = () => {
 /* ── Right board: options ─────────────────────────────────────────────────── */
 .right-board {
   flex: 1;
-  background-color: #ffffff;
+  background: var(--bg-secondary);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -469,7 +469,7 @@ const playHint = () => {
   justify-content: center;
   gap: 0.4rem;
   padding: 0.75rem;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 3px solid #e2e8f0;
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);

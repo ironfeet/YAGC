@@ -281,7 +281,7 @@ const handleNextLevel = () => {
 }
 
 .card-back {
-  background: white;
+  background: var(--bg-secondary);
   transform: rotateY(180deg);
   border: 4px solid #e5e7eb;
 }
