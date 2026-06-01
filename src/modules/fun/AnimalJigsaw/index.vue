@@ -21,6 +21,7 @@ const playQueue = ref<AnimalDef[]>([]);
 
 const handleStart = () => {
   hasStarted.value = true;
+  score.value = 0;
   playQueue.value = shuffleArray([...ANIMALS]);
   generateLevel();
 };
@@ -289,6 +290,7 @@ function onPointerUp(e: PointerEvent) {
 function onLevelComplete() {
   completed.value = true;
   score.value += 10 * level.value;
+  playInstruction(`Great job! You built the ${animal.value.label}!`);
   progressStore.updateStats(moduleId, true);
 }
 
@@ -321,7 +323,7 @@ const playHint = () => {
     @pointercancel="onPointerUp"
   >
     <div v-if="!hasStarted" class="start-screen">
-      <div class="start-icon"><MenuIcon gameId="fun-jigsaw" style="width: 140px; height: 140px;" /></div>
+      <div class="start-icon"><MenuIcon gameId="fun-animal-jigsaw" style="width: 140px; height: 140px;" /></div>
       <h1>Animal Jigsaw<br><span>Spatial Puzzles</span></h1>
       <p class="start-sub">Put the animal pieces together.</p>
       <button @click="handleStart" class="start-btn">

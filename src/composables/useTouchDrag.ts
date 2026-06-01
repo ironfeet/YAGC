@@ -35,6 +35,10 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
   let startX = 0;
   let startY = 0;
   
+  // Scroll-safe original center of the element (page coordinates captured at drag-start)
+  let originalCenterX = 0;
+  let originalCenterY = 0;
+  
   let wrapperZIndexTimeout: ReturnType<typeof setTimeout> | null = null;
   
   let modifiedParents: HTMLElement[] = [];
@@ -146,6 +150,11 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
+    // Store the original element center in page coordinates (used in onEnd for accurate snap).
+    // We add window.scrollX/Y so that subsequent scrolling during the drag doesn't invalidate this.
+    originalCenterX = centerX + window.scrollX;
+    originalCenterY = centerY + window.scrollY;
+    
     snapOffsetX = clientX - centerX;
     snapOffsetY = clientY - centerY;
     
@@ -198,12 +207,13 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
         const targetCenterX = targetRect.left + targetRect.width / 2;
         const targetCenterY = targetRect.top + targetRect.height / 2;
         
-        // Calculate where it needs to translate to, relative to its original static position
-        const originalCenterX = startX - snapOffsetX;
-        const originalCenterY = startY - snapOffsetY;
+        // Calculate where it needs to translate to, relative to its original static position.
+        // Use page-coordinate originalCenter to account for any scroll that occurred during drag.
+        const scrollAdjustedCenterX = originalCenterX - window.scrollX;
+        const scrollAdjustedCenterY = originalCenterY - window.scrollY;
         
-        translateX.value = targetCenterX - originalCenterX;
-        translateY.value = targetCenterY - originalCenterY;
+        translateX.value = targetCenterX - scrollAdjustedCenterX;
+        translateY.value = targetCenterY - scrollAdjustedCenterY;
         
         isSuccess.value = true;
         if (options.onSuccessDrop) options.onSuccessDrop(hitTarget);

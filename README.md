@@ -378,10 +378,44 @@ A progressive interlocking jigsaw puzzle focusing on outdoor objects.
   - Phase 4: 5×5 grid (25 pieces).
   - Phase 5: 6×6 grid (36 pieces) with no visual guide and a complex, overlapping multi-nature scene.
 
-#### Upcoming Fun Games
-- **Number Puzzle** (coming soon)
-- **Color Board** (coming soon)
-- **Shape Sorter** (coming soon)
+#### Number Puzzle (`NumberPuzzle`)
+**Module ID**: `fun-number-puzzle`
+
+A progressive matching puzzle focusing on number recognition and sequencing on a wooden board.
+
+- **Numbers 1-15**: Colorful numeric blocks that snap cleanly into place using an interlocking board grid.
+- **Progressive Difficulty**:
+  - Phase 1: 1×2 grid (numbers 1-2).
+  - Phase 2: 2×2 grid (numbers 1-4).
+  - Phase 3: 2×3 grid (numbers 1-6).
+  - Phase 4: 2×5 grid (numbers 1-10).
+  - Phase 5: 3×5 grid (numbers 1-15).
+
+#### Color Board (`ColorBoard`)
+**Module ID**: `fun-color-board`
+
+A matching puzzle focusing on color recognition on a wooden board.
+
+- **10 Vibrant Colors**: Features shiny circular pegs in Red, Blue, Yellow, Green, Orange, Purple, Pink, Cyan, Teal, and Lime.
+- **Progressive Difficulty**:
+  - Phase 1: 1×2 grid (2 colors).
+  - Phase 2: 2×2 grid (4 colors).
+  - Phase 3: 2×3 grid (6 colors).
+  - Phase 4: 2×4 grid (8 colors).
+  - Phase 5: 2×5 grid (10 colors).
+
+#### Shape Sorter (`ShapeSorter`)
+**Module ID**: `fun-shape-sorter`
+
+A matching puzzle focusing on geometry and shape recognition.
+
+- **10 Distinct Shapes**: Features custom SVG blocks for Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, and Crescent.
+- **Progressive Difficulty**:
+  - Phase 1: 1×3 grid (3 shapes).
+  - Phase 2: 2×2 grid (4 shapes).
+  - Phase 3: 2×3 grid (6 shapes).
+  - Phase 4: 2×4 grid (8 shapes).
+  - Phase 5: 2×5 grid (10 shapes).
 
 ---
 

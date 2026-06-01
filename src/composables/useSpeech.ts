@@ -1,69 +1,87 @@
-import { ref, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import 'webostvjs';
 
-export function useSpeech() {
-  const isPlaying = ref(false);
-  const isSupported = 'speechSynthesis' in window;
-  
-  let preferredVoice: SpeechSynthesisVoice | null = null;
-  let fallbackAudio: HTMLAudioElement | null = null;
+// Global state to prevent memory leaks and manage active speech across components
+const globalIsPlaying = ref(false);
+const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
-  const initVoices = () => {
-    if (!isSupported) return;
-    const voices = window.speechSynthesis.getVoices();
-    // Prefer Google US English, Siri, or any friendly en-US voice
-    preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
-                     voices.find(v => v.name.includes('Samantha') || v.name.includes('Victoria')) ||
-                     voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en')) ||
-                     voices[0] || null;
-  };
+let preferredVoice: SpeechSynthesisVoice | null = null;
+let fallbackAudio: HTMLAudioElement | null = null;
+let activeUtterance: SpeechSynthesisUtterance | null = null;
+let voicesInitialized = false;
 
-  // Voices are loaded asynchronously in some browsers (like Chrome)
-  if (isSupported) {
-    if (window.speechSynthesis.getVoices().length > 0) {
-      initVoices();
-    } else {
-      window.speechSynthesis.addEventListener('voiceschanged', initVoices);
-    }
+const initVoices = () => {
+  if (!isSupported) return;
+  const voices = window.speechSynthesis.getVoices();
+  // Prefer Google US English, Siri, or any friendly en-US voice
+  preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
+                   voices.find(v => v.name.includes('Samantha') || v.name.includes('Victoria')) ||
+                   voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en')) ||
+                   voices[0] || null;
+  voicesInitialized = true;
+};
+
+// Initialize voices globally once
+if (isSupported && !voicesInitialized) {
+  if (window.speechSynthesis.getVoices().length > 0) {
+    initVoices();
+  } else {
+    window.speechSynthesis.addEventListener('voiceschanged', initVoices, { once: true });
   }
+}
 
-  let activeUtterance: SpeechSynthesisUtterance | null = null;
+// NOTE: This uses an unofficial Google TTS endpoint. It works on most networks but
+// may be blocked or rate-limited. It is used only as a last-resort fallback when
+// both Luna (webOS) and the Web Speech API are unavailable.
+function _playGoogleTTS(text: string) {
+  console.log('Using Google TTS audio fallback for:', text);
+  if (fallbackAudio) {
+    fallbackAudio.pause();
+    fallbackAudio.src = '';
+  }
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
+  fallbackAudio = new Audio(url);
+  fallbackAudio.onplay = () => { globalIsPlaying.value = true; };
+  fallbackAudio.onended = () => { globalIsPlaying.value = false; };
+  fallbackAudio.onerror = () => {
+    console.warn('Google TTS audio fallback also failed. No TTS available.');
+    globalIsPlaying.value = false;
+  };
+  fallbackAudio.play().catch(() => {
+    console.warn('Google TTS audio playback blocked by browser policy.');
+    globalIsPlaying.value = false;
+  });
+}
 
+export function useSpeech() {
   const playInstruction = (text: string) => {
     const webOS = typeof window !== 'undefined' ? (window as any).webOS : null;
     
-    // 1. If we are on WebOS, OR if standard speechSynthesis has no voices, use robust Audio fallback
-    const hasStandardVoices = isSupported && window.speechSynthesis.getVoices().length > 0;
-    
-    if (webOS || !hasStandardVoices) {
-      console.log('Using Audio TTS Fallback for:', text);
-      if (fallbackAudio) {
-        fallbackAudio.pause();
+    // 1. If we are on WebOS, use the Luna TTS service first (most reliable on-device)
+    if (webOS && webOS.service) {
+      try {
+        globalIsPlaying.value = true;
+        webOS.service.request("luna://com.webos.service.tts", {
+          method: "speak",
+          parameters: { text: text, clear: true },
+          onSuccess: () => { globalIsPlaying.value = false; },
+          onFailure: () => {
+            globalIsPlaying.value = false;
+            // Luna failed — fall through to Google TTS audio
+            _playGoogleTTS(text);
+          }
+        });
+      } catch(err) {
+        globalIsPlaying.value = false;
+        _playGoogleTTS(text);
       }
-      
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
-      fallbackAudio = new Audio(url);
-      
-      fallbackAudio.onplay = () => { isPlaying.value = true; };
-      fallbackAudio.onended = () => { isPlaying.value = false; };
-      fallbackAudio.onerror = (e) => { 
-        console.error('Audio TTS Fallback failed:', e);
-        isPlaying.value = false;
-        
-        // Final Hail Mary: Try native WebOS Luna Service if audio fails
-        if (webOS && webOS.service) {
-          try {
-            webOS.service.request("luna://com.webos.service.tts", {
-              method: "speak",
-              parameters: { text: text, clear: true }
-            });
-          } catch(err) {}
-        }
-      };
-      
-      fallbackAudio.play().catch(e => {
-        console.error("Audio playback blocked", e);
-      });
+      return;
+    }
+
+    // 2. If standard speechSynthesis has no voices, use Google TTS audio fallback
+    const hasStandardVoices = isSupported && window.speechSynthesis.getVoices().length > 0;
+    if (!hasStandardVoices) {
+      _playGoogleTTS(text);
       return;
     }
 
@@ -99,20 +117,20 @@ export function useSpeech() {
     currentUtterance.onstart = () => { 
       if (activeUtterance === currentUtterance) {
         console.log('Speech started:', text); 
-        isPlaying.value = true; 
+        globalIsPlaying.value = true; 
       }
     };
     currentUtterance.onend = () => { 
       if (activeUtterance === currentUtterance) {
         console.log('Speech ended'); 
-        isPlaying.value = false; 
+        globalIsPlaying.value = false; 
         activeUtterance = null;
       }
     };
     currentUtterance.onerror = (e) => { 
       if (activeUtterance === currentUtterance) {
         console.error('Speech error:', e); 
-        isPlaying.value = false; 
+        globalIsPlaying.value = false; 
         activeUtterance = null;
       }
     };
@@ -139,22 +157,19 @@ export function useSpeech() {
 
     if (isSupported) {
       window.speechSynthesis.cancel();
-      isPlaying.value = false;
+      globalIsPlaying.value = false;
       activeUtterance = null;
     }
   };
 
-  onUnmounted(() => {
-    stopSpeech();
-    if (isSupported) {
-      window.speechSynthesis.removeEventListener('voiceschanged', initVoices);
-    }
-  });
+  // We explicitly DO NOT call stopSpeech() onUnmounted anymore.
+  // This prevents the race condition during Vue Router transitions where the old 
+  // component unmounts *after* the new component has already started playing speech.
 
   return {
     playInstruction,
     stopSpeech,
-    isPlaying,
+    isPlaying: globalIsPlaying,
     isSupported
   };
 }

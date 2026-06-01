@@ -23,6 +23,7 @@ export interface ModuleStat {
   highestPhase: number;
   currentOptionCount: number;
   highestOptionCount: number;
+  minOptionCount?: number; // Minimum option count to reset to on phase-up
   currentPromptLevel: PromptLevel;
   successRate: number; // For algorithmic scaling
 }

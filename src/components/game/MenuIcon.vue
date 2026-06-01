@@ -366,7 +366,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Number Puzzle -->
-      <g v-else-if="gameId === 'puzzle-numbers'">
+      <g v-else-if="gameId === 'fun-number-puzzle'">
         <!-- Big '1' -->
         <path d="M 40,30 L 55,20 L 55,75 M 40,75 L 70,75" fill="none" stroke="white" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
         <!-- Puzzle cut line through the 1 -->
@@ -378,7 +378,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Color Board -->
-      <g v-else-if="gameId === 'puzzle-colors'">
+      <g v-else-if="gameId === 'fun-color-board'">
         <!-- Paint Palette -->
         <path d="M 80,45 C 80,75 55,85 45,85 C 15,85 15,55 25,35 C 35,15 70,15 80,45 Z" fill="white" />
         <!-- Thumb hole -->
@@ -408,7 +408,7 @@ defineProps<{
       </g>
 
       <!-- Fun: Shape Sorter -->
-      <g v-else-if="gameId === 'puzzle-shapes'">
+      <g v-else-if="gameId === 'fun-shape-sorter'">
         <!-- Triangle -->
         <polygon points="30,20 45,45 15,45" fill="white" />
         <!-- Circle -->

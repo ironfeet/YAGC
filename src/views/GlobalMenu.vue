@@ -30,20 +30,20 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'puzzle-numbers',
+    id: 'fun-number-puzzle',
     name: 'Number Puzzle',
-    description: 'Match numbers and shapes on the board',
+    description: 'Learn and place numbers',
     emoji: '🔢',
-    color: '#22c55e',
-    comingSoon: true,
+    color: '#0284c7',
+    comingSoon: false,
   },
   {
-    id: 'puzzle-colors',
+    id: 'fun-color-board',
     name: 'Color Board',
-    description: 'Slide colored tiles to solve the board',
+    description: 'Match the colorful buttons to their holes',
     emoji: '🎨',
     color: '#a855f7',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 'fun-nature-jigsaw',
@@ -54,12 +54,12 @@ const funGames = [
     comingSoon: false,
   },
   {
-    id: 'puzzle-shapes',
+    id: 'fun-shape-sorter',
     name: 'Shape Sorter',
     description: 'Fit shapes into the correct holes',
-    emoji: '🔷',
+    emoji: '⭐',
     color: '#ec4899',
-    comingSoon: true,
+    comingSoon: false,
   },
 ];
 </script>
@@ -389,20 +389,6 @@ const funGames = [
   height: 4px;
   background: var(--card-color);
   border-radius: 20px 20px 0 0;
-}
-
-.fun-card-icon {
-  width: 100%;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fun-card-icon :deep(svg) {
-  width: 80px;
-  height: 80px;
-  max-width: 100%;
 }
 
 .fun-card-icon {

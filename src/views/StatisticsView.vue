@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/useProgressStore';
 
@@ -15,14 +15,16 @@ const goBack = () => {
 
 const handleReset = () => {
   if (confirm(`Are you sure you want to reset all ${activeTab.value === 'fun' ? 'Fun Game' : 'MITA'} statistics? This cannot be undone.`)) {
-    // We only reset the stats for the currently viewed category
+    // Collect keys to delete first to avoid mutating the object while iterating it
+    const keysToDelete: string[] = [];
     for (const key in progressStore.moduleStats) {
       const isFunGame = key.startsWith('fun-') || key.startsWith('jigsaw-') || key.startsWith('puzzle-');
       if ((activeTab.value === 'fun' && isFunGame) || (activeTab.value === 'mita' && !isFunGame)) {
-        delete progressStore.moduleStats[key];
+        keysToDelete.push(key);
       }
     }
-    // Also save empty state to force reactivity/persistence if needed
+    keysToDelete.forEach(key => { delete progressStore.moduleStats[key]; });
+    // Patch to force reactivity/persistence
     progressStore.$patch({ moduleStats: { ...progressStore.moduleStats } });
   }
 };
@@ -32,10 +34,10 @@ const gameNames: Record<string, string> = {
   // Fun games
   'fun-animal-jigsaw': 'Animal Jigsaw',
   'fun-vehicle-jigsaw': 'Vehicle Jigsaw',
-  'puzzle-numbers': 'Number Puzzle',
-  'puzzle-colors': 'Color Board',
   'fun-nature-jigsaw': 'Nature Jigsaw',
-  'puzzle-shapes': 'Shape Sorter',
+  'fun-number-puzzle': 'Number Puzzle',
+  'fun-color-board': 'Color Board',
+  'fun-shape-sorter': 'Shape Sorter',
   // MITA games
   'tier1-patches': 'Patches',
   'tier1-outlines': 'Outlines',
@@ -69,6 +71,7 @@ const gameNames: Record<string, string> = {
 const filteredStats = computed(() => {
   const result: Record<string, any> = {};
   for (const key in progressStore.moduleStats) {
+    if (!gameNames[key]) continue; // Ignore legacy or unknown keys
     const isFunGame = key.startsWith('fun-') || key.startsWith('jigsaw-') || key.startsWith('puzzle-');
     if ((activeTab.value === 'fun' && isFunGame) || (activeTab.value === 'mita' && !isFunGame)) {
       result[key] = progressStore.moduleStats[key];
@@ -77,25 +80,7 @@ const filteredStats = computed(() => {
   return result;
 });
 
-onMounted(() => {
-  let changed = false;
-  for (const key in gameNames) {
-    if (!progressStore.moduleStats[key]) {
-      progressStore.moduleStats[key] = {
-        currentPhase: 1,
-        highestPhase: 5,
-        currentOptionCount: 2,
-        highestOptionCount: 8,
-        currentPromptLevel: 'none',
-        successRate: 0,
-      };
-      changed = true;
-    }
-  }
-  if (changed) {
-    progressStore.$patch({ moduleStats: { ...progressStore.moduleStats } });
-  }
-});
+
 </script>
 
 <template>

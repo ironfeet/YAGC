@@ -30,9 +30,7 @@ export function usePromptFading(initialConfiguredLevel: PromptLevel = 'none', id
     }
   };
 
-  const registerInteraction = () => {
-    resetTimer();
-  };
+
 
   const registerError = () => {
     errorCount.value++;
@@ -53,16 +51,29 @@ export function usePromptFading(initialConfiguredLevel: PromptLevel = 'none', id
     resetTimer();
   };
 
+  let interactionDebounce: ReturnType<typeof setTimeout> | null = null;
+
+  const debouncedRegisterInteraction = () => {
+    // Debounce: only reset the ABA timer at most once per 300ms to prevent
+    // rapid drag events from permanently suppressing the prompt escalation.
+    if (interactionDebounce) return;
+    interactionDebounce = setTimeout(() => {
+      interactionDebounce = null;
+    }, 300);
+    resetTimer();
+  };
+
   onMounted(() => {
     resetTimer();
-    window.addEventListener('touchstart', registerInteraction);
-    window.addEventListener('mousedown', registerInteraction);
+    // Use pointerdown instead of touchstart + mousedown to avoid double-firing
+    // on hybrid devices where both events fire for the same tap.
+    window.addEventListener('pointerdown', debouncedRegisterInteraction);
   });
 
   onUnmounted(() => {
     if (idleTimer) clearTimeout(idleTimer);
-    window.removeEventListener('touchstart', registerInteraction);
-    window.removeEventListener('mousedown', registerInteraction);
+    if (interactionDebounce) clearTimeout(interactionDebounce);
+    window.removeEventListener('pointerdown', debouncedRegisterInteraction);
   });
 
   return {
