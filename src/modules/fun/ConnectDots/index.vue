@@ -166,8 +166,8 @@ const startDrawing = (evt: PointerEvent, dotIndex: number) => {
     currentDragX.value = pos.x;
     currentDragY.value = pos.y;
     resetPrompt();
-  } else if (dotIndex !== currentTargetIndex.value) {
-    playInstruction(`Start at number ${currentTargetIndex.value}`);
+  } else {
+    playInstruction(`Drag from number ${currentTargetIndex.value} to number ${currentTargetIndex.value + 1}`);
   }
 };
 
