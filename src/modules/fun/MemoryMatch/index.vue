@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import { useSafeTimeout } from '../../../composables/useSafeTimeout';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 
 const router = useRouter();
@@ -14,8 +15,9 @@ const GAME_ID = 'fun-memory-match';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
-const { playInstruction, isPlaying } = useSpeech();
+const { playInstruction, stopSpeech, isPlaying } = useSpeech();
 const log = useLogger(GAME_ID);
+const { safeSetTimeout } = useSafeTimeout();
 
 const ANIMALS = ['cat', 'dog', 'rabbit', 'frog', 'pig', 'lion', 'elephant', 'penguin', 'monkey', 'bear', 'fox', 'duck'];
 
@@ -110,8 +112,8 @@ const flipCard = (card: Card) => {
 const checkForMatch = () => {
   const [card1, card2] = flippedCards.value;
   if (card1.assetId === card2.assetId) {
-    // Match
-    setTimeout(() => {
+    // Match — use safeSetTimeout so this is auto-cleared on unmount
+    safeSetTimeout(() => {
       card1.isMatched = true;
       card2.isMatched = true;
       flippedCards.value = [];
@@ -122,8 +124,8 @@ const checkForMatch = () => {
       }
     }, 500);
   } else {
-    // No match
-    setTimeout(() => {
+    // No match — use safeSetTimeout so this is auto-cleared on unmount
+    safeSetTimeout(() => {
       card1.isFlipped = false;
       card2.isFlipped = false;
       flippedCards.value = [];
@@ -139,6 +141,10 @@ function onLevelComplete() {
   progressStore.updateStats(GAME_ID, true);
   resetPrompt();
 }
+
+onUnmounted(() => {
+  stopSpeech();
+});
 
 const handleNextLevel = () => {
   isComplete.value = false;
