@@ -112,6 +112,10 @@ const generatePoints = () => {
         // tall oval
         rMult = Math.abs(Math.sin(angle)) * 0.15 + 0.9;
         break;
+      default:
+        console.warn(`ConnectDots: Unknown animal shape '${animal}', using default circle.`);
+        rMult = 1.0;
+        break;
     }
     
     // Map 0 (top) to x=sin, y=-cos
