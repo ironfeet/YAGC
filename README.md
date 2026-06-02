@@ -165,7 +165,18 @@ src/
 │   └── useTouchDrag.ts          # Touch/mouse drag engine with layering & hit-box logic
 ├── modules/
 │   ├── fun/
-│   │   └── AnimalJigsaw/        # Progressive interlocking puzzle
+│   │   ├── AnimalJigsaw/        # Progressive interlocking animal puzzle
+│   │   ├── CategoryBins/        # Thematic sorting and categorization
+│   │   ├── ColorBoard/          # Color recognition and grid matching
+│   │   ├── ConnectDots/         # Number sequencing and drawing
+│   │   ├── MemoryMatch/         # Classic card-flipping memory game
+│   │   ├── NatureJigsaw/        # Progressive interlocking nature puzzle
+│   │   ├── NumberPuzzle/        # Number recognition and ordering
+│   │   ├── PatternTrain/        # Visual sequencing and pattern completion
+│   │   ├── ShadowMatch/         # Visual discrimination with silhouettes
+│   │   ├── ShapeSorter/         # Geometry and shape matching
+│   │   ├── SizeSorter/          # Physical stacking from biggest to smallest
+│   │   └── VehicleJigsaw/       # Progressive interlocking vehicle puzzle
 │   ├── tier1/
 │   │   ├── BasicLanguage/       # Language Comprehension (6 phases)
 │   │   ├── MatchingAnimals/     # Animal visual discrimination
@@ -421,7 +432,7 @@ A matching puzzle focusing on geometry and shape recognition.
 
 - **10 Distinct Shapes**: Features custom SVG blocks for Circle, Square, Triangle, Star, Pentagon, Hexagon, Heart, Cross, Diamond, and Crescent.
 - **Progressive Difficulty**:
-  - Phase 1: 1×3 grid (3 shapes).
+  - Phase 1: 1×2 grid (2 shapes).
   - Phase 2: 2×2 grid (4 shapes).
   - Phase 3: 2×3 grid (6 shapes).
   - Phase 4: 2×4 grid (8 shapes).
@@ -534,9 +545,12 @@ A car waits at a traffic light. The child drags the matching car from the garage
 
 | Phase | Active cues | Distractor strategy |
 |---|---|---|
-| 1 | Color + Shape | Completely different distractors |
-| 2 | Color + Shape + Passenger + Roof | Near-miss: same 3/4 features |
-| 3 | All four | Near-miss: each distractor differs in exactly 1 feature |
+| 1 | Color | Completely different distractors |
+| 2 | Shape | Completely different distractors |
+| 3 | Color + Shape | Distractors have one wrong feature |
+| 4 | Passenger + Roof | Distractors have one wrong feature |
+| 5 | Color + Shape + Passenger | Near-miss: same 2/3 features |
+| 6 | All four | Near-miss: each distractor differs in exactly 1 feature |
 
 On success: car drives off right with animation. Traffic light switches to green.
 
@@ -545,7 +559,7 @@ On success: car drives off right with animation. Traffic light switches to green
 #### Matching Animals (`MatchingAnimals`)
 **Module ID**: `tier1-matching-animals`
 
-Same mechanic as Matching Cars, but uses `AnimalAsset`. Animal features: shape, color, size, direction.
+Same mechanic as Matching Cars, but uses `AnimalAsset`. Animal features: shape, color, size, direction. Progressive difficulty follows the same 6 phases.
 
 ---
 
@@ -574,7 +588,7 @@ Each has 3 phases: same features → shared one feature → all different featur
 #### Arithmetics (`Arithmetics`)
 **Module ID**: `tier2-arithmetics`
 
-Math operations: counting (phase 1), addition (phase 2), subtraction (phase 3). The child drags the correct numeric answer card to the answer zone. Visual items (balls, apples, stars) represent operands.
+Math operations: counting (phase 1), addition (phase 2), subtraction (phase 3), multiplication (phase 4), and division (phase 5). The child drags the correct numeric answer card to the answer zone. Visual items (balls, apples, stars) represent operands.
 
 ---
 
@@ -608,7 +622,7 @@ Memory variants share a common two-state UI:
 #### Spatial Prepositions (`SpatialPrepositions`)
 **Module ID**: `tier3-spatial-prepositions`
 
-A grid of toy+vehicle cells with some empty. The child must fill the empty cells with the correct combination based on the spatial rule (`in_front`, `inside`, `behind`). 3 phases scale grid complexity.
+A grid of toy+vehicle cells with some empty. The child must fill the empty cells with the correct combination based on the spatial rule (`in_front`, `inside`, `behind`). 5 phases scale grid complexity and distractor count.
 
 ---
 
@@ -698,7 +712,7 @@ Thematic role assignment: the child drags the Rider onto the Carrier. Verb ("car
 Visual search: tap all instances of the target item in a crowded field of distractors.
 - Phase 1: Feature search — single obvious difference (color)
 - Phase 2: Conjunction search — distractors share one feature with target
-- Phase 3: High-density field (30+ items), micro-feature differences
+- Phase 3-5: Increasing grid density and subtle micro-feature differences (up to 35+ items)
 
 ---
 
