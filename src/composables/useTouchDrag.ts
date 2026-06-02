@@ -172,14 +172,16 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
     translateY.value = (clientY - startY) + snapOffsetY;
   };
 
-  const onEnd = (clientX: number, clientY: number) => {
+  const onEnd = (clientX: number, clientY: number, isCancelled: boolean = false) => {
     if (!isDragging.value) return;
     isDragging.value = false;
     
-    const targets = document.querySelectorAll(options.dropZoneSelector);
     let hitTarget: HTMLElement | null = null;
-    // Check intersections using an expanded bounding box (20% larger) for much easier placement
-    for (const target of Array.from(targets)) {
+
+    if (!isCancelled) {
+      const targets = document.querySelectorAll(options.dropZoneSelector);
+      // Check intersections using an expanded bounding box (20% larger) for much easier placement
+      for (const target of Array.from(targets)) {
       const rect = target.getBoundingClientRect();
       
       // Expand the hitbox by 20% in all directions for accessibility
@@ -194,6 +196,7 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
       ) {
         hitTarget = target as HTMLElement;
         break; // Stop checking once we find a hit
+      }
       }
     }
 
@@ -245,7 +248,7 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
       
       wrapperZIndexTimeout = setTimeout(() => { restoreParents(); }, 400);
       
-      if (options.onErrorDrop) options.onErrorDrop();
+      if (!isCancelled && options.onErrorDrop) options.onErrorDrop();
     }
   };
 
@@ -273,7 +276,7 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
       const target = e.currentTarget as HTMLElement;
       if (target.hasPointerCapture(e.pointerId)) {
         target.releasePointerCapture(e.pointerId);
-        onEnd(e.clientX, e.clientY);
+        onEnd(e.clientX, e.clientY, true);
       }
     }
   };
