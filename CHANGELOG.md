@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Introduced a true Fisher-Yates `shuffle()` utility to replace statistically biased inline `sort(Math.random)` implementations across 30+ modules.
   - Fixed ConnectDots hint logic off-by-one text mapping and swallowing events on destination dots.
   - Fixed hardcoded distractor color logic and uninitialized reactive states across various modules.
+  - Fixed a progression logic flaw where `ColorBoard` and `ShapeSorter` would unintentionally reset their difficulty (shrinking the grid back to 2 items) after maxing out, due to a misconfigured hidden `highestPhase`.
 
 ## [0.0.7] - 01-06-2026
 

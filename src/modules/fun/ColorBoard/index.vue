@@ -40,11 +40,11 @@ interface ColorItem {
   zIndex: number;
 }
 
-const currentOptionCount = computed(() => progressStore.moduleStats[GAME_ID]?.currentOptionCount || 2);
+const currentPhase = computed(() => progressStore.moduleStats[GAME_ID]?.currentPhase || 1);
 
-// Generate the sequence of colors based on currentOptionCount (ABA-driven)
+// Generate the sequence of colors based on currentPhase
 const targetSequence = computed(() => {
-  const count = Math.min(currentOptionCount.value, COLORS.length);
+  const count = Math.min(currentPhase.value * 2, COLORS.length);
   return COLORS.slice(0, count);
 });
 
@@ -225,7 +225,7 @@ const handleNextLevel = () => {
         <header class="top-bar">
           <div class="phase-badge">
             <span style="font-size: 1.5rem; margin-right: 0.5rem">🎨</span>
-            {{ currentOptionCount }} Colors
+            Phase {{ currentPhase }}
           </div>
           <button class="replay-btn" @click="playHint">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
