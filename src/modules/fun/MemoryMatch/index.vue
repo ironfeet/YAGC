@@ -8,6 +8,7 @@ import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
 import { useSafeTimeout } from '../../../composables/useSafeTimeout';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
+import ShapeBlock from '../ShapeSorter/ShapeBlock.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
