@@ -13,8 +13,8 @@ const moduleId = computed(() => route.params.id as string);
 const moduleRegistry: Record<string, any> = {
   'tier1-patches': defineAsyncComponent(() => import('../modules/tier1/Patches/index.vue')),
   'tier1-outlines': defineAsyncComponent(() => import('../modules/tier1/Outlines/index.vue')),
-  'tier1-matchingcars': defineAsyncComponent(() => import('../modules/tier1/MatchingCars/index.vue')),
-  'tier1-matchinganimals': defineAsyncComponent(() => import('../modules/tier1/MatchingAnimals/index.vue')),
+  'tier1-matching-cars': defineAsyncComponent(() => import('../modules/tier1/MatchingCars/index.vue')),
+  'tier1-matching-animals': defineAsyncComponent(() => import('../modules/tier1/MatchingAnimals/index.vue')),
   'tier1-basiclanguage': defineAsyncComponent(() => import('../modules/tier1/BasicLanguage/index.vue')),
   'tier2-combine-elephants': defineAsyncComponent(() => import('../modules/tier2/CombineElephants/index.vue')),
   'tier2-combine-butterflies': defineAsyncComponent(() => import('../modules/tier2/CombineButterflies/index.vue')),

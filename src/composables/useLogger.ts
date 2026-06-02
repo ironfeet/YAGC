@@ -20,8 +20,8 @@ const ENABLED = import.meta.env.VITE_DISABLE_YAGC_LOGS !== 'true';
 const MODULE_COLORS: Record<string, string> = {
   'tier1-patches':                 '#6d9b6d',
   'tier1-outlines':                '#5b8fa8',
-  'tier1-matchingcars':            '#c9843e',
-  'tier1-matchinganimals':         '#a06090',
+  'tier1-matching-cars':            '#c9843e',
+  'tier1-matching-animals':         '#a06090',
   'tier1-basiclanguage':           '#4a90d9',
   'tier2-combine-elephants':       '#d45f5f',
   'tier2-combine-butterflies':     '#c060b0',
