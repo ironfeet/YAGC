@@ -382,6 +382,7 @@ export const useProgressStore = defineStore('progress', {
       if (success) {
         stat.successRate += 10;
         if (stat.successRate >= 100) {
+          let maxedOut = false;
           // Fade prompt or increase difficulty
           if (stat.currentPromptLevel === 'full') stat.currentPromptLevel = 'partial';
           else if (stat.currentPromptLevel === 'partial') stat.currentPromptLevel = 'none';
@@ -391,12 +392,14 @@ export const useProgressStore = defineStore('progress', {
               if (stat.currentPhase < stat.highestPhase) {
                 stat.currentPhase++;
                 stat.currentOptionCount = stat.minOptionCount ?? 2;
+              } else {
+                maxedOut = true;
               }
             } else {
               stat.currentOptionCount++;
             }
           }
-          stat.successRate = 0;
+          stat.successRate = maxedOut ? 100 : 0;
         }
       } else {
         stat.successRate = Math.max(0, stat.successRate - 20);
