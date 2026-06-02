@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.9] - 02-06-2026
+
+### Fixed
+- **Invisible Replay Button (Light/Colorful Themes):** Fixed a CSS variable inheritance issue where the global `--color-orange` definition was missing, causing the Replay button to render as white text on a transparent background in non-dark themes. Added the missing variable to `variables.scss` so the button is always highly visible across all themes.
+
 ## [0.0.8] - 01-06-2026
 
 ### Fixed
