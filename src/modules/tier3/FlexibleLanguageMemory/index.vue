@@ -470,7 +470,9 @@ const handleDrop = (itemId: string, zoneId: string) => {
     filledZones.value.set(zoneId, itemId);
     actionQueue.value.shift();
     log.success(itemId, { step: expected.stepIndex, remaining: actionQueue.value.length });
-    gameStore.handleSuccess();
+    // NOTE: Do NOT call gameStore.handleSuccess() here for intermediate steps.
+    // The full success credit (score + updateStats) is awarded once via winLevel()
+    // when the entire sequence is complete, preventing score inflation.
 
     if (actionQueue.value.length === 0) {
       winLevel();
@@ -523,7 +525,7 @@ const confirmSelection = () => {
     gameStore.handleSuccess();
     winLevel();
   }
-  if (!allCorrect) {
+  else {
     log.error('multi-select-failed', { phase: 2, expected: targets, selected: selected });
     gameStore.handleError();
     progressStore.updateStats(moduleId, false);
@@ -534,8 +536,7 @@ const confirmSelection = () => {
     actionQueue.value = [...config.value.expectedActionQueue];
 
     playInstruction('Oops. Listen closely and try again.');
-    return;
-  };
+  }
 };
 
 const winLevel = () => {
