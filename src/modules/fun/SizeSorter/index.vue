@@ -289,7 +289,7 @@ const handleNextLevel = () => {
                 <p class="complete-sub">You sorted them all!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
-                  <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
+                  <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>
                 </div>
               </div>
             </div>
