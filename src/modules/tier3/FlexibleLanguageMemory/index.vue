@@ -188,7 +188,8 @@ const generateLevel = () => {
     audioPrompt = `The ${a.colorName} ${a.noun} lives on top of the ${b.colorName} ${b.noun} AND next to the ${c.colorName} ${c.noun}. The ${d.colorName} ${d.noun} lives behind the ${a.colorName} ${a.noun}.`;
     
     const distNoun = HOUSE_ANIMALS.find(n => !houseAnimals.includes(n)) || 'dog';
-    const dist: FlexLangItem = { id: 'd0', noun: distNoun, color: COLORS[5].hex, colorName: COLORS[5].name, isDistractor: true };
+    const distColor = pick(COLORS.filter(c => !houseColors.includes(c)), 1)[0] || COLORS[5];
+    const dist: FlexLangItem = { id: 'd0', noun: distNoun, color: distColor.hex, colorName: distColor.name, isDistractor: true };
     displayItems = shuffle([a, b, c, d, dist]);
     yardItemIds.value = displayItems.map(i => i.id);
   }
