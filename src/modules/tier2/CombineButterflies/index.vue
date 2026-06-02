@@ -33,7 +33,7 @@ const BODY_COLORS: ButterflyBodyColor[] = ['#444444', '#795548', '#5c6bc0', '#00
 const PATTERN_COLORS: ButterflyPatternColor[] = ['#ff4081', '#2196f3', '#4caf50', '#ff9800', '#9c27b0', '#e91e63'];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateLevel = () => {
   levelCounter.value++;

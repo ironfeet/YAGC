@@ -3,7 +3,7 @@ import type { UserProgress } from '../types';
 
 export const useProgressStore = defineStore('progress', {
   state: (): UserProgress => ({
-    userId: 'jiacheng',
+    userId: 'player1',
     currentTier: 1,
     unlockedModules: ['tier1-patches', 'tier1-outlines', 'tier1-basiclanguage', 'tier1-matching-cars', 'tier1-matching-animals', 'tier2-odd-one-out', 'tier2-combine-elephants', 'tier2-combine-butterflies', 'tier2-combine-trains', 'tier2-arithmetics', 'tier2-count-everything', 'tier3-spatial-prepositions', 'tier3-perspectivetaking', 'tier3-auditory-memory', 'tier3-flexible-language-memory', 'tier3-nested-logic'],
     moduleStats: {
@@ -47,7 +47,7 @@ export const useProgressStore = defineStore('progress', {
         currentPhase: 1,
         highestPhase: 5,
         currentOptionCount: 2,
-        highestOptionCount: 10,
+        highestOptionCount: 2,
         minOptionCount: 2,
         currentPromptLevel: 'none',
         successRate: 0,
@@ -56,7 +56,7 @@ export const useProgressStore = defineStore('progress', {
         currentPhase: 1,
         highestPhase: 5,
         currentOptionCount: 2,
-        highestOptionCount: 10,
+        highestOptionCount: 2,
         minOptionCount: 2,
         currentPromptLevel: 'none',
         successRate: 0,
@@ -382,6 +382,7 @@ export const useProgressStore = defineStore('progress', {
       if (success) {
         stat.successRate += 10;
         if (stat.successRate >= 100) {
+          let maxedOut = false;
           // Fade prompt or increase difficulty
           if (stat.currentPromptLevel === 'full') stat.currentPromptLevel = 'partial';
           else if (stat.currentPromptLevel === 'partial') stat.currentPromptLevel = 'none';
@@ -391,12 +392,14 @@ export const useProgressStore = defineStore('progress', {
               if (stat.currentPhase < stat.highestPhase) {
                 stat.currentPhase++;
                 stat.currentOptionCount = stat.minOptionCount ?? 2;
+              } else {
+                maxedOut = true;
               }
             } else {
               stat.currentOptionCount++;
             }
           }
-          stat.successRate = 0;
+          stat.successRate = maxedOut ? 100 : 0;
         }
       } else {
         stat.successRate = Math.max(0, stat.successRate - 20);
@@ -411,8 +414,8 @@ export const useProgressStore = defineStore('progress', {
         'fun-vehicle-jigsaw': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 2, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
         'fun-nature-jigsaw': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 2, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
         'fun-number-puzzle': { currentPhase: 1, highestPhase: 5, currentOptionCount: 3, highestOptionCount: 8, minOptionCount: 3, currentPromptLevel: 'none', successRate: 0 },
-        'fun-color-board': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 10, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
-        'fun-shape-sorter': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 10, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
+        'fun-color-board': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 2, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
+        'fun-shape-sorter': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 2, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
         'fun-shadow-match': { currentPhase: 1, highestPhase: 5, currentOptionCount: 2, highestOptionCount: 10, minOptionCount: 2, currentPromptLevel: 'none', successRate: 0 },
         'fun-size-sorter': { currentPhase: 1, highestPhase: 5, currentOptionCount: 3, highestOptionCount: 7, minOptionCount: 3, currentPromptLevel: 'none', successRate: 0 },
         'fun-pattern-train': { currentPhase: 1, highestPhase: 5, currentOptionCount: 3, highestOptionCount: 6, minOptionCount: 3, currentPromptLevel: 'none', successRate: 0 },

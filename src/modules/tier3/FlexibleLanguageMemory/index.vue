@@ -63,7 +63,7 @@ const CONTAINERS = [
   { id: 'box',   label: 'Box',   prep: 'inside' },
 ];
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const pick = <T>(arr: T[], n: number): T[] => shuffle(arr).slice(0, n);
 
 // ── Procedural Generation ─────────────────────────────────────────────────────
@@ -188,7 +188,8 @@ const generateLevel = () => {
     audioPrompt = `The ${a.colorName} ${a.noun} lives on top of the ${b.colorName} ${b.noun} AND next to the ${c.colorName} ${c.noun}. The ${d.colorName} ${d.noun} lives behind the ${a.colorName} ${a.noun}.`;
     
     const distNoun = HOUSE_ANIMALS.find(n => !houseAnimals.includes(n)) || 'dog';
-    const dist: FlexLangItem = { id: 'd0', noun: distNoun, color: COLORS[5].hex, colorName: COLORS[5].name, isDistractor: true };
+    const distColor = pick(COLORS.filter(c => !houseColors.includes(c)), 1)[0] || COLORS[5];
+    const dist: FlexLangItem = { id: 'd0', noun: distNoun, color: distColor.hex, colorName: distColor.name, isDistractor: true };
     displayItems = shuffle([a, b, c, d, dist]);
     yardItemIds.value = displayItems.map(i => i.id);
   }
@@ -470,7 +471,9 @@ const handleDrop = (itemId: string, zoneId: string) => {
     filledZones.value.set(zoneId, itemId);
     actionQueue.value.shift();
     log.success(itemId, { step: expected.stepIndex, remaining: actionQueue.value.length });
-    gameStore.handleSuccess();
+    // NOTE: Do NOT call gameStore.handleSuccess() here for intermediate steps.
+    // The full success credit (score + updateStats) is awarded once via winLevel()
+    // when the entire sequence is complete, preventing score inflation.
 
     if (actionQueue.value.length === 0) {
       winLevel();
@@ -523,7 +526,7 @@ const confirmSelection = () => {
     gameStore.handleSuccess();
     winLevel();
   }
-  if (!allCorrect) {
+  else {
     log.error('multi-select-failed', { phase: 2, expected: targets, selected: selected });
     gameStore.handleError();
     progressStore.updateStats(moduleId, false);
@@ -534,8 +537,7 @@ const confirmSelection = () => {
     actionQueue.value = [...config.value.expectedActionQueue];
 
     playInstruction('Oops. Listen closely and try again.');
-    return;
-  };
+  }
 };
 
 const winLevel = () => {

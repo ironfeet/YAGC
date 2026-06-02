@@ -34,7 +34,7 @@ const PATTERNS: BugPattern[] = ['none', 'spots', 'stripes', 'zigzag'];
 const ROTATIONS: BugRotation[] = [0, 90, 180, 270];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateLevel = () => {
   levelCounter.value++;

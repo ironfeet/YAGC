@@ -41,7 +41,7 @@ const initialOptions = ref<{ id: string; animal: VocabularyNoun; isTarget: boole
 // Pool of recognizable nouns for this task
 const NOUNS: VocabularyNoun[] = ['dog', 'cat', 'bird', 'rabbit', 'fish', 'car', 'apple', 'banana', 'tree', 'house', 'lion', 'giraffe', 'tiger', 'monkey', 'bear', 'dinosaur', 'cow', 'horse'] as any[];
 
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 // ── Procedural Engine ─────────────────────────────────────────────────────────

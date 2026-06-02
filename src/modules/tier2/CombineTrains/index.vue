@@ -34,7 +34,7 @@ const WINDOW_COLORS: TrainWindowColor[] = ['#ffeb3b', '#2196f3', '#f44336', '#9c
 const WINDOW_PATTERNS: TrainWindowPattern[] = ['square-2', 'square-3', 'round-2', 'round-3'];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateLevel = () => {
   levelCounter.value++;

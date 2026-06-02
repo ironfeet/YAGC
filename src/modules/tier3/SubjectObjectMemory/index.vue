@@ -43,7 +43,7 @@ const confetti = ref<Array<{ x: number; y: number; color: string; angle: number;
 // Pool of recognizable nouns for this task
 const NOUNS: VocabularyNoun[] = ['lion', 'monkey', 'giraffe', 'duck', 'cat', 'bear', 'rabbit', 'horse', 'elephant', 'dog'] as any[];
 
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 // ── Procedural Engine ─────────────────────────────────────────────────────────
 

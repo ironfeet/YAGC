@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -80,7 +81,7 @@ const initLevel = async () => {
   }
 
   // Shuffle start positions
-  const shuffledItems = [...items].sort(() => Math.random() - 0.5);
+  const shuffledItems = shuffle([...items]);
 
   shuffledItems.forEach((ring, index) => {
     // Alternate left and right sides of the peg
@@ -289,7 +290,7 @@ const handleNextLevel = () => {
                 <p class="complete-sub">You sorted them all!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
-                  <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
+                  <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>
                 </div>
               </div>
             </div>

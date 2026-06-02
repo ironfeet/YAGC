@@ -68,7 +68,7 @@ const SIMILAR_GROUPS: VocabularyNoun[][] = [
 const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c', '#e91e63'];
 
 const pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const pickN = <T>(arr: T[], n: number): T[] => shuffle([...arr]).slice(0, n);
 
 // ─── Level generation ─────────────────────────────────────────────────────────

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import { useSafeTimeout } from '../../../composables/useSafeTimeout';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 
 const router = useRouter();
@@ -14,8 +15,9 @@ const GAME_ID = 'fun-connect-dots';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
-const { playInstruction, isPlaying } = useSpeech();
+const { playInstruction, stopSpeech, isPlaying } = useSpeech();
 const log = useLogger(GAME_ID);
+const { safeSetTimeout } = useSafeTimeout();
 
 const ANIMALS = ['cat', 'dog', 'rabbit', 'frog', 'pig', 'lion', 'elephant', 'penguin'];
 
@@ -110,6 +112,10 @@ const generatePoints = () => {
         // tall oval
         rMult = Math.abs(Math.sin(angle)) * 0.15 + 0.9;
         break;
+      default:
+        console.warn(`ConnectDots: Unknown animal shape '${animal}', using default circle.`);
+        rMult = 1.0;
+        break;
     }
     
     // Map 0 (top) to x=sin, y=-cos
@@ -160,8 +166,8 @@ const startDrawing = (evt: PointerEvent, dotIndex: number) => {
     currentDragX.value = pos.x;
     currentDragY.value = pos.y;
     resetPrompt();
-  } else if (dotIndex !== currentTargetIndex.value) {
-    playInstruction(`Start at number ${currentTargetIndex.value}`);
+  } else {
+    playInstruction(`Drag from number ${currentTargetIndex.value} to number ${currentTargetIndex.value + 1}`);
   }
 };
 
@@ -213,11 +219,16 @@ function onLevelComplete() {
   playInstruction('You drew a beautiful picture!');
   progressStore.updateStats(GAME_ID, true);
   
-  setTimeout(() => {
+  // Use safeSetTimeout so this is auto-cleared if user navigates away before it fires
+  safeSetTimeout(() => {
     showOverlay.value = true;
     resetPrompt();
   }, 2000);
 }
+
+onUnmounted(() => {
+  stopSpeech();
+});
 
 const handleNextLevel = () => {
   showOverlay.value = false;
@@ -310,7 +321,7 @@ const handleNextLevel = () => {
                 <p class="complete-sub">You revealed the picture!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
-                  <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
+                  <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>
                 </div>
               </div>
             </div>

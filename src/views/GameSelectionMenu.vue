@@ -44,8 +44,8 @@ const tiers = [
     games: [
       { id: 'tier1-patches',         name: 'Patches',           desc: 'Match colors & patterns to fill scene holes' },
       { id: 'tier1-outlines',        name: 'Outlines',          desc: 'Drag silhouettes to their matching shapes' },
-      { id: 'tier1-matchingcars',    name: 'Matching Cars',     desc: 'Find the car that matches every detail' },
-      { id: 'tier1-matchinganimals', name: 'Matching Animals',  desc: 'Match animals by color, size & direction' },
+      { id: 'tier1-matching-cars',    name: 'Matching Cars',     desc: 'Find the car that matches every detail' },
+      { id: 'tier1-matching-animals', name: 'Matching Animals',  desc: 'Match animals by color, size & direction' },
       { id: 'tier1-basiclanguage',   name: 'Basic Language',    desc: 'Find the object that matches the spoken cue' },
     ],
   },

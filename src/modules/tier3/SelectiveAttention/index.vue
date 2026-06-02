@@ -38,7 +38,7 @@ const TYPES: SearchItemType[] = ['apple', 'strawberry', 'star', 'car', 'flower',
 const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22'];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateLevel = () => {
   levelCounter.value++;
@@ -180,6 +180,7 @@ const generateLevel = () => {
 
   fieldItemsWithStyles.value = allItems.map(item => ({
     ...item,
+    isCollected: false,
     style: {
       transform: `rotate(${Math.floor(Math.random() * 40 - 20)}deg) translate(${Math.floor(Math.random() * 10 - 5)}px, ${Math.floor(Math.random() * 10 - 5)}px)`,
       margin: phase >= 4 ? `${Math.floor(Math.random() * 4 + 2)}px` : `${Math.floor(Math.random() * 10 + 5)}px`,
@@ -310,8 +311,7 @@ const playHint = () => {
               :key="`${levelCounter}-${item.id}`"
               class="field-item-wrapper"
               :style="item.style"
-              @click="() => handleTap(index)"
-              @touchstart.prevent="() => handleTap(index)"
+              @pointerdown.prevent="() => handleTap(index)"
             >
               <SearchItemAsset 
                 ref="assetRefs"

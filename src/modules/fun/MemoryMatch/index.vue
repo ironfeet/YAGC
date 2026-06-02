@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { shuffle } from '../../../utils/shuffle';
+import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import { useSafeTimeout } from '../../../composables/useSafeTimeout';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
+import ShapeBlock from '../ShapeSorter/ShapeBlock.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
@@ -14,8 +17,9 @@ const GAME_ID = 'fun-memory-match';
 
 const hasStarted = ref(false);
 const isComplete = ref(false);
-const { playInstruction, isPlaying } = useSpeech();
+const { playInstruction, stopSpeech, isPlaying } = useSpeech();
 const log = useLogger(GAME_ID);
+const { safeSetTimeout } = useSafeTimeout();
 
 const ANIMALS = ['cat', 'dog', 'rabbit', 'frog', 'pig', 'lion', 'elephant', 'penguin', 'monkey', 'bear', 'fox', 'duck'];
 
@@ -72,7 +76,7 @@ const initLevel = async () => {
   resetPrompt('none');
   
   const pairsNeeded = cardCount.value / 2;
-  const selectedAnimals = [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, pairsNeeded);
+  const selectedAnimals = shuffle([...ANIMALS]).slice(0, pairsNeeded);
 
   const cardSet: Card[] = [];
   selectedAnimals.forEach((animal, i) => {
@@ -80,7 +84,7 @@ const initLevel = async () => {
     cardSet.push({ id: `b-${i}`, assetId: animal, isFlipped: false, isMatched: false });
   });
 
-  cards.value = cardSet.sort(() => Math.random() - 0.5);
+  cards.value = shuffle(cardSet);
 
   await nextTick();
   playInstruction('Find the matching pairs!');
@@ -110,8 +114,8 @@ const flipCard = (card: Card) => {
 const checkForMatch = () => {
   const [card1, card2] = flippedCards.value;
   if (card1.assetId === card2.assetId) {
-    // Match
-    setTimeout(() => {
+    // Match — use safeSetTimeout so this is auto-cleared on unmount
+    safeSetTimeout(() => {
       card1.isMatched = true;
       card2.isMatched = true;
       flippedCards.value = [];
@@ -122,8 +126,8 @@ const checkForMatch = () => {
       }
     }, 500);
   } else {
-    // No match
-    setTimeout(() => {
+    // No match — use safeSetTimeout so this is auto-cleared on unmount
+    safeSetTimeout(() => {
       card1.isFlipped = false;
       card2.isFlipped = false;
       flippedCards.value = [];
@@ -139,6 +143,10 @@ function onLevelComplete() {
   progressStore.updateStats(GAME_ID, true);
   resetPrompt();
 }
+
+onUnmounted(() => {
+  stopSpeech();
+});
 
 const handleNextLevel = () => {
   isComplete.value = false;
@@ -208,7 +216,7 @@ const handleNextLevel = () => {
                 <p class="complete-sub">You found all the matches!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
-                  <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
+                  <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>
                 </div>
               </div>
             </div>

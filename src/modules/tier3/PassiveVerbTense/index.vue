@@ -41,7 +41,7 @@ const confetti = ref<Array<{ x: number; y: number; color: string; angle: number;
 // Pool of recognizable nouns for this task (using fastest/land animals makes sense for racing)
 const NOUNS: VocabularyNoun[] = ['lion', 'monkey', 'bear', 'cat', 'dog', 'elephant', 'giraffe', 'duck', 'horse'] as any[];
 
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 // ── Procedural Engine ─────────────────────────────────────────────────────────

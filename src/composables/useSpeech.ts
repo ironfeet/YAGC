@@ -36,17 +36,26 @@ if (isSupported && !voicesInitialized) {
 function _playGoogleTTS(text: string) {
   console.log('Using Google TTS audio fallback for:', text);
   if (fallbackAudio) {
+    // Clear old event listeners so they don't fire when we reset the src!
+    fallbackAudio.onended = null;
+    fallbackAudio.onerror = null;
     fallbackAudio.pause();
     fallbackAudio.src = '';
   }
+  
+  // Set playing state SYNCHRONOUSLY to prevent UI flashing
+  globalIsPlaying.value = true;
+
   const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en-US&client=tw-ob&q=${encodeURIComponent(text)}`;
   fallbackAudio = new Audio(url);
-  fallbackAudio.onplay = () => { globalIsPlaying.value = true; };
+  
+  // Ensure we cover all ending scenarios
   fallbackAudio.onended = () => { globalIsPlaying.value = false; };
   fallbackAudio.onerror = () => {
     console.warn('Google TTS audio fallback also failed. No TTS available.');
     globalIsPlaying.value = false;
   };
+  
   fallbackAudio.play().catch(() => {
     console.warn('Google TTS audio playback blocked by browser policy.');
     globalIsPlaying.value = false;
@@ -64,15 +73,20 @@ export function useSpeech() {
         webOS.service.request("luna://com.webos.service.tts", {
           method: "speak",
           parameters: { text: text, clear: true },
-          onSuccess: () => { globalIsPlaying.value = false; },
+          onSuccess: () => { 
+            // WebOS returns success immediately when queued!
+            // We must estimate the duration to clear the playing state.
+            const estimatedDuration = Math.max(1500, text.length * 85);
+            setTimeout(() => { globalIsPlaying.value = false; }, estimatedDuration);
+          },
           onFailure: () => {
-            globalIsPlaying.value = false;
-            // Luna failed — fall through to Google TTS audio
+            // Luna failed — fall through to Google TTS audio directly
+            // Do NOT set globalIsPlaying = false here, to prevent flickering
             _playGoogleTTS(text);
           }
         });
       } catch(err) {
-        globalIsPlaying.value = false;
+        // Do NOT set globalIsPlaying = false here, to prevent flickering
         _playGoogleTTS(text);
       }
       return;
@@ -88,8 +102,10 @@ export function useSpeech() {
     // 2. Standard Web Speech API (Chrome/Safari/Desktop)
     if (!isSupported) return;
     
-    // Cancel any currently playing speech to avoid overlapping
-    window.speechSynthesis.cancel();
+    // Only cancel if there is active speech to prevent Safari event detachment bug
+    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+      window.speechSynthesis.cancel();
+    }
     
     // Resume in case the synthesis engine was stuck in a paused state
     if (window.speechSynthesis.resume) {
@@ -98,6 +114,14 @@ export function useSpeech() {
     
     const currentUtterance = new SpeechSynthesisUtterance(text);
     activeUtterance = currentUtterance;
+    
+    // Prevent Safari Garbage Collection bug
+    (window as any).__utteranceCache = (window as any).__utteranceCache || [];
+    (window as any).__utteranceCache.push(currentUtterance);
+    // Keep cache size manageable
+    if ((window as any).__utteranceCache.length > 5) {
+      (window as any).__utteranceCache.shift();
+    }
     
     // Fetch voices just in time if they weren't loaded yet
     if (!preferredVoice) {
@@ -114,10 +138,12 @@ export function useSpeech() {
     currentUtterance.rate = 0.85; 
     currentUtterance.pitch = 1.1;
 
+    // Set playing state SYNCHRONOUSLY to prevent UI flashing before onstart fires
+    globalIsPlaying.value = true;
+
     currentUtterance.onstart = () => { 
       if (activeUtterance === currentUtterance) {
         console.log('Speech started:', text); 
-        globalIsPlaying.value = true; 
       }
     };
     currentUtterance.onend = () => { 
@@ -141,6 +167,8 @@ export function useSpeech() {
 
   const stopSpeech = () => {
     if (fallbackAudio) {
+      fallbackAudio.onended = null;
+      fallbackAudio.onerror = null;
       fallbackAudio.pause();
       fallbackAudio.currentTime = 0;
     }

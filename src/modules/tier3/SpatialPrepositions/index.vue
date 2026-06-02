@@ -43,7 +43,7 @@ const COLORS = ['#f44336', '#2196f3', '#4caf50', '#ffeb3b', '#9c27b0', '#ff9800'
 const ORIENTATIONS: SpatialOrientation[] = ['left', 'right'];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateLevel = () => {
   levelCounter.value++;

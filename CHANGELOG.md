@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] - 01-06-2026
+
+### Fixed
+- **Memory Game Listening Cover:** Fixed a bug where the "Listen Closely" cover in memory games would flash and disappear immediately when a voice instruction was replayed. The cover will now consistently lock the screen for the entire duration of the audio prompt.
+- **Deep Scan Bug Fixes (18 total):**
+  - Resolved module ID mismatch where Matching Cars/Animals were saving progress to a detached key.
+  - Fixed dead "Menu" button routes in 6 Fun Games, ensuring safe return to the home screen.
+  - Corrected double-counting of stats on successful phase completion in FlexibleLanguageMemory.
+  - Eliminated double-firing on touch screens in SelectiveAttention by migrating to exclusive `pointerdown`.
+  - Closed severe memory leaks caused by unmanaged `setTimeout` loops in MemoryMatch and ConnectDots.
+  - Repaired `StatisticsView` crashes caused by hard-deleting keys from the persistent store instead of re-initializing them.
+  - Fixed false-positive drops on `pointercancel` system interrupts in `useTouchDrag`.
+  - Resolved progression stalls in `useProgressStore` where max-difficulty levels would silently reset to 0% success.
+  - Fixed global `pointerdown` duplication across multiple `usePromptFading` components by centralizing the DOM listener.
+  - Introduced a true Fisher-Yates `shuffle()` utility to replace statistically biased inline `sort(Math.random)` implementations across 30+ modules.
+  - Fixed ConnectDots hint logic off-by-one text mapping and swallowing events on destination dots.
+  - Fixed hardcoded distractor color logic and uninitialized reactive states across various modules.
+  - Fixed a progression logic flaw where `ColorBoard` and `ShapeSorter` would unintentionally reset their difficulty (shrinking the grid back to 2 items) after maxing out, due to a misconfigured hidden `highestPhase`.
+
 ## [0.0.7] - 01-06-2026
 
 ### Added

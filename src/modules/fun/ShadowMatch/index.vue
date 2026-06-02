@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -64,7 +65,7 @@ const shadowCount = computed(() => Math.min(currentPhase.value * 2, ANIMALS.leng
 // Generate the sequence of animals based on currentPhase
 const targetSequence = computed(() => {
   // We want a deterministic set per level for simplicity in ABA, but here we can just pick the first `count` shuffled
-  return [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, shadowCount.value);
+  return shuffle([...ANIMALS]).slice(0, shadowCount.value);
 });
 
 const puzzlePieces = ref<ShadowItem[]>([]);
@@ -299,7 +300,7 @@ const handleNextLevel = () => {
                 <p class="complete-sub">You matched all the animals!</p>
                 <div class="complete-actions">
                   <button class="btn-next" @click="handleNextLevel">Next Level →</button>
-                  <button class="btn-menu" @click="router.push('/fun-games')">🏠 Menu</button>
+                  <button class="btn-menu" @click="router.push('/')">🏠 Menu</button>
                 </div>
               </div>
             </div>
