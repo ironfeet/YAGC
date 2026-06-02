@@ -180,6 +180,7 @@ const generateLevel = () => {
 
   fieldItemsWithStyles.value = allItems.map(item => ({
     ...item,
+    isCollected: false,
     style: {
       transform: `rotate(${Math.floor(Math.random() * 40 - 20)}deg) translate(${Math.floor(Math.random() * 10 - 5)}px, ${Math.floor(Math.random() * 10 - 5)}px)`,
       margin: phase >= 4 ? `${Math.floor(Math.random() * 4 + 2)}px` : `${Math.floor(Math.random() * 10 + 5)}px`,
