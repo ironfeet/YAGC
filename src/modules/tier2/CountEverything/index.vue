@@ -39,7 +39,7 @@ const TRAIN_SHAPES: TrainShape[] = ['steam', 'bullet', 'boxcar', 'diesel'];
 const COLORS = ['#f44336', '#2196f3', '#4caf50', '#ffeb3b', '#9c27b0', '#ff9800', '#00bcd4'];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const generateScatterCoordinates = (count: number, containerWidth: number, containerHeight: number, objectSize: number) => {

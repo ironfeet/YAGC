@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -75,7 +76,7 @@ const initLevel = async () => {
   resetPrompt('none');
   
   const pairsNeeded = cardCount.value / 2;
-  const selectedAnimals = [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, pairsNeeded);
+  const selectedAnimals = shuffle([...ANIMALS]).slice(0, pairsNeeded);
 
   const cardSet: Card[] = [];
   selectedAnimals.forEach((animal, i) => {
@@ -83,7 +84,7 @@ const initLevel = async () => {
     cardSet.push({ id: `b-${i}`, assetId: animal, isFlipped: false, isMatched: false });
   });
 
-  cards.value = cardSet.sort(() => Math.random() - 0.5);
+  cards.value = shuffle(cardSet);
 
   await nextTick();
   playInstruction('Find the matching pairs!');

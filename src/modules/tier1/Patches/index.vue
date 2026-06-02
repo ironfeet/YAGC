@@ -103,7 +103,7 @@ const ALL_SCENES: { type: PatchesLevelConfig['sceneType']; holes: typeof BALLOON
 ];
 
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 
 const generateTheme = (phase: number): SceneTheme => {
   const t: any = {};

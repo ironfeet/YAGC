@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -54,8 +55,8 @@ const { currentLevel: promptLevel, resetAll: resetPrompt } = usePromptFading('no
 
 const generatePattern = () => {
   // Shuffle pools
-  const sPool = [...SHAPES].sort(() => Math.random() - 0.5);
-  const cPool = [...COLORS].sort(() => Math.random() - 0.5);
+  const sPool = shuffle([...SHAPES]);
+  const cPool = shuffle([...COLORS]);
 
   const A = { shape: sPool[0], color: cPool[0] };
   const B = { shape: sPool[1], color: cPool[1] };
@@ -105,7 +106,7 @@ const generatePattern = () => {
     }
   }
 
-  return options.sort(() => Math.random() - 0.5);
+  return shuffle(options);
 };
 
 const initLevel = async () => {

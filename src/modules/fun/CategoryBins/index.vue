@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -60,8 +61,8 @@ const initLevel = async () => {
   const numAnimals = Math.floor(count / 2);
   const numVehicles = count - numAnimals;
 
-  const aPool = [...ANIMALS].sort(() => Math.random() - 0.5).slice(0, numAnimals);
-  const vPool = [...VEHICLES].sort(() => Math.random() - 0.5).slice(0, numVehicles);
+  const aPool = shuffle([...ANIMALS]).slice(0, numAnimals);
+  const vPool = shuffle([...VEHICLES]).slice(0, numVehicles);
 
   const items: SortItem[] = [];
 
@@ -74,7 +75,7 @@ const initLevel = async () => {
     startX: 0, startY: 0, dragX: 0, dragY: 0, dragging: false, placed: false, zIndex: 0
   }));
 
-  const shuffledItems = items.sort(() => Math.random() - 0.5);
+  const shuffledItems = shuffle(items);
 
   const trayCols = Math.max(4, Math.ceil(shuffledItems.length / 2));
   const pieceWidth = 120;

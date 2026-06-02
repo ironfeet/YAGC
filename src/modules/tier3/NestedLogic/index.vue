@@ -43,7 +43,7 @@ const ANIMALS = [
   { noun: 'fish'   as const, color: '#3b82f6', colorName: 'blue'   },
 ];
 
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 // ── Procedural Generation ─────────────────────────────────────────────────────

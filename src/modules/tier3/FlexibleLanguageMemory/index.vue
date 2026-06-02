@@ -63,7 +63,7 @@ const CONTAINERS = [
   { id: 'box',   label: 'Box',   prep: 'inside' },
 ];
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const pick = <T>(arr: T[], n: number): T[] => shuffle(arr).slice(0, n);
 
 // ── Procedural Generation ─────────────────────────────────────────────────────

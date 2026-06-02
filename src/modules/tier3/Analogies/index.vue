@@ -40,7 +40,7 @@ const ORIENTATIONS: AnalogyOrientation[] = ['left', 'right'];
 const INHABITANTS: AnalogyInhabitant[] = ['none', 'cat', 'dog'];
 const COLORS = ['#ef4444', '#3b82f6', '#22c55e', '#a855f7', '#f97316', '#eab308'];
 
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from '../../../utils/shuffle';
 const getRandomItem = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 // Random valid house

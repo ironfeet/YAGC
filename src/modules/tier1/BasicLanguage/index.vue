@@ -73,7 +73,7 @@ const pickExcept = <T>(arr: T[], exclude: T[]): T => {
   const pool = arr.filter(x => !exclude.includes(x));
   return pool[Math.floor(Math.random() * pool.length)];
 };
-const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+import { shuffle } from "../../../utils/shuffle";
 
 const buildInstruction = (f: LanguageFeature): string => {
   const parts: string[] = [];
