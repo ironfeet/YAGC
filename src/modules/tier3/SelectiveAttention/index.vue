@@ -310,8 +310,7 @@ const playHint = () => {
               :key="`${levelCounter}-${item.id}`"
               class="field-item-wrapper"
               :style="item.style"
-              @click="() => handleTap(index)"
-              @touchstart.prevent="() => handleTap(index)"
+              @pointerdown.prevent="() => handleTap(index)"
             >
               <SearchItemAsset 
                 ref="assetRefs"
