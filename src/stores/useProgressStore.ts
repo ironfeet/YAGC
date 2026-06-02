@@ -3,7 +3,7 @@ import type { UserProgress } from '../types';
 
 export const useProgressStore = defineStore('progress', {
   state: (): UserProgress => ({
-    userId: 'jiacheng',
+    userId: 'player1',
     currentTier: 1,
     unlockedModules: ['tier1-patches', 'tier1-outlines', 'tier1-basiclanguage', 'tier1-matching-cars', 'tier1-matching-animals', 'tier2-odd-one-out', 'tier2-combine-elephants', 'tier2-combine-butterflies', 'tier2-combine-trains', 'tier2-arithmetics', 'tier2-count-everything', 'tier3-spatial-prepositions', 'tier3-perspectivetaking', 'tier3-auditory-memory', 'tier3-flexible-language-memory', 'tier3-nested-logic'],
     moduleStats: {
