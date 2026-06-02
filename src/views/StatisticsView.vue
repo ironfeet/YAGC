@@ -22,12 +22,13 @@ const handleReset = () => {
     // Collect keys to delete first to avoid mutating the object while iterating it
     const keysToDelete: string[] = [];
     for (const key in progressStore.moduleStats) {
-      const isFunGame = key.startsWith('fun-') || key.startsWith('jigsaw-') || key.startsWith('puzzle-');
+      const isFunGame = key.startsWith('fun-');
       if ((activeTab.value === 'fun' && isFunGame) || (activeTab.value === 'mita' && !isFunGame)) {
         keysToDelete.push(key);
       }
     }
     keysToDelete.forEach(key => { delete progressStore.moduleStats[key]; });
+    progressStore.initMissingStats(); // Re-initialize immediately with default zeroed values
     // Patch to force reactivity/persistence
     progressStore.$patch({ moduleStats: { ...progressStore.moduleStats } });
   }
@@ -82,7 +83,7 @@ const filteredStats = computed(() => {
   const result: Record<string, any> = {};
   for (const key in progressStore.moduleStats) {
     if (!gameNames[key]) continue; // Ignore legacy or unknown keys
-    const isFunGame = key.startsWith('fun-') || key.startsWith('jigsaw-') || key.startsWith('puzzle-');
+    const isFunGame = key.startsWith('fun-');
     if ((activeTab.value === 'fun' && isFunGame) || (activeTab.value === 'mita' && !isFunGame)) {
       result[key] = progressStore.moduleStats[key];
     }
