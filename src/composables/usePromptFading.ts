@@ -2,6 +2,14 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 export type PromptLevel = 'none' | 'partial' | 'full';
 
+// Centralized pointerdown listener to prevent duplicate window events
+const activeInteractionSubscribers = new Set<() => void>();
+let isGlobalListenerAttached = false;
+
+const handleGlobalPointerDown = () => {
+  activeInteractionSubscribers.forEach(fn => fn());
+};
+
 export function usePromptFading(initialConfiguredLevel: PromptLevel = 'none', idleTimeoutMs = 7000, errorThreshold = 2) {
   let configuredLevel = initialConfiguredLevel;
   // Always start at 'none' to give the child an independent opportunity (Time Delay Prompting)
@@ -65,15 +73,29 @@ export function usePromptFading(initialConfiguredLevel: PromptLevel = 'none', id
 
   onMounted(() => {
     resetTimer();
-    // Use pointerdown instead of touchstart + mousedown to avoid double-firing
-    // on hybrid devices where both events fire for the same tap.
-    window.addEventListener('pointerdown', debouncedRegisterInteraction);
+    
+    // Attach the debounced interaction handler to the centralized subscriber set
+    activeInteractionSubscribers.add(debouncedRegisterInteraction);
+    
+    // Only attach the physical DOM listener once globally
+    if (!isGlobalListenerAttached) {
+      window.addEventListener('pointerdown', handleGlobalPointerDown);
+      isGlobalListenerAttached = true;
+    }
   });
 
   onUnmounted(() => {
     if (idleTimer) clearTimeout(idleTimer);
     if (interactionDebounce) clearTimeout(interactionDebounce);
-    window.removeEventListener('pointerdown', debouncedRegisterInteraction);
+    
+    // Remove this instance's subscriber
+    activeInteractionSubscribers.delete(debouncedRegisterInteraction);
+    
+    // If no more instances are active, clean up the global DOM listener
+    if (activeInteractionSubscribers.size === 0 && isGlobalListenerAttached) {
+      window.removeEventListener('pointerdown', handleGlobalPointerDown);
+      isGlobalListenerAttached = false;
+    }
   });
 
   return {
