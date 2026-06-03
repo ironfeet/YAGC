@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.9] - 02-06-2026
 
+### Security & CI
+- **CodeQL Integration:** Switched from "Default Setup" to an explicit `codeql.yml` workflow, restricting analysis to JavaScript/TypeScript to prevent crashes caused by false-positive Python detection in `node_modules`.
+- **CI Hardening:** Implemented `check-build.yml` workflow with explicit least-privilege `contents: read` permissions.
+- **CodeQL Alerts Resolved:** Cleaned up several dead stores and useless assignments across `useSpeech`, `ConnectDots`, `Arithmetics`, `NestedLogic`, and `CountEverything` to resolve all active CodeQL dashboard alerts.
+
 ### Fixed
 - **Invisible Replay Button (Light/Colorful Themes):** Fixed a CSS variable inheritance issue where the global `--color-orange` definition was missing, causing the Replay button to render as white text on a transparent background in non-dark themes. Added the missing variable to `variables.scss` so the button is always highly visible across all themes.
 
