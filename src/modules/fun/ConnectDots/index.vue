@@ -64,7 +64,7 @@ const generatePoints = () => {
 
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count; // 0 to 2PI, starting at top, clockwise
-    let rMult = 1.0;
+    let rMult: number;
     
     switch(animal) {
       case 'cat':

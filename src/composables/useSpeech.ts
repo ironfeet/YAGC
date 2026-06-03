@@ -8,7 +8,6 @@ const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window
 let preferredVoice: SpeechSynthesisVoice | null = null;
 let fallbackAudio: HTMLAudioElement | null = null;
 let activeUtterance: SpeechSynthesisUtterance | null = null;
-let voicesInitialized = false;
 
 const initVoices = () => {
   if (!isSupported) return;
@@ -18,11 +17,10 @@ const initVoices = () => {
                    voices.find(v => v.name.includes('Samantha') || v.name.includes('Victoria')) ||
                    voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en')) ||
                    voices[0] || null;
-  voicesInitialized = true;
 };
 
 // Initialize voices globally once
-if (isSupported && !voicesInitialized) {
+if (isSupported) {
   if (window.speechSynthesis.getVoices().length > 0) {
     initVoices();
   } else {
