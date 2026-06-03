@@ -89,9 +89,9 @@ const generateLevel = () => {
   
   const phase = Math.min(4, span) as 1 | 2 | 3 | 4;
 
-  let targetCount = 0;
-  let allowedTypes: CountItemType[] = ['ball'];
-  let objectSize = 18;
+  let targetCount: number;
+  let allowedTypes: CountItemType[];
+  let objectSize: number;
   
   if (phase === 1) {
     targetCount = randomInt(1, 5);
