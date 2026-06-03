@@ -45,7 +45,7 @@ const generateLevel = () => {
   const phase = Math.min(5, span) as 1 | 2 | 3 | 4 | 5;
   const itemType = getRandomItem(ITEM_TYPES);
   
-  let operation: MathOperation = 'count';
+  let operation: MathOperation;
   let leftCount = 0;
   let rightCount = 0;
   let answerCount = 0;

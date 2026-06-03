@@ -62,7 +62,7 @@ const generateLevel = () => {
 
   const animalPool = shuffle([...ANIMALS]);
 
-  let rows = 2, cols = 1;
+  let rows: number, cols: number;
   let cells: HouseCell[] = [];
   let targetAnimals: NestedAnimal[] = [];
   let audioPrompt = '';
