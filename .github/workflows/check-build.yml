@@ -1,0 +1,47 @@
+name: Check IPK Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-ipk-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web App
+        run: npm run build
+
+      - name: Install LG webOS CLI
+        run: npm install -g @webos-tools/cli@3.2.3
+
+      - name: Package webOS App (.ipk)
+        run: |
+          mkdir -p build
+          ares-package ./dist -o ./build --no-minify
+
+      - name: Verify IPK Generation
+        run: |
+          if [ -z "$(ls -A build/*.ipk 2>/dev/null)" ]; then
+            echo "Error: IPK file was not generated successfully."
+            exit 1
+          else
+            echo "Success: IPK package generated successfully."
+            ls -lh build/*.ipk
+          fi
