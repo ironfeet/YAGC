@@ -22,7 +22,7 @@ const initVoices = () => {
 };
 
 // Initialize voices globally once
-if (isSupported && !voicesInitialized) {
+if (isSupported) {
   if (window.speechSynthesis.getVoices().length > 0) {
     initVoices();
   } else {
