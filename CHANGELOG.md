@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.10] - 06-06-2026
+
+### Fixed
+- **Matching Cars Visual Fix:** Fixed an issue where cars with tall accessories (like bicycles or dogs sticking out) would get cut off or stick out of their puzzle pieces. The cars are now perfectly sized and padded to always fit nicely inside the garage cards without any clipping!
+
 ## [0.0.9] - 02-06-2026
 
 ### Security & CI
