@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <svg viewBox="0 0 200 120" class="car-asset" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 -35 200 155" class="car-asset" xmlns="http://www.w3.org/2000/svg">
     <!-- Body -->
     <g v-if="shape === 'sedan'">
       <!-- Sedan Body -->
