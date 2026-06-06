@@ -161,7 +161,7 @@ const filteredStats = computed(() => {
 
 .stats-container {
   padding: 3rem;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   height: 100%;
   display: flex;
   flex-direction: column;

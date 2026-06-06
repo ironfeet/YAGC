@@ -436,7 +436,7 @@ const countArray = (n: number | undefined) => Array.from({ length: n ?? 1 });
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -523,7 +523,7 @@ const countArray = (n: number | undefined) => Array.from({ length: n ?? 1 });
   justify-content: space-evenly;
   align-items: center;
   padding: 1.5rem 2rem;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   gap: 1.5rem;
   flex-wrap: wrap;
 }

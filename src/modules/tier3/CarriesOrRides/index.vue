@@ -339,7 +339,7 @@ const playHint = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -368,7 +368,7 @@ const playHint = () => {
 
 .main-area {
   flex: 1;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;

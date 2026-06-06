@@ -402,7 +402,7 @@ const playHint = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -449,7 +449,7 @@ const playHint = () => {
 
 .scene-board {
   flex: 6;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   display: flex;
   justify-content: center;
   align-items: center;
