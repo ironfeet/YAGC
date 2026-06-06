@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.11] - 06-06-2026
 
 ### Fixed
-- **Colorful Theme Background:** Fixed an issue where the colorful theme's background would appear completely transparent on the Settings page (and across all 20+ games) because it was being applied via the `background-color` CSS property instead of the shorthand `background` property, which prevented the beautiful CSS gradient from rendering correctly.
+- **Menu Themes:** Fixed an issue where the Settings and Statistics pages would sometimes show the wrong theme (for example, showing the MITA theme when you came from the Fun Games menu). They will now always match the theme of the section you are currently playing in!
+- **Colorful Theme Fix:** Fixed a visual bug where the beautiful gradient background for the "Colorful" theme was missing and showing up as completely transparent on the Settings page and inside the games.
 
 ## [0.0.10] - 06-06-2026
 
