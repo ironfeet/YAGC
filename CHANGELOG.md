@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **Menu Themes:** Fixed an issue where the Settings and Statistics pages would sometimes show the wrong theme (for example, showing the MITA theme when you came from the Fun Games menu). They will now always match the theme of the section you are currently playing in!
 - **Colorful Theme Fix:** Fixed a visual bug where the beautiful gradient background for the "Colorful" theme was missing and showing up as completely transparent on the Settings page and inside the games.
+- **Statistics Readability:** Fixed a bug where the text and numbers on the Statistics page were invisible when using the Light or Colorful themes. The text colors will now automatically adjust to remain clearly visible no matter which theme you are using!
 
 ## [0.0.10] - 06-06-2026
 
