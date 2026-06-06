@@ -125,7 +125,7 @@ ares-launch "./dist" -s 24 \
 ```bash
 npm run build
 ares-package ./dist -o ./build --no-minify
-ares-install ./build/yagc_0.0.7_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.11_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
@@ -135,6 +135,7 @@ ares-launch yagc -d <device-name>
 
 ```
 src/
+├── assets/                      # Static resources and global stylesheets
 ├── components/
 │   ├── game/                    # Reusable game primitives
 │   │   ├── AnimalAsset.vue      # SVG animals (30 shapes × size/color/direction)
@@ -209,12 +210,21 @@ src/
 │       └── TimePrepositionsMemory/ # Same + hidden options during audio
 ├── stores/
 │   ├── useGameStore.ts          # Session-level game state
-│   └── useProgressStore.ts      # Cross-session progress (persisted)
+│   ├── useProgressStore.ts      # Cross-session progress (persisted)
+│   └── useSessionStore.ts       # Ephemeral session state (e.g., last active tab)
+├── utils/
+│   └── shuffle.ts               # Array randomization utilities
+├── views/
+│   ├── GlobalMenu.vue           # Main landing page for Fun vs MITA selection
+│   ├── GameSelectionMenu.vue    # Game selection grid for the chosen section
+│   ├── GameView.vue             # Wrapper for dynamically loading game modules
+│   ├── SettingsView.vue         # Global theme and preference configuration
+│   └── StatisticsView.vue       # Progress dashboards and data reset
 ├── router/
 │   └── index.ts                 # Vue Router routes → all module views
 ├── types.ts                     # All TypeScript interfaces and enums
 ├── main.ts                      # App entry: Pinia + Router setup
-└── App.vue                      # Root component + GameSelectionMenu
+└── App.vue                      # Root component (router-view provider)
 ```
 
 ---
@@ -750,7 +760,7 @@ Advanced phases always generate distractors that match the target in N-1 feature
 
 ## Deployment to webOS
 
-The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.7`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
+The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.11`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
 
 ### Simulator
 
@@ -771,7 +781,7 @@ npm run build
 ares-package ./dist -o ./build/
 
 # 3. Install & launch
-ares-install ./build/yagc_0.0.7_all.ipk -d <device-name>
+ares-install ./build/yagc_0.0.11_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
