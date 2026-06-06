@@ -348,7 +348,7 @@ const playHint = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -387,7 +387,7 @@ const playHint = () => {
 /* ── Left board: silhouettes ──────────────────────────────────────────────── */
 .left-board {
   flex: 1;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   background-image: radial-gradient(#d1d8df 1px, transparent 1px);
   background-size: 20px 20px;
   display: flex;

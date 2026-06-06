@@ -155,13 +155,13 @@ const filteredStats = computed(() => {
 }
 
 .max-hint {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .stats-container {
   padding: 3rem;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -229,7 +229,7 @@ const filteredStats = computed(() => {
 .stats-table th, .stats-table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--text-secondary);
 }
 
 .stats-table th {
@@ -243,9 +243,9 @@ const filteredStats = computed(() => {
 }
 
 .stat-input, .stat-select {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  background: var(--bg-primary);
+  border: 1px solid var(--text-secondary);
+  color: var(--text-primary);
   padding: 0.5rem;
   border-radius: var(--border-radius-sm, 4px);
   font-size: 1.2rem;

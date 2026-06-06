@@ -301,7 +301,7 @@ const playHint = () => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-primary);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
