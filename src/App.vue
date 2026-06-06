@@ -19,20 +19,13 @@ watch(
       document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
     } else if (path.includes('/tier') || path.includes('/mita')) {
       document.documentElement.setAttribute('data-theme', progressStore.mitaTheme || 'dark');
-    } else if (path === '/') {
-      // GlobalMenu handles both tabs
-      const activeTab = tab || sessionStore.lastActiveTab || progressStore.defaultHomeMenu;
-      if (activeTab === 'fun') {
-        document.documentElement.setAttribute('data-theme', progressStore.funTheme || 'colorful');
-      } else {
-        document.documentElement.setAttribute('data-theme', progressStore.mitaTheme || 'dark');
-      }
     } else {
-      // Settings, Statistics
-      const defaultTheme = progressStore.defaultHomeMenu === 'fun' 
+      // GlobalMenu, Settings, Statistics
+      const activeTab = tab || sessionStore.lastActiveTab || progressStore.defaultHomeMenu;
+      const theme = activeTab === 'fun' 
         ? (progressStore.funTheme || 'colorful')
         : (progressStore.mitaTheme || 'dark');
-      document.documentElement.setAttribute('data-theme', defaultTheme);
+      document.documentElement.setAttribute('data-theme', theme);
     }
   },
   { immediate: true }
