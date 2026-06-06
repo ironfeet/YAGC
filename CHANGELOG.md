@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.11] - 06-06-2026
+
+### Fixed
+- **Colorful Theme Background:** Fixed an issue where the colorful theme's background would appear completely transparent on the Settings page (and across all 20+ games) because it was being applied via the `background-color` CSS property instead of the shorthand `background` property, which prevented the beautiful CSS gradient from rendering correctly.
+
 ## [0.0.10] - 06-06-2026
 
 ### Fixed
