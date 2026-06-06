@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -27,10 +27,29 @@ const completedHoles = ref<Set<string>>(new Set());
 const levelCounter = ref(0);
 const hasStarted = ref(false);
 
-const handleStart = () => {
+const sceneWrapper = ref<HTMLElement | null>(null);
+const sceneScale = ref(1);
+let resizeObserver: ResizeObserver | null = null;
+
+const handleStart = async () => {
   hasStarted.value = true;
   generateLevel();
+  await nextTick();
+  if (sceneWrapper.value && !resizeObserver) {
+    resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect.width > 0) {
+          sceneScale.value = entry.contentRect.width / 400;
+        }
+      }
+    });
+    resizeObserver.observe(sceneWrapper.value);
+  }
 };
+
+onUnmounted(() => {
+  if (resizeObserver) resizeObserver.disconnect();
+});
 
 const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22'];
 const PATTERNS: PatternType[] = ['solid', 'stripes', 'polka-dots', 'checkerboard'];
@@ -336,13 +355,15 @@ const playHint = () => {
       <!-- Left Column: The Main Scene -->
       <div class="left-board scene-board">
         <!-- Render the main SVG scene. Pass ONLY the holes that are NOT yet completed -->
-        <SvgSceneGenerator 
-          :sceneType="config.sceneType"
-          :theme="baseTheme"
-          :holes="config.targetPatches.filter(p => !completedHoles.has(p.id))"
-          :promptLevel="currentLevel"
-          class="main-scene"
-        />
+        <div ref="sceneWrapper" class="main-scene-wrapper">
+          <SvgSceneGenerator 
+            :sceneType="config.sceneType"
+            :theme="baseTheme"
+            :holes="config.targetPatches.filter(p => !completedHoles.has(p.id))"
+            :promptLevel="currentLevel"
+            class="main-scene"
+          />
+        </div>
       </div>
 
       <!-- Right Column: Draggable Patches -->
@@ -356,7 +377,7 @@ const playHint = () => {
             @success="() => handleSuccess(opt.patch.id)"
             @error="handleError"
             :class="{ 'prompt-full': currentLevel === 'full' && opt.isTarget }"
-            :style="{ width: `${opt.patch.radius * 4}px`, height: `${opt.patch.radius * 4}px` }"
+            :style="{ width: `${opt.patch.radius * 2 * sceneScale}px`, height: `${opt.patch.radius * 2 * sceneScale}px` }"
           >
             <!-- The puzzle piece is essentially a cropped view of the scene with the specific theme applied -->
             <SvgSceneGenerator 
@@ -438,12 +459,19 @@ const playHint = () => {
   min-height: 0;
 }
 
-.main-scene {
+.main-scene-wrapper {
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 1;
+  position: relative;
+}
+
+.main-scene {
+  width: 100%;
+  height: 100%;
+  display: block;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
 }
 
