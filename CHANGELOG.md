@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.10] - 06-06-2026
 
 ### Fixed
+- **Patches Responsive Sizing:** Fixed an issue where the draggable patches had a static pixel size, causing them to look too big or too small compared to their destination holes when the game scaled to different screen sizes. The patches now dynamically sync their size to match the scene!
 - **Matching Cars Visual Fix:** Fixed an issue where cars with tall accessories (like bicycles or dogs sticking out) would get cut off or stick out of their puzzle pieces. The cars are now perfectly sized and padded to always fit nicely inside the garage cards without any clipping!
 
 ## [0.0.9] - 02-06-2026
