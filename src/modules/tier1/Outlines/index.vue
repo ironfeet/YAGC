@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onMounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -200,8 +201,8 @@ const handleSuccess = (draggedId: string, zoneEl?: HTMLElement) => {
     log.success(draggedId, { phase: config.value.phase });
     gameStore.handleSuccess();
     progressStore.updateStats(moduleId, true);
-    const praises = ['Great job!', 'Awesome!', 'You did it!', 'Perfect match!'];
-    playInstruction(pick(praises));
+    
+    playInstruction(getRandomPraise());
     safeSetTimeout(() => { generateLevel(); }, 2000);
   } else {
     // Multi-target: mark this zone filled, check if all done
@@ -214,8 +215,8 @@ const handleSuccess = (draggedId: string, zoneEl?: HTMLElement) => {
       log.success('all-targets', { phase: config.value.phase });
       gameStore.handleSuccess();
       progressStore.updateStats(moduleId, true);
-      const praises = ['Amazing!', 'All matched!', 'You got them all!'];
-      playInstruction(pick(praises));
+      
+      playInstruction(getRandomPraise());
       safeSetTimeout(() => { generateLevel(); }, 2500);
     } else {
       playInstruction('Good! Keep going!');

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
@@ -223,7 +224,7 @@ function onPointerUp(e: PointerEvent) {
 function onLevelComplete() {
   isComplete.value = true;
   log.generate({ level: 1, phase: currentPhase.value, pieces: currentOptionCount.value });
-  playInstruction('Great job! You finished the pattern!');
+  playInstruction(`${getRandomPraise()} You finished the pattern!`);
   progressStore.updateStats(GAME_ID, true);
   resetPrompt();
 }

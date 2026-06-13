@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -139,7 +140,7 @@ const checkForMatch = () => {
 function onLevelComplete() {
   isComplete.value = true;
   log.generate({ level: 1, phase: currentPhase.value, pieces: cardCount.value });
-  playInstruction('Great job! You found all the pairs!');
+  playInstruction(`${getRandomPraise()} You found all the pairs!`);
   progressStore.updateStats(GAME_ID, true);
   resetPrompt();
 }

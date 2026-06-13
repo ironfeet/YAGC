@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -189,7 +190,7 @@ const validateDone = () => {
     gameStore.handleSuccess();
     progressStore.updateStats(moduleId, true);
     
-    playInstruction('Yes! You found the wet animals!');
+    playInstruction(`${getRandomPraise()} You found the wet animals!`);
     safeSetTimeout(() => generateLevel(), 3500);
   } else {
     // Error

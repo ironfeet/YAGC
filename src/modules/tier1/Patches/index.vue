@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onMounted, nextTick, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -276,8 +277,8 @@ const handleSuccess = (holeId: string) => {
     gameStore.handleSuccess();
     progressStore.updateStats(moduleId, true);
     log.info('All holes filled — level complete', { phase: config.value?.phase, sceneType: config.value?.sceneType });
-    const praises = ['Great job!', 'Awesome!', 'Perfect fit!'];
-    playInstruction(getRandomItem(praises));
+    
+    playInstruction(getRandomPraise());
     safeSetTimeout(() => { generateLevel(); }, 2000);
   } else {
     playInstruction('Good!');

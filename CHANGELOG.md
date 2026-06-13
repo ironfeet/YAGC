@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.12] - 14-06-2026
+
+### Added
+- **Dynamic Success Audio:** Replaced repetitive, hardcoded success phrases (like "Great job!") across all 27 games with a new dynamic system. The application now uses a vast, randomized library of enthusiastic praises (e.g., "Awesome!", "Brilliant!", "Fantastic!") to provide much more varied and encouraging auditory feedback when a child completes a game.
+
+### Changed
+- **Documentation & Cleanup:** Removed several empty, unused placeholder game directories (e.g., AnimalFarm, CatchApples, MagicReveal) from the codebase and updated the `README.md` project structure to accurately reflect the 12 active Fun Games.
+
 ## [0.0.11] - 06-06-2026
 
 ### Fixed

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, computed, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -544,8 +545,8 @@ const winLevel = () => {
   isComplete.value = true;
   progressStore.updateStats(moduleId, true);
   log.info('Level complete', { phase: config.value?.phase });
-  const praises = ['Amazing memory!', 'Perfect!', 'Outstanding!', 'You remembered it all!'];
-  playInstruction(getRandomItem(praises));
+  
+  playInstruction(getRandomPraise());
   safeSetTimeout(() => generateLevel(), 3500);
 };
 
