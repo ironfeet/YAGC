@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onMounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -223,8 +224,8 @@ const handleSuccess = (draggedId: string, target?: HTMLElement) => {
     gameStore.handleSuccess();
     progressStore.updateStats(moduleId, true);
     
-    const praises = ['Perfect!', 'Away they go!', 'Great listening!'];
-    playInstruction(getRandomItem(praises));
+    
+    playInstruction(getRandomPraise());
     
     safeSetTimeout(() => {
       generateLevel();

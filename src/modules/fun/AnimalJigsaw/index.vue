@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
@@ -290,7 +291,7 @@ function onPointerUp(e: PointerEvent) {
 function onLevelComplete() {
   completed.value = true;
   score.value += 10 * level.value;
-  playInstruction(`Great job! You built the ${animal.value.label}!`);
+  playInstruction(`${getRandomPraise()} You built the ${animal.value.label}!`);
   progressStore.updateStats(moduleId, true);
 }
 

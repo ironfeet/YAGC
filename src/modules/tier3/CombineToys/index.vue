@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onMounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -198,7 +199,7 @@ const handleSuccess = (itemId: string) => {
     isComplete.value = true;
     log.info('Grid complete!', { phase: config.value.phase, rule: config.value.rule });
     progressStore.updateStats(moduleId, true);
-    playInstruction('Amazing! You finished the grid!');
+    playInstruction(`${getRandomPraise()} You finished the grid!`);
     safeSetTimeout(() => { generateLevel(); }, 4000);
   } else {
     playInstruction('Good match!');

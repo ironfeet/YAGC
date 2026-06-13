@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -192,7 +193,7 @@ function onPointerUp(e: PointerEvent) {
 
 function onLevelComplete() {
   isComplete.value = true;
-  playInstruction("Great job! You matched the colors!");
+  playInstruction(`${getRandomPraise()} You matched the colors!`);
   progressStore.updateStats(GAME_ID, true);
 }
 

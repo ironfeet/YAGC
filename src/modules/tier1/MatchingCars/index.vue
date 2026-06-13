@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getRandomPraise } from '../../../utils/praises';
 import { ref, onMounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -171,8 +172,8 @@ const handleSuccess = (matchedId: string) => {
   gameStore.handleSuccess();
   progressStore.updateStats(moduleId, true);
   
-  const praises = ['Green light! Go!', 'Perfect match!', 'Vroom!'];
-  playInstruction(getRandomItem(praises));
+  
+  playInstruction(getRandomPraise());
   
   // Wait for the drive-off animation to finish before generating the next level
   safeSetTimeout(() => {
