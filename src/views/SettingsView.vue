@@ -1,9 +1,52 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/useProgressStore';
+import packageJson from '../../package.json';
 
 const router = useRouter();
 const progressStore = useProgressStore();
+const currentVersion = packageJson.version;
+
+const latestVersion = ref<string | null>(null);
+const updateAvailable = ref(false);
+const checkingUpdate = ref(true);
+
+const isNewerVersion = (latest: string, current: string) => {
+  const lParts = latest.split('.').map(Number);
+  const cParts = current.split('.').map(Number);
+  for (let i = 0; i < Math.max(lParts.length, cParts.length); i++) {
+    const l = lParts[i] || 0;
+    const c = cParts[i] || 0;
+    if (l > c) return true;
+    if (l < c) return false;
+  }
+  return false;
+};
+
+const checkForUpdates = async () => {
+  try {
+    const response = await fetch('https://api.github.com/repos/ironfeet/YAGC/releases/latest');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.tag_name) {
+        const latest = data.tag_name.replace(/^v/, '');
+        latestVersion.value = latest;
+        if (isNewerVersion(latest, currentVersion)) {
+          updateAvailable.value = true;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to check for updates', error);
+  } finally {
+    checkingUpdate.value = false;
+  }
+};
+
+onMounted(() => {
+  checkForUpdates();
+});
 
 const goBack = () => {
   router.push({ name: 'Home' });
@@ -40,6 +83,21 @@ const goBack = () => {
     </div>
 
     <button class="back-btn" @click="goBack">Back to Home</button>
+    
+    <div class="version-info">
+      <p class="version-text">Current Version: v{{ currentVersion }}</p>
+      <div v-if="!checkingUpdate" class="update-status">
+        <span v-if="updateAvailable" class="update-available">
+          ⚠️ Update available: v{{ latestVersion }}
+        </span>
+        <span v-else class="update-latest">
+          ✅ You are on the latest version.
+        </span>
+      </div>
+      <div v-else class="checking-status">
+        Checking for updates...
+      </div>
+    </div>
   </div>
 </template>
 
@@ -90,5 +148,41 @@ button {
   border: 1px solid var(--text-secondary);
   cursor: pointer;
   outline: none;
+}
+
+.version-info {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.version-text {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.update-status {
+  font-size: 1.1rem;
+}
+
+.update-available {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.update-latest {
+  color: #4caf50;
+  opacity: 0.8;
+}
+
+.checking-status {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  opacity: 0.5;
+  font-style: italic;
 }
 </style>
