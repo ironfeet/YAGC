@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.13] - 14-06-2026
+
+### Added
+- **Update Checker:** We added the current version number to the bottom of the Settings page! Even better, it now checks online to see if there's a newer version available and lets you know instantly. No more guessing if you have the latest update!
+
+### Security
+- **Dependency Patches:** Addressed two Dependabot security alerts by bumping `vite` to `8.0.16`, keeping the app's build environment secure from path handling vulnerabilities.
+
 ## [0.0.12] - 14-06-2026
 
 ### Added
