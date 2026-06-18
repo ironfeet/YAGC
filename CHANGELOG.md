@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.14] - 18-06-2026
+
+### Changed
+- **Quieter Drag Feedback:** When you drag a piece and drop it somewhere that isn't a valid target, it no longer says "Oops!" out loud. Instead, it plays a quick, satisfying snap sound so the interaction still feels responsive without interrupting the flow or discouraging the child.
+
 ## [0.0.13] - 14-06-2026
 
 ### Added

@@ -1,4 +1,5 @@
 import { ref, computed, onUnmounted, type Ref } from 'vue';
+import { playSnapSound, initAudio } from '../utils/audio';
 
 export interface DragOptions {
   dropZoneSelector: string;     // e.g., '.target-outline'
@@ -97,6 +98,9 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
 
   const onStart = (clientX: number, clientY: number) => {
     if (options.disabled || !elementRef.value || isSuccess.value || isSpringing.value) return;
+    
+    // Unlock AudioContext during this user gesture (pointerdown)
+    initAudio();
     
     isDragging.value = true;
     
@@ -248,7 +252,10 @@ export function useTouchDrag(elementRef: Ref<HTMLElement | null>, options: DragO
       
       wrapperZIndexTimeout = setTimeout(() => { restoreParents(); }, 400);
       
-      if (!isCancelled && options.onErrorDrop) options.onErrorDrop();
+      playSnapSound();
+      
+      // Do not emit error when dropped outside of any dropzone (aborted drag)
+      // to avoid triggering verbal "Oops" instructions. Just the snap sound is enough.
     }
   };
 
