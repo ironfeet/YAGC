@@ -64,10 +64,7 @@ const currentPhase = computed(() => progressStore.moduleStats[GAME_ID]?.currentP
 const shadowCount = computed(() => Math.min(currentPhase.value * 2, ANIMALS.length));
 
 // Generate the sequence of animals based on currentPhase
-const targetSequence = computed(() => {
-  // We want a deterministic set per level for simplicity in ABA, but here we can just pick the first `count` shuffled
-  return shuffle([...ANIMALS]).slice(0, shadowCount.value);
-});
+const targetSequence = ref<AnimalDef[]>([]);
 
 const puzzlePieces = ref<ShadowItem[]>([]);
 const boardRef = ref<HTMLElement | null>(null);
@@ -82,6 +79,7 @@ const initLevel = async () => {
   puzzlePieces.value = [];
   resetPrompt('none');
   
+  targetSequence.value = shuffle([...ANIMALS]).slice(0, shadowCount.value);
   const seq = [...targetSequence.value];
   // Shuffle pieces
   for (let i = seq.length - 1; i > 0; i--) {
@@ -279,7 +277,7 @@ const handleNextLevel = () => {
               v-for="piece in puzzlePieces" 
               :key="piece.id"
               class="piece-tray-item"
-              :class="{ dragging: piece.dragging, placed: piece.placed, 'is-target': !piece.placed && piece.animalId === targetSequence[0].id }"
+              :class="{ dragging: piece.dragging, placed: piece.placed, 'is-target': !piece.placed && targetSequence.length > 0 && piece.animalId === targetSequence[0].id }"
               :style="{
                 transform: piece.dragging ? `translate(${piece.dragX - 70}px, ${piece.dragY - 70}px) scale(1.1)` : `translate(${piece.startX - 70}px, ${piece.startY - 70}px) scale(1)`,
                 zIndex: piece.zIndex
