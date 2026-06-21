@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.15] - 21-06-2026
+
+### Fixed
+- **Audio Instructions No Longer Cut Off:** Fixed an issue where very long spoken instructions would abruptly stop playing. The game now smoothly reads out even the longest sentences perfectly!
+- **Fresh Shadow Match Puzzles:** Fixed a bug in the Shadow Match game where the exact same group of animals would sometimes repeat over and over. You'll now see a brand-new, randomly shuffled set of animals every single time you play!
+- **Smooth Drawing on the TV:** Improved the "Connect the Dots" game so it works flawlessly on real TVs using the Magic Remote. It's now much easier and more forgiving to connect the dots without the remote "missing" your movements.
+- **Dots Stay on the Screen:** Adjusted the size of the animal shapes in the "Connect the Dots" game so they always fit perfectly in the center of the board and never spill off the edges of the screen.
+
 ## [0.0.14] - 18-06-2026
 
 ### Changed
