@@ -58,7 +58,7 @@ const generatePoints = () => {
   const pts: Point[] = [];
   const cx = 300;
   const cy = 300;
-  const baseRadius = 200;
+  const baseRadius = 160;
   const count = dotCount.value;
   const animal = hiddenAnimal.value;
 
@@ -165,6 +165,14 @@ const startDrawing = (evt: PointerEvent, dotIndex: number) => {
     const pos = getSvgMousePosition(evt);
     currentDragX.value = pos.x;
     currentDragY.value = pos.y;
+    
+    // Release pointer capture to allow normal pointerenter events on TV
+    if (evt.target && (evt.target as HTMLElement).hasPointerCapture && (evt.target as HTMLElement).hasPointerCapture(evt.pointerId)) {
+      try {
+        (evt.target as HTMLElement).releasePointerCapture(evt.pointerId);
+      } catch (e) {}
+    }
+    
     resetPrompt();
   } else {
     playInstruction(`Drag from number ${currentTargetIndex.value} to number ${currentTargetIndex.value + 1}`);
@@ -177,6 +185,17 @@ const draw = (evt: PointerEvent) => {
   const pos = getSvgMousePosition(evt);
   currentDragX.value = pos.x;
   currentDragY.value = pos.y;
+  
+  // Mathematical collision detection to ensure dots connect even if pointerenter fails on TV
+  if (currentTargetIndex.value < points.value.length) {
+    const targetPt = points.value[currentTargetIndex.value];
+    const dx = pos.x - targetPt.x;
+    const dy = pos.y - targetPt.y;
+    // 50px radius (2500 sq) provides a generous hitbox (dots are 60x60)
+    if (dx * dx + dy * dy < 2500) {
+      dotEnter(currentTargetIndex.value);
+    }
+  }
 };
 
 const endDrawing = () => {
