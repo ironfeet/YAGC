@@ -344,7 +344,7 @@ const handleCheck = () => {
     progressStore.updateStats(moduleId, true);
     const praise = getRandomItem(['Amazing!', 'Perfect!', 'You got it!', 'Outstanding!']);
     playInstruction(praise);
-    safeSetTimeout(() => generateLevel(), 3500);
+    safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
   } else {
     // FAIL — shake wrong cells, evict wrong animals back to yard
     shakingCells.value = wrongZones;

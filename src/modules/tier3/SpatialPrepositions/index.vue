@@ -199,7 +199,10 @@ const handleSuccess = (itemId: string) => {
     log.info('Grid complete!', { phase: config.value.phase, rule: config.value.rule });
     progressStore.updateStats(moduleId, true);
     playInstruction(`${getRandomPraise()} You finished the grid!`);
-    safeSetTimeout(() => { generateLevel(); }, 4000);
+    safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 4000);
   } else {
     playInstruction('Good match!');
   }

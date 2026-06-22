@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 22-06-2026
+
+### Added
+- **Random Mode:** Introduced a fully featured "Random Mode" that seamlessly shuffles between games. You can specify the total number of games to play and the rounds per game. The system intelligently shuffles the games, prevents repeats until the pool is exhausted, tracks your progress with a UI badge, and smoothly auto-advances through your session!
+
+### Fixed
+- **Theme Visibility:** Fixed an issue where the header text and buttons were invisible when playing games under the Light Mode or Colorful Mode themes.
+
 ## [0.0.15] - 21-06-2026
 
 ### Fixed
@@ -165,7 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Initial Open-Source Release:** Launch of "YAGC — Yet Another Game Collection".
 - **Fun Games Category:** Elevated casual puzzles to a dedicated, first-class tab in the Global Menu.
-- **Therapeutic Curriculum:** 26 clinical cognitive-training modules across 3 difficulty tiers designed for children with ASD.
+- **Therapeutic Curriculum:** 27 clinical cognitive-training modules across 3 difficulty tiers designed for children with ASD.
 - **ABA Prompt Fading Engine:** Built-in auto-scaffolding (Full → Partial → None) utilizing time-delay mechanisms.
 - **Procedural Generation:** Dynamic SVG asset generation and endless procedural levels to prevent memorization.
 - **Web Speech API Integration:** Fully voiced instructions for every module.

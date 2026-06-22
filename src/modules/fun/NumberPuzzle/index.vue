@@ -3,12 +3,14 @@ import { getRandomPraise } from '../../../utils/praises';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
+import { useGameStore } from '../../../stores/useGameStore';
 import NumberBlock from './NumberBlock.vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 
 const router = useRouter();
 const progressStore = useProgressStore();
+const gameStore = useGameStore();
 const { playInstruction, isPlaying } = useSpeech();
 const GAME_ID = 'fun-number-puzzle';
 
@@ -194,14 +196,19 @@ function onPointerUp(e: PointerEvent) {
 }
 
 function onLevelComplete() {
-  isComplete.value = true;
+  if (gameStore.isRandomMode) { setTimeout(() => { if (!gameStore.advanceRandomRound()) handleNextLevel(); }, 2500); } else { isComplete.value = true; }
   playInstruction(`${getRandomPraise()} You built it!`);
   progressStore.updateStats(GAME_ID, true);
 }
 
 const handleNextLevel = () => {
-  isComplete.value = false;
-  initLevel();
+  if (gameStore.isRandomMode) {
+    isComplete.value = false;
+    initLevel();
+  } else {
+    isComplete.value = false;
+    initLevel();
+  }
 };
 </script>
 

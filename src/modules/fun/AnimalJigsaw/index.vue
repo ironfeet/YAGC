@@ -8,10 +8,12 @@ import { useSpeech } from '../../../composables/useSpeech';
 import { useLogger } from '../../../composables/useLogger';
 import { useSafeTimeout } from '../../../composables/useSafeTimeout';
 import { useProgressStore } from '../../../stores/useProgressStore';
+import { useGameStore } from '../../../stores/useGameStore';
 
 const moduleId = 'fun-animal-jigsaw';
 const router = useRouter();
 const progressStore = useProgressStore();
+const gameStore = useGameStore();
 const { playInstruction, isPlaying } = useSpeech();
 const log = useLogger(moduleId);
 const { safeSetTimeout } = useSafeTimeout();
@@ -289,7 +291,7 @@ function onPointerUp(e: PointerEvent) {
 }
 
 function onLevelComplete() {
-  completed.value = true;
+  if (gameStore.isRandomMode) { setTimeout(() => { if (!gameStore.advanceRandomRound()) nextAnimal(); }, 2500); } else { completed.value = true; }
   score.value += 10 * level.value;
   playInstruction(`${getRandomPraise()} You built the ${animal.value.label}!`);
   progressStore.updateStats(moduleId, true);

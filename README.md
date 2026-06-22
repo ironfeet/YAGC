@@ -70,6 +70,18 @@ YAGC supports a fully dynamic, independent global theme system. You can set a un
 3. Under "Fun Game Theme", select a theme for casual puzzles.
 4. Your choices are automatically persisted and instantly applied to both the game menus and inside every individual game board!
 
+### 🎲 Random Mode
+
+YAGC features a dynamic "Random Mode" that automatically shuffles between games, ensuring a varied and engaging experience without needing to manually return to the menu after every module.
+
+**How to use Random Mode:**
+1. From either the MITA or Fun Games menu, locate the **Random Mode** controls at the top.
+2. Select your goal: choose to play a specific number of games (e.g., 5, 10, or 20) or choose "Endless" for continuous play.
+3. Use the slider to determine how many "rounds" (successes) are required per game before the system automatically advances to the next random module.
+4. Click the large "Play Random Mode" button to begin!
+
+The system uses a "Shuffle Bag" algorithm to guarantee that games do not repeat during a session until every available game has been played at least once. A persistent UI badge at the top of the screen will track your session progress.
+
 ---
 
 ## Tech Stack
@@ -125,7 +137,7 @@ ares-launch "./dist" -s 24 \
 ```bash
 npm run build
 ares-package ./dist -o ./build --no-minify
-ares-install ./build/yagc_0.0.15_all.ipk -d <device-name>
+ares-install ./build/yagc_0.1.0_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
@@ -218,6 +230,7 @@ src/
 │   ├── GlobalMenu.vue           # Main landing page for Fun vs MITA selection
 │   ├── GameSelectionMenu.vue    # Game selection grid for the chosen section
 │   ├── GameView.vue             # Wrapper for dynamically loading game modules
+│   ├── RandomSuccessView.vue    # Celebration screen shown after completing a Random Mode session
 │   ├── SettingsView.vue         # Global theme and preference configuration
 │   └── StatisticsView.vue       # Progress dashboards and data reset
 ├── router/
@@ -362,7 +375,7 @@ Props: `shape`, `color`, `size` (`small` | `large`), `direction` (`left` | `righ
 
 #### `MenuIcon.vue` — Game Menu Icons
 
-Contains 26 custom SVG icons (one per game module) rendered on each game's start screen and the main selection menu. Keyed by `gameId` string.
+Contains 39 custom SVG icons (one per game module) rendered on each game's start screen and the main selection menu. Keyed by `gameId` string.
 
 ---
 
@@ -760,7 +773,7 @@ Advanced phases always generate distractors that match the target in N-1 feature
 
 ## Deployment to webOS
 
-The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.0.15`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
+The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.1.0`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
 
 ### Simulator
 
@@ -781,7 +794,7 @@ npm run build
 ares-package ./dist -o ./build/
 
 # 3. Install & launch
-ares-install ./build/yagc_0.0.15_all.ipk -d <device-name>
+ares-install ./build/yagc_0.1.0_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 

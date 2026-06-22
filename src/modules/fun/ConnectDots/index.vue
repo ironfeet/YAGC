@@ -2,6 +2,7 @@
 import { ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
+import { useGameStore } from '../../../stores/useGameStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
@@ -11,6 +12,7 @@ import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
+const gameStore = useGameStore();
 const GAME_ID = 'fun-connect-dots';
 
 const hasStarted = ref(false);
@@ -233,7 +235,7 @@ const dotEnter = (dotIndex: number) => {
 };
 
 function onLevelComplete() {
-  isComplete.value = true;
+  if (gameStore.isRandomMode) { setTimeout(() => { if (!gameStore.advanceRandomRound()) handleNextLevel(); }, 2500); } else { isComplete.value = true; }
   log.generate({ level: 1, phase: currentPhase.value, pieces: dotCount.value });
   playInstruction('You drew a beautiful picture!');
   progressStore.updateStats(GAME_ID, true);

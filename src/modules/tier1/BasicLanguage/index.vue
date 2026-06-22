@@ -300,7 +300,7 @@ const handleSuccess = () => {
   playInstruction(pick(encouragements));
 
   safeSetTimeout(() => {
-    generateLevel();
+    if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); }
     replayAudio();
   }, 2000);
 };

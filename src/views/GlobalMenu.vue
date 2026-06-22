@@ -25,108 +25,166 @@ const switchTab = (tab: 'mita' | 'fun') => {
   router.replace({ query: { ...route.query, tab } });
 };
 
+// Random Play Modal State
+import { useGameStore } from '../stores/useGameStore';
+const gameStore = useGameStore();
+
+const showRandomModal = ref(false);
+const randomGames = ref<number | 'endless'>(5);
+const randomRoundsPerGame = ref<number>(3);
+const randomPool = ref<'all' | 'mita' | 'fun'>('all');
+
+const startRandomSession = () => {
+  showRandomModal.value = false;
+  gameStore.startRandomMode(randomPool.value, randomGames.value, randomRoundsPerGame.value);
+};
+
 const funGames = [
   {
     id: 'fun-animal-jigsaw',
     name: 'Animal Jigsaw',
-    description: 'Piece together fun animal puzzles',
     emoji: '🦁',
-    color: '#f97316',
-    comingSoon: false,
+    color: '#34d399',
+    description: 'Spatial reasoning with animal pieces',
+    comingSoon: false
   },
   {
     id: 'fun-vehicle-jigsaw',
     name: 'Vehicle Jigsaw',
-    description: 'Build cars, trains and planes',
-    emoji: '🚂',
-    color: '#3b82f6',
-    comingSoon: false,
-  },
-  {
-    id: 'fun-number-puzzle',
-    name: 'Number Puzzle',
-    description: 'Learn and place numbers',
-    emoji: '🔢',
-    color: '#0284c7',
-    comingSoon: false,
-  },
-  {
-    id: 'fun-color-board',
-    name: 'Color Board',
-    description: 'Match the colorful buttons to their holes',
-    emoji: '🎨',
-    color: '#a855f7',
-    comingSoon: false,
+    emoji: '🚜',
+    color: '#60a5fa',
+    description: 'Assemble cars, trucks and planes',
+    comingSoon: false
   },
   {
     id: 'fun-nature-jigsaw',
     name: 'Nature Jigsaw',
-    description: 'Piece together beautiful nature scenes',
-    emoji: '🌲',
-    color: '#059669',
-    comingSoon: false,
+    emoji: '🌳',
+    color: '#a78bfa',
+    description: 'Piece together bugs and plants',
+    comingSoon: false
+  },
+  {
+    id: 'fun-color-board',
+    name: 'Color Board',
+    emoji: '🎨',
+    color: '#fbbf24',
+    description: 'Match items by their color',
+    comingSoon: false
   },
   {
     id: 'fun-shape-sorter',
     name: 'Shape Sorter',
-    description: 'Fit shapes into the correct holes',
-    emoji: '⭐',
-    color: '#ec4899',
-    comingSoon: false,
-  },
-  {
-    id: 'fun-shadow-match',
-    name: 'Shadow Match',
-    description: 'Match animals to their silhouettes',
-    emoji: '👥',
-    color: '#14b8a6',
-    comingSoon: false,
+    emoji: '🔺',
+    color: '#f472b6',
+    description: 'Match simple shapes',
+    comingSoon: false
   },
   {
     id: 'fun-size-sorter',
     name: 'Size Sorter',
-    description: 'Stack rings from largest to smallest',
-    emoji: '🍩',
-    color: '#8b5cf6',
-    comingSoon: false,
+    emoji: '📏',
+    color: '#38bdf8',
+    description: 'Sort objects by size',
+    comingSoon: false
+  },
+  {
+    id: 'fun-shadow-match',
+    name: 'Shadow Match',
+    emoji: '👥',
+    color: '#a3e635',
+    description: 'Match objects to their shadows',
+    comingSoon: false
+  },
+  {
+    id: 'fun-number-puzzle',
+    name: 'Number Puzzle',
+    emoji: '🔢',
+    color: '#fb923c',
+    description: 'Count and match numbers',
+    comingSoon: false
   },
   {
     id: 'fun-pattern-train',
     name: 'Pattern Train',
-    description: 'Complete the sequence of train cars',
     emoji: '🚂',
-    color: '#ef4444',
-    comingSoon: false,
+    color: '#818cf8',
+    description: 'Complete the visual patterns',
+    comingSoon: false
   },
   {
     id: 'fun-category-bins',
     name: 'Category Bins',
-    description: 'Sort objects into the correct bins',
     emoji: '🧺',
-    color: '#f59e0b',
-    comingSoon: false,
+    color: '#fcd34d',
+    description: 'Sort items into categories',
+    comingSoon: false
   },
   {
     id: 'fun-memory-match',
     name: 'Memory Match',
-    description: 'Flip and match the animal cards',
-    emoji: '🎴',
-    color: '#6366f1',
-    comingSoon: false,
+    emoji: '🧠',
+    color: '#f87171',
+    description: 'Find the matching pairs',
+    comingSoon: false
   },
   {
     id: 'fun-connect-dots',
     name: 'Connect the Dots',
-    description: 'Connect numbers to reveal the picture',
     emoji: '✏️',
-    color: '#10b981',
-    comingSoon: false,
-  },
+    color: '#2dd4bf',
+    description: 'Draw lines to connect objects',
+    comingSoon: false
+  }
 ];
 </script>
 
 <template>
   <div class="global-menu">
+
+    <!-- ── Random Play Modal ────────────────────────────────────── -->
+    <transition name="pop">
+      <div v-if="showRandomModal" class="random-modal-overlay" @click.self="showRandomModal = false">
+        <div class="random-modal-card">
+          <button class="close-modal-btn" @click="showRandomModal = false">✕</button>
+          <div class="modal-emoji">🎲</div>
+          <h2 class="modal-title">Random Play</h2>
+          <p class="modal-sub">Pick a random sequence of games to play!</p>
+          
+          <div class="modal-section">
+            <label>Total Games</label>
+            <div class="segmented-control">
+              <button :class="{ active: randomGames === 5 }" @click="randomGames = 5">5</button>
+              <button :class="{ active: randomGames === 10 }" @click="randomGames = 10">10</button>
+              <button :class="{ active: randomGames === 15 }" @click="randomGames = 15">15</button>
+              <button :class="{ active: randomGames === 'endless' }" @click="randomGames = 'endless'">∞</button>
+            </div>
+          </div>
+          
+          <div class="modal-section">
+            <label>Rounds per Game</label>
+            <div class="segmented-control">
+              <button :class="{ active: randomRoundsPerGame === 1 }" @click="randomRoundsPerGame = 1">1</button>
+              <button :class="{ active: randomRoundsPerGame === 3 }" @click="randomRoundsPerGame = 3">3</button>
+              <button :class="{ active: randomRoundsPerGame === 5 }" @click="randomRoundsPerGame = 5">5</button>
+            </div>
+          </div>
+          
+          <div class="modal-section">
+            <label>Which games?</label>
+            <div class="segmented-control">
+              <button :class="{ active: randomPool === 'all' }" @click="randomPool = 'all'">All Games</button>
+              <button :class="{ active: randomPool === 'mita' }" @click="randomPool = 'mita'">MITA</button>
+              <button :class="{ active: randomPool === 'fun' }" @click="randomPool = 'fun'">Fun Only</button>
+            </div>
+          </div>
+          
+          <button class="start-random-btn" @click="startRandomSession">
+            Start Session
+          </button>
+        </div>
+      </div>
+    </transition>
 
     <!-- ── Top bar ─────────────────────────────────────────── -->
     <header class="global-header">
@@ -165,6 +223,9 @@ const funGames = [
       </nav>
 
       <div class="header-right">
+        <button class="random-play-btn" @click="showRandomModal = true">
+          🎲 Play Random
+        </button>
         <button
           class="stats-btn"
           @click="router.push(`/statistics?tab=${activeTab}`)"
@@ -186,7 +247,7 @@ const funGames = [
         <div v-else key="fun" class="tab-panel fun-panel">
           <div class="fun-header">
             <h2 class="fun-title">🧩 Fun Games</h2>
-            <p class="fun-desc">Jigsaw puzzles and board games — coming soon!</p>
+            <p class="fun-desc">Jigsaw puzzles and board games</p>
           </div>
 
           <div class="fun-grid">
@@ -331,6 +392,27 @@ const funGames = [
   gap: 0.75rem;
 }
 
+.random-play-btn {
+  padding: 0.65rem 1.4rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.random-play-btn:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
 .stats-btn {
   padding: 0.65rem 1.4rem;
   font-size: 1rem;
@@ -364,6 +446,138 @@ const funGames = [
   transform: rotate(30deg);
   background: rgba(255,255,255,0.08);
 }
+
+/* ── Random Modal ────────────────────────────────────────── */
+.random-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.random-modal-card {
+  position: relative;
+  background: var(--bg-secondary);
+  padding: 3rem 4rem;
+  border-radius: 32px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  min-width: 450px;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.close-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-emoji {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+}
+
+.modal-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 0.2rem;
+}
+
+.modal-sub {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.modal-section {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.modal-section label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.8rem;
+}
+
+.segmented-control {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 0.3rem;
+  gap: 0.3rem;
+}
+
+.segmented-control button {
+  flex: 1;
+  padding: 0.8rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.segmented-control button:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.segmented-control button.active {
+  color: white;
+  background: var(--color-blue);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.start-random-btn {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin-top: 1rem;
+}
+
+.start-random-btn:active {
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+.pop-enter-active, .pop-leave-active { transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pop-enter-from, .pop-leave-to { opacity: 0; transform: scale(0.9); }
 
 /* ── Tab content ─────────────────────────────────────────── */
 .tab-content {

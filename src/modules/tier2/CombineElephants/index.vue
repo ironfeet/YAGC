@@ -151,7 +151,7 @@ const handleSuccess = (id: string) => {
   playInstruction(getRandomPraise());
   
   safeSetTimeout(() => {
-    generateLevel();
+    if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); }
   }, 2500);
 };
 

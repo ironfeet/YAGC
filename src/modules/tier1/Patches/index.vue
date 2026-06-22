@@ -279,7 +279,10 @@ const handleSuccess = (holeId: string) => {
     log.info('All holes filled — level complete', { phase: config.value?.phase, sceneType: config.value?.sceneType });
     
     playInstruction(getRandomPraise());
-    safeSetTimeout(() => { generateLevel(); }, 2000);
+    safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 2000);
   } else {
     playInstruction('Good!');
     resetAll();

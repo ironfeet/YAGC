@@ -169,7 +169,10 @@ const handleSuccess = (matchedId: string) => {
   progressStore.updateStats(moduleId, true);
   
   playInstruction(getRandomPraise());
-  safeSetTimeout(() => { generateLevel(); }, 2000);
+  safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 2000);
 };
 
 const handleError = () => {

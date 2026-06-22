@@ -191,7 +191,7 @@ const validateDone = () => {
     progressStore.updateStats(moduleId, true);
     
     playInstruction(`${getRandomPraise()} You found the wet animals!`);
-    safeSetTimeout(() => generateLevel(), 3500);
+    safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
   } else {
     // Error
     log.error('validation-failed', { phase: config.value.phase, expected: targetIds, selected: selectedIds });
