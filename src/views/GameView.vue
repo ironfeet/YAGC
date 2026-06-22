@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onUnmounted } from 'vue';
+import { computed, defineAsyncComponent, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useGameStore } from '../stores/useGameStore';
 
@@ -60,8 +60,13 @@ const goBackToMenu = () => {
   router.push('/');
 };
 
+// Clear the game session config when switching to a different game
+watch(moduleId, () => {
+  gameStore.activeConfig = null;
+});
+
 onUnmounted(() => {
-  // Cleanup game session when leaving
+  // Cleanup game session when leaving entirely
   gameStore.endGame();
 });
 </script>
@@ -70,14 +75,24 @@ onUnmounted(() => {
   <div class="game-view">
     <!-- Global Navigation UI -->
     <header class="game-header">
-      <button class="back-btn" @click="goBackToMenu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-        Back to Menu
-      </button>
-      <div class="game-stats" v-if="gameStore.isPlaying">
-        <span>Score: {{ gameStore.score }}</span>
+      <div class="header-left">
+        <button class="back-btn" @click="goBackToMenu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back to Menu
+        </button>
+      </div>
+      
+      <div v-if="gameStore.isRandomMode" class="random-mode-badge">
+        <span class="random-icon">🎲</span>
+        Random Mode (Game {{ gameStore.randomGamesCompleted }}{{ gameStore.randomModeGoal !== 'endless' ? ` / ${gameStore.randomModeGoal}` : '' }})
+      </div>
+      
+      <div class="header-right">
+        <div class="game-stats" v-if="gameStore.isPlaying">
+          <span>Score: {{ gameStore.score }}</span>
+        </div>
       </div>
     </header>
 
@@ -119,19 +134,51 @@ onUnmounted(() => {
   z-index: 100;
 }
 
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.random-mode-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-blue);
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
+
+.random-icon {
+  font-size: 1.3rem;
+}
+
 .back-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--color-neutral);
-  color: white;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
   font-weight: bold;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.back-btn:hover {
+  opacity: 0.85;
 }
 
 .back-btn:active {

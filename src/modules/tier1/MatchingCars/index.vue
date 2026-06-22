@@ -177,7 +177,7 @@ const handleSuccess = (matchedId: string) => {
   
   // Wait for the drive-off animation to finish before generating the next level
   safeSetTimeout(() => {
-    generateLevel();
+    if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); }
   }, 2500);
 };
 

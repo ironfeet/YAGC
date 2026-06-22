@@ -203,7 +203,10 @@ const handleSuccess = (draggedId: string, zoneEl?: HTMLElement) => {
     progressStore.updateStats(moduleId, true);
     
     playInstruction(getRandomPraise());
-    safeSetTimeout(() => { generateLevel(); }, 2000);
+    safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 2000);
   } else {
     // Multi-target: mark this zone filled, check if all done
     const zoneId = zoneEl?.dataset?.zoneId || draggedId;
@@ -217,7 +220,10 @@ const handleSuccess = (draggedId: string, zoneEl?: HTMLElement) => {
       progressStore.updateStats(moduleId, true);
       
       playInstruction(getRandomPraise());
-      safeSetTimeout(() => { generateLevel(); }, 2500);
+      safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 2500);
     } else {
       playInstruction('Good! Keep going!');
     }

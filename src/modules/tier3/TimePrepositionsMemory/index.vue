@@ -181,7 +181,7 @@ const handleStrictSuccess = (itemId: string) => {
     progressStore.updateStats(moduleId, true);
     
     playInstruction(getRandomItem(['Excellent memory!', 'You followed the steps perfectly!', 'Great sequencing!']));
-    safeSetTimeout(() => generateLevel(), 3500);
+    safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
   } else {
     // Play subtle "ding" for correct step
     playInstruction('Good.');

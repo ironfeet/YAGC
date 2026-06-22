@@ -196,7 +196,13 @@ const handleSuccess = (itemId: string) => {
   const praise = getRandomItem(['Brilliant logic!', 'Exactly right!', 'You figured it out!']);
   playInstruction(praise);
   
-  safeSetTimeout(() => generateLevel(), 3500);
+  safeSetTimeout(() => {
+    if (gameStore.isRandomMode) {
+      if (!gameStore.advanceRandomRound()) generateLevel();
+    } else {
+      generateLevel();
+    }
+  }, 3500);
 };
 
 const handleError = (itemId: string) => {

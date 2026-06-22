@@ -4,6 +4,7 @@ import { shuffle } from '../../../utils/shuffle';
 import { ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
+import { useGameStore } from '../../../stores/useGameStore';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
@@ -11,6 +12,7 @@ import { useLogger } from '../../../composables/useLogger';
 
 const router = useRouter();
 const progressStore = useProgressStore();
+const gameStore = useGameStore();
 const GAME_ID = 'fun-size-sorter';
 
 const hasStarted = ref(false);
@@ -212,7 +214,7 @@ function onPointerUp(e: PointerEvent) {
 }
 
 function onLevelComplete() {
-  isComplete.value = true;
+  if (gameStore.isRandomMode) { setTimeout(() => { if (!gameStore.advanceRandomRound()) handleNextLevel(); }, 2500); } else { isComplete.value = true; }
   log.generate({ level: 1, phase: currentPhase.value, pieces: ringCount.value });
   playInstruction(`${getRandomPraise()} You sorted them all!`);
   progressStore.updateStats(GAME_ID, true);
@@ -220,8 +222,13 @@ function onLevelComplete() {
 }
 
 const handleNextLevel = () => {
-  isComplete.value = false;
-  initLevel();
+  if (gameStore.isRandomMode) {
+    isComplete.value = false;
+    initLevel();
+  } else {
+    isComplete.value = false;
+    initLevel();
+  }
 };
 </script>
 

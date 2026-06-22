@@ -185,7 +185,10 @@ const handleSuccess = (itemId: string) => {
     log.info('All targets placed — level complete', { phase: config.value.phase });
     progressStore.updateStats(moduleId, true);
     playInstruction('Great memory!');
-    safeSetTimeout(() => { generateLevel(); }, 3000);
+    safeSetTimeout(() => { 
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); }
+      else generateLevel(); 
+    }, 3000);
   } else {
     playInstruction('Good!');
   }

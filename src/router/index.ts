@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/settings',
       name: 'Settings',
       component: SettingsView
+    },
+    {
+      path: '/random-success',
+      name: 'RandomSuccess',
+      component: () => import('../views/RandomSuccessView.vue')
     }
   ]
 });

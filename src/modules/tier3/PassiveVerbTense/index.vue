@@ -164,7 +164,7 @@ const handleStrictSuccess = (itemId: string) => {
   progressStore.updateStats(moduleId, true);
   
   playInstruction(getRandomItem(['That is correct!', 'Yes, they won the race!', 'Perfect grammar!']));
-  safeSetTimeout(() => generateLevel(), 3500);
+  safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
 };
 
 const handleStrictError = (itemId: string) => {

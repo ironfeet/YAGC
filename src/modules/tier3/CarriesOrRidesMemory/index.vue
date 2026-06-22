@@ -227,7 +227,7 @@ const handleSuccess = (draggedId: string, target?: HTMLElement) => {
     playInstruction(getRandomPraise());
     
     safeSetTimeout(() => {
-      generateLevel();
+      if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); }
     }, 4000);
   } else {
     handleError();

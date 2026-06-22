@@ -388,7 +388,7 @@ const handleCheckHouse = () => {
     progressStore.updateStats(moduleId, true);
     const praise = getRandomItem(['Amazing memory!', 'Perfect!', 'You got it!', 'Outstanding!']);
     playInstruction(praise);
-    safeSetTimeout(() => generateLevel(), 3500);
+    safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
   } else {
     shakingCells.value = wrongZones;
     log.error('check', { wrongZones: [...wrongZones], phase: config.value.phase });
@@ -547,7 +547,7 @@ const winLevel = () => {
   log.info('Level complete', { phase: config.value?.phase });
   
   playInstruction(getRandomPraise());
-  safeSetTimeout(() => generateLevel(), 3500);
+  safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3500);
 };
 
 // ── Controls ──────────────────────────────────────────────────────────────────

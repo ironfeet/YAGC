@@ -235,9 +235,7 @@ const handleTap = (index: number) => {
       
       playInstruction(getRandomPraise());
       
-      safeSetTimeout(() => {
-        generateLevel();
-      }, 3000);
+      safeSetTimeout(() => { if (gameStore.isRandomMode) { if (!gameStore.advanceRandomRound()) generateLevel(); } else { generateLevel(); } }, 3000);
     } else {
       playInstruction(getRandomItem(['Got it!', 'Found one!', 'Nice!']));
       resetAll(); // reset prompts on success
