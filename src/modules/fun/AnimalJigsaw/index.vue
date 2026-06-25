@@ -311,6 +311,8 @@ function nextAnimal() {
 
 onMounted(() => {
   log.lifecycle('mounted');
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
 });
 const playHint = () => {
   const text = `Put the ${animal.value.label} together!`;

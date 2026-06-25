@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -209,6 +209,11 @@ const handleError = () => {
 onUnmounted(() => {
   log.lifecycle('unmounted');
   stopSpeech();
+});
+
+onMounted(() => {
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
 });
 </script>
 

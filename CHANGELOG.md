@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 25-06-2026
+
+### Fixed
+- **Random Mode Ended Too Early:** Fixed a bug where a Random Mode session would sometimes finish one game short of the chosen goal.
+- **Random Mode Hijacking Regular Games:** Fixed a bug where pressing "Back to Menu" during a Random Mode session would cause the next regular game you played to unexpectedly jump away to a random game.
+- **Incomplete MITA Game Pool:** 10 advanced clinical games (including Analogies, Carries or Rides, and Time Prepositions) were accidentally left out of the MITA random pool. All 26 MITA games are now correctly included.
+- **Manual Start Tap Between Games:** Fixed an annoyance where every game in a Random Mode session required tapping a "Start" button before it began. Games now start automatically, making the session flow without interruption.
+
 ## [0.1.0] - 22-06-2026
 
 ### Added

@@ -215,6 +215,8 @@ const generateLevel = () => {
 
 onMounted(() => {
   log.lifecycle('mounted');
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
 });
 
 const handleTap = (index: number) => {

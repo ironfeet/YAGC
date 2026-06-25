@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getRandomPraise } from '../../../utils/praises';
 import { shuffle } from '../../../utils/shuffle';
-import { ref, computed, nextTick, onUnmounted } from 'vue';
+import { onMounted, ref, computed, nextTick, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -160,6 +160,11 @@ const handleNextLevel = () => {
     initLevel();
   }
 };
+
+onMounted(() => {
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
+});
 </script>
 
 <template>

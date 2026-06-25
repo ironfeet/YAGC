@@ -5,7 +5,7 @@ export const useProgressStore = defineStore('progress', {
   state: (): UserProgress => ({
     userId: 'player1',
     currentTier: 1,
-    unlockedModules: ['tier1-patches', 'tier1-outlines', 'tier1-basiclanguage', 'tier1-matching-cars', 'tier1-matching-animals', 'tier2-odd-one-out', 'tier2-combine-elephants', 'tier2-combine-butterflies', 'tier2-combine-trains', 'tier2-arithmetics', 'tier2-count-everything', 'tier3-spatial-prepositions', 'tier3-perspectivetaking', 'tier3-auditory-memory', 'tier3-flexible-language-memory', 'tier3-nested-logic'],
+    unlockedModules: ['tier1-patches', 'tier1-outlines', 'tier1-basiclanguage', 'tier1-matching-cars', 'tier1-matching-animals', 'tier2-odd-one-out', 'tier2-combine-elephants', 'tier2-combine-butterflies', 'tier2-combine-trains', 'tier2-arithmetics', 'tier2-count-everything', 'tier3-spatial-prepositions', 'tier3-perspectivetaking', 'tier3-auditory-memory', 'tier3-flexible-language-memory', 'tier3-nested-logic', 'tier3-analogies', 'tier3-passiveverbtense', 'tier3-subjectobject', 'tier3-subjectobject-memory', 'tier3-catchup-memory', 'tier3-combinetoys', 'tier3-carriesorrides', 'tier3-carriesorrides-memory', 'tier3-timeprepositions', 'tier3-timeprepositions-memory'],
     moduleStats: {
       'fun-animal-jigsaw': {
         currentPhase: 1,

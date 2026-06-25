@@ -57,6 +57,10 @@ const ModuleComponent = computed(() => {
 });
 
 const goBackToMenu = () => {
+  // Always clean up Random Mode when navigating away mid-session
+  if (gameStore.isRandomMode) {
+    gameStore.endRandomMode();
+  }
   router.push('/');
 };
 
@@ -86,7 +90,7 @@ onUnmounted(() => {
       
       <div v-if="gameStore.isRandomMode" class="random-mode-badge">
         <span class="random-icon">🎲</span>
-        Random Mode (Game {{ gameStore.randomGamesCompleted }}{{ gameStore.randomModeGoal !== 'endless' ? ` / ${gameStore.randomModeGoal}` : '' }})
+        Random Mode (Game {{ gameStore.randomGamesCompleted + 1 }}{{ gameStore.randomModeGoal !== 'endless' ? ` / ${gameStore.randomModeGoal}` : '' }})
       </div>
       
       <div class="header-right">

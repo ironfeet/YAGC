@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getRandomPraise } from '../../../utils/praises';
-import { ref, computed, onUnmounted } from 'vue';
+import { onMounted, ref, computed, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -650,6 +650,11 @@ const handlePPError = (itemId: string, target?: HTMLElement) => {
   playInstruction('Try again!');
 };
 
+
+onMounted(() => {
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
+});
 </script>
 
 <template>
