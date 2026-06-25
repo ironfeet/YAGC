@@ -179,7 +179,11 @@ const generateLevel = () => {
   }, 500);
 };
 
-onMounted(() => { log.lifecycle('mounted'); });
+onMounted(() => {
+  log.lifecycle('mounted');
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
+});
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 // For multi-target: a draggable piece matches if its noun equals the zone's noun

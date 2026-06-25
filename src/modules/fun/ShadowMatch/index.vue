@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getRandomPraise } from '../../../utils/praises';
 import { shuffle } from '../../../utils/shuffle';
-import { ref, computed, nextTick } from 'vue';
+import { onMounted, ref, computed, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../../../stores/useProgressStore';
 import { useGameStore } from '../../../stores/useGameStore';
@@ -217,14 +217,14 @@ function onLevelComplete() {
 }
 
 const handleNextLevel = () => {
-  if (gameStore.isRandomMode) {
-    isComplete.value = false;
-    initLevel();
-  } else {
-    isComplete.value = false;
-    initLevel();
-  }
+  isComplete.value = false;
+  initLevel();
 };
+
+onMounted(() => {
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
+});
 </script>
 
 <template>

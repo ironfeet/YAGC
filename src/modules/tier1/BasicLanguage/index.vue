@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
+import { onMounted, ref, onUnmounted } from 'vue';
 import MenuIcon from '../../../components/game/MenuIcon.vue';
 import AssetLibrary from '../../../components/game/AssetLibrary.vue';
 import { useProgressStore } from '../../../stores/useProgressStore';
@@ -323,6 +323,11 @@ onUnmounted(() => {
 // ─── Computed helpers for template ───────────────────────────────────────────
 // Build an array of 1..count for v-for repeat rendering
 const countArray = (n: number | undefined) => Array.from({ length: n ?? 1 });
+
+onMounted(() => {
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
+});
 </script>
 
 <template>

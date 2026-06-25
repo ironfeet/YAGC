@@ -195,6 +195,8 @@ const generateLevel = () => {
 onMounted(() => {
   log.lifecycle('mounted');
   // generateLevel();
+  // In Random Mode, bypass the start screen and begin immediately
+  if (gameStore.isRandomMode) handleStart();
 });
 
 const isCellEmpty = (r: number, c: number) => {

@@ -52,6 +52,7 @@ export const useGameStore = defineStore('game', {
       this.randomRoundsPerGameGoal = roundsPerGame;
       this.randomCurrentGameRoundsCompleted = 0;
       this.randomSessionPlayedGames = [];
+      // forceNewGame=true: navigate to first game WITHOUT incrementing the completed counter
       this.advanceRandomRound(true);
     },
     endRandomMode() {
@@ -66,24 +67,24 @@ export const useGameStore = defineStore('game', {
       if (!forceNewGame) {
         this.randomCurrentGameRoundsCompleted++;
         
-        // If we haven't reached the per-game goal, stay on the same game
+        // If we haven't reached the per-game round goal, stay on the same game
         if (this.randomCurrentGameRoundsCompleted < this.randomRoundsPerGameGoal) {
-          return false; // Return false to indicate we did NOT switch games
+          return false; // false = did NOT switch games
+        }
+        
+        // This game is fully completed — record it and reset round counter
+        this.randomGamesCompleted++;
+        this.randomCurrentGameRoundsCompleted = 0;
+        
+        // Check if the entire session is complete (use >= since counter is now accurate)
+        if (this.randomModeGoal !== 'endless' && this.randomGamesCompleted >= this.randomModeGoal) {
+          this.endRandomMode();
+          import('../router').then(m => m.default.push('/random-success'));
+          return true;
         }
       }
       
-      // We are switching games!
-      this.randomGamesCompleted++;
-      this.randomCurrentGameRoundsCompleted = 0;
-      
-      // Check for completion
-      if (this.randomModeGoal !== 'endless' && this.randomGamesCompleted > this.randomModeGoal) {
-        this.endRandomMode();
-        import('../router').then(m => m.default.push('/random-success'));
-        return true;
-      }
-      
-      // Pick next random game
+      // Pick next random game from the pool
       const progressStore = useProgressStore();
       
       let pool: string[] = [];
@@ -98,7 +99,7 @@ export const useGameStore = defineStore('game', {
       else if (this.randomModePool === 'fun') pool = funGames;
       else pool = [...mitaGames, ...funGames];
       
-      // Identify current game
+      // Identify current game to avoid immediate repeat
       let currentId: string | undefined = undefined;
       const match = window.location.hash.match(/\/game\/([^/]+)/);
       if (match) {
@@ -107,27 +108,27 @@ export const useGameStore = defineStore('game', {
         currentId = this.activeConfig.moduleId;
       }
       
-      // Filter out all already played games from this session to ensure uniqueness
+      // Filter out already played games this session (shuffle-bag algorithm)
       let availablePool = pool.filter(id => !this.randomSessionPlayedGames.includes(id));
       
-      // If we exhausted the entire pool, reset the played history to allow games to repeat
+      // If the entire pool has been exhausted, reset history so games can repeat
       if (availablePool.length === 0) {
         this.randomSessionPlayedGames = [];
         availablePool = pool;
       }
       
-      // Always prevent picking the exact same game twice in a row
+      // Never pick the exact same game twice in a row
       if (availablePool.length > 1 && currentId) {
         availablePool = availablePool.filter(id => id !== currentId);
       }
       
       const randomId = availablePool[Math.floor(Math.random() * availablePool.length)];
       
-      // Add the chosen game to the session history
+      // Record this game as played in the session
       this.randomSessionPlayedGames.push(randomId);
       
       import('../router').then(m => m.default.push(`/game/${randomId}`));
-      return true; // Return true to indicate we switched games
+      return true; // true = switched to a new game
     }
   }
 });
