@@ -10,6 +10,7 @@ import { useSpeech } from '../../../composables/useSpeech';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import PointingHand from '../../../components/prompts/PointingHand.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
@@ -294,6 +295,10 @@ onMounted(() => {
               <ColorfulAnimal 
                 :name="piece.animalId" 
                 style="width: 120px; height: 120px;"
+              />
+              <!-- Full prompt: pointing hand on the target piece -->
+              <PointingHand
+                v-if="promptLevel === 'full' && !piece.placed && targetSequence.length > 0 && piece.animalId === targetSequence[0].id"
               />
             </div>
           </div>

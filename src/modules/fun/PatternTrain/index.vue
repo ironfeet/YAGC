@@ -9,6 +9,7 @@ import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import PointingHand from '../../../components/prompts/PointingHand.vue';
 import ShapeBlock from '../ShapeSorter/ShapeBlock.vue';
 
 const router = useRouter();
@@ -325,6 +326,8 @@ onMounted(() => {
               @pointerdown="onPointerDown($event, piece)"
             >
               <ShapeBlock :shape="piece.piece.shape" :color="piece.piece.color" />
+              <!-- Full prompt: pointing hand on the target piece -->
+              <PointingHand v-if="promptLevel === 'full' && !piece.placed && piece.isTarget" />
             </div>
           </div>
 

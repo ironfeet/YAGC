@@ -9,6 +9,7 @@ import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import PointingHand from '../../../components/prompts/PointingHand.vue';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 import ColorfulVehicle from '../VehicleJigsaw/ColorfulVehicle.vue';
 
@@ -278,6 +279,8 @@ onMounted(() => {
             >
               <ColorfulAnimal v-if="piece.category === 'animal'" :name="piece.assetId" style="width: 120px; height: 120px;" />
               <ColorfulVehicle v-else :name="piece.assetId" style="width: 120px; height: 120px;" />
+              <!-- Full prompt: pointing hand on the first unplaced piece -->
+              <PointingHand v-if="promptLevel === 'full' && !piece.placed" />
             </div>
           </div>
 

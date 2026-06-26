@@ -9,6 +9,7 @@ import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import PointingHand from '../../../components/prompts/PointingHand.vue';
 
 const router = useRouter();
 const progressStore = useProgressStore();
@@ -292,6 +293,8 @@ onMounted(() => {
               @pointerdown="onPointerDown($event, piece)"
             >
               <span v-if="piece.placed || piece.dragging" class="ring-number">{{ piece.sizeIndex + 1 }}</span>
+              <!-- Full prompt: pointing hand on the target ring -->
+              <PointingHand v-if="promptLevel === 'full' && !piece.placed && piece.sizeIndex === placedRings.length" />
             </div>
           </div>
 
