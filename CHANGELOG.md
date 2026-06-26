@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 26-06-2026
+
+### Fixed
+- **Prompt Hand Moves Object to Corner:** When the prompting hand appeared to guide a child toward the correct answer in games like Shadow Match, Category Bins, Size Sorter, and Pattern Train, the highlighted object would jump to the upper-left corner of the screen. It now stays in its correct position while glowing gold to attract attention.
+
 ## [0.1.1] - 25-06-2026
 
 ### Fixed
