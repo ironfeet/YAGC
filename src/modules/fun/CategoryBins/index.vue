@@ -9,6 +9,7 @@ import MenuIcon from '../../../components/game/MenuIcon.vue';
 import { useSpeech } from '../../../composables/useSpeech';
 import { usePromptFading } from '../../../composables/usePromptFading';
 import { useLogger } from '../../../composables/useLogger';
+import PointingHand from '../../../components/prompts/PointingHand.vue';
 import ColorfulAnimal from '../AnimalJigsaw/ColorfulAnimal.vue';
 import ColorfulVehicle from '../VehicleJigsaw/ColorfulVehicle.vue';
 
@@ -278,6 +279,8 @@ onMounted(() => {
             >
               <ColorfulAnimal v-if="piece.category === 'animal'" :name="piece.assetId" style="width: 120px; height: 120px;" />
               <ColorfulVehicle v-else :name="piece.assetId" style="width: 120px; height: 120px;" />
+              <!-- Full prompt: pointing hand on the first unplaced piece -->
+              <PointingHand v-if="promptLevel === 'full' && !piece.placed" />
             </div>
           </div>
 
@@ -384,8 +387,9 @@ onMounted(() => {
   animation: promptPulse 2s infinite;
 }
 @keyframes promptPulse {
-  0% { transform: scale(1); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) brightness(1); }
-  50% { transform: scale(1.05); filter: drop-shadow(0 10px 15px rgba(255,215,0,0.8)) brightness(1.2); }
-  100% { transform: scale(1); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) brightness(1); }
+  /* Only animate filter — never touch transform so the translate position is preserved */
+  0%   { filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) brightness(1); }
+  50%  { filter: drop-shadow(0 0 18px rgba(255,215,0,1)) brightness(1.25); }
+  100% { filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2)) brightness(1); }
 }
 </style>

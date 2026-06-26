@@ -137,7 +137,7 @@ ares-launch "./dist" -s 24 \
 ```bash
 npm run build
 ares-package ./dist -o ./build --no-minify
-ares-install ./build/yagc_0.1.1_all.ipk -d <device-name>
+ares-install ./build/yagc_0.1.2_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
@@ -773,7 +773,7 @@ Advanced phases always generate distractors that match the target in N-1 feature
 
 ## Deployment to webOS
 
-The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.1.1`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
+The project uses GitHub Actions to automate the release process. Pushing a tag (e.g., `v0.1.2`) will automatically build the Vue app and package it into an `.ipk` file for download on the Releases page.
 
 ### Simulator
 
@@ -794,7 +794,7 @@ npm run build
 ares-package ./dist -o ./build/
 
 # 3. Install & launch
-ares-install ./build/yagc_0.1.1_all.ipk -d <device-name>
+ares-install ./build/yagc_0.1.2_all.ipk -d <device-name>
 ares-launch yagc -d <device-name>
 ```
 
